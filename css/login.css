@@ -1,0 +1,198 @@
+input::-webkit-input-placeholder {
+    /* WebKit browsers*/
+    color: #999;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18*/
+    color: #999;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+input::-moz-placeholder {
+    /* Mozilla Firefox 19+*/
+    color: #999;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+input:-ms-input-placeholder {
+    /* Internet Explorer 10+*/
+    color: #999;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.header {
+    width: 1200px;
+    height: 100px;
+    margin: 0 auto;
+    background: url('../images/logo.jpg');
+    background-repeat: no-repeat;
+    background-position: 5% center;
+}
+
+.container {
+    width: 100%;
+    height: 560px;
+    min-width: 1200px;
+    background: url('../images/login-background.jpg');
+    background-position: center center;
+    margin-bottom: 40px;
+}
+
+.container .container-child {
+    width: 1200px;
+    height: 560px;
+    margin: 0 auto;
+    background: transparent;
+    position: relative;
+}
+
+.container .container-child .content {
+    width: 430px;
+    height: 340px;
+    background: #fff;
+    position: absolute;
+    right: 120px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.container .container-child .content .tab_header {
+    width: 100%;
+    height: 67px;
+    border-bottom: 1px solid #cccccc;
+}
+
+.container .container-child .content .tab_header ul {
+    list-style: none;
+}
+
+.container .container-child .content .tab_header ul:after {
+    content: '';
+    display: table;
+    clear: both;
+    zoom: 1;
+}
+
+.container .container-child .content .tab_header ul li {
+    width: 213px;
+    height: 67px;
+    line-height: 67px;
+    float: left;
+    text-align: center;
+    cursor: pointer;
+}
+
+.container .container-child .content .tab_header ul .bq {
+    float: left;
+    border: 0;
+    background: #eeeeee;
+    width: 2px;
+    height: 31px;
+    margin-top: 18px;
+}
+
+.container .container-child .content .tab_header ul li.active {
+    color: #ee8823;
+}
+
+.container .container-child .content .tab_content {
+    padding: 40px 38px 10px 38px;
+}
+
+.container .container-child .content .tab_content .tab_content_item {
+    display: none;
+}
+
+.container .container-child .content .tab_content .tab_content_item.active {
+    display: block;
+}
+
+.container .container-child .content .tab_content .tab_content_item .username,
+.container .container-child .content .tab_content .tab_content_item .password {
+    position: relative;
+    margin: 0 auto;
+    width: 347px;
+}
+
+.container .container-child .content .tab_content .tab_content_item .password {
+    margin-top: 12px;
+}
+
+.container .container-child .content .tab_content .tab_content_item .username .icon-people,
+.container .container-child .content .tab_content .tab_content_item .password .icon-lock {
+    position: absolute;
+    display: inline-block;
+    font-size: 32px;
+    color: #999999;
+    left: 10px;
+    top: 4px;
+}
+
+.container .container-child .content .tab_content .tab_content_item .username input,
+.container .container-child .content .tab_content .tab_content_item .password input {
+    width: 347px;
+    height: 42px;
+    padding-left: 46px;
+    color: #444;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.container .container-child .content .tab_content .tab_content_item .remember {
+    width: 347px;
+    margin: 12px auto;
+    color: #cccccc;
+    vertical-align: middle;
+}
+
+.container .container-child .content .tab_content .tab_content_item button {
+    display: block;
+    width: 347px;
+    height: 40px;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+    background: #ee8823;
+    border: 0;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.container .container-child .content .tab_content .tab_content_item .forget_register {
+    width: 347px;
+    margin: 12px auto;
+}
+
+.container .container-child .content .tab_content .tab_content_item .forget_register a {
+    text-decoration: none;
+    color: #444;
+}
+
+.container .container-child .content .tab_content .tab_content_item .forget_register .register {
+    float: right;
+    color: #ee8823;
+}
+
+.footer {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.footer .hx {
+    width: 80%;
+    margin: 0 auto;
+    border: 1px dashed #999999;
+}
+
+.footer .instructions {
+    padding: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #999999;
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/register.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header"></div>
+        <div class="container">
+            <div class="container-child">
+                <div class="content">
+                    <div class="content-title">手机注册</div>
+                    <div class="formline">
+                        <div class="word"><span style="color:red">*</span>&nbsp;&nbsp;手机号码：</div>
+                        <div class="input">
+                            <input type="text" placeholder="中国0086" style="width:103px;">
+                            <input type="text" placeholder="请输入手机号码" style="width:268px;">
+                        </div>
+                    </div>
+                    <div class="formline">
+                        <div class="word"><span style="color:red">*</span>&nbsp;&nbsp;验证码：</div>
+                        <div class="input">
+                            <input type="text" placeholder="不区分大小写" id="verification-code" style="width:222px;">&nbsp;&nbsp;
+                            <span>看不清，<a href="">换一张</a></span>
+                        </div>
+                    </div>
+                    <div class="formline">
+                        <div class="word"><span style="color:red">*</span>&nbsp;&nbsp;校验码：</div>
+                        <div class="input">
+                            <input type="text" placeholder="请输入校验码" id="check-code" style="width:262px;">
+                            <button type="button">获取校验码</button>
+                        </div>
+                    </div>
+                    <div class="formline">
+                        <div class="word"><span style="color:red">*</span>&nbsp;&nbsp;设置密码：</div>
+                        <div class="input">
+                            <input type="text" id="pwd" style="width:374px;">
+                        </div>
+                    </div>
+                    <div class="formline">
+                        <div class="word"><span style="color:red">*</span>&nbsp;&nbsp;再次输入密码：</div>
+                        <div class="input">
+                            <input type="text" id="repwd" style="width:374px;">
+                        </div>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox"> 同意&nbsp;
+                        <a href="">旅拍秀秀会员协议</a>&nbsp;并且愿意接受旅游咨询免费信息
+                    </div>
+                    <button class="register-btn">注&nbsp;册</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <hr class="hx">
+            <div class="instructions">
+                Copyright&copy;208-2020 湖南中惠旅山水印象国际旅行社有限公司 版权所有 备案号：湘ICP备12010097号-5
+            </div>
+        </div>
+    </div>
+    <script src="./assert/jquery.min.js"></script>
+    <script src="./js/register.js"></script>
+</body>
+
+
+</html>

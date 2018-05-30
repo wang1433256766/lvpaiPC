@@ -1,0 +1,166 @@
+input::-webkit-input-placeholder {
+    /* WebKit browsers*/
+    color: #999;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18*/
+    color: #999;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+input::-moz-placeholder {
+    /* Mozilla Firefox 19+*/
+    color: #999;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+input:-ms-input-placeholder {
+    /* Internet Explorer 10+*/
+    color: #999;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.header {
+    width: 1200px;
+    height: 100px;
+    margin: 0 auto;
+    background: url('../images/logo.jpg');
+    background-repeat: no-repeat;
+    background-position: 5% center;
+}
+
+.container {
+    width: 100%;
+    height: 560px;
+    min-width: 1200px;
+    background: url('../images/login-background.jpg');
+    background-position: center center;
+    margin-bottom: 40px;
+}
+
+.container .container-child {
+    width: 1200px;
+    height: 560px;
+    margin: 0 auto;
+    background: transparent;
+    position: relative;
+}
+
+.container .container-child .content {
+    width: 630px;
+    height: 450px;
+    background: #fff;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.container .container-child .content .content-title {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background: #ee8823;
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.container .container-child .content .formline {
+    margin: 20px 0;
+    width: 100%;
+    height: 30px
+}
+
+.container .container-child .content .formline:after {
+    content: '';
+    display: table;
+    clear: both;
+    zoom: 1;
+}
+
+.container .container-child .content .formline .word {
+    width: 25%;
+    height: 30px;
+    line-height: 30px;
+    float: left;
+    text-align: right;
+}
+
+.container .container-child .content .formline .input {
+    width: 75%;
+    height: 30px;
+    line-height: 30px;
+    float: left;
+    text-align: left;
+}
+
+.container .container-child .content .formline .input input {
+    height: 30px;
+    padding-left: 15px;
+}
+
+.container .container-child .content .formline .input span {
+    font-size: 14px;
+}
+
+.container .container-child .content .formline .input span a {
+    text-decoration: none;
+    color: #ee8823;
+}
+
+.container .container-child .content .formline .input button {
+    width: 108px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #cccccc;
+    background: #eeeeee;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.container .container-child .content .checkbox {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+}
+
+.container .container-child .content .checkbox a {
+    color: #ee8823;
+}
+
+.container .container-child .content .register-btn {
+    display: block;
+    margin: 20px auto;
+    width: 381px;
+    height: 42px;
+    line-height: 42px;
+    border: 0;
+    background: #626262;
+    color: #fff;
+}
+
+.footer {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.footer .hx {
+    width: 80%;
+    margin: 0 auto;
+    border: 1px dashed #999999;
+}
+
+.footer .instructions {
+    padding: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #999999;
+}
