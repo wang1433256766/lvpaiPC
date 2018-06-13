@@ -29,22 +29,32 @@
                             <div class='tab_content_item active'>
                                 <div class="username">
                                     <i class="iconfont icon-people"></i>
-                                    <input type="text" placeholder="手机号/会员名/昵称/邮箱">
+                                    <input type="text" placeholder="请输入手机号" id="phone">
+                                    <div class="check-phone"></div>
                                 </div>
-                                <div class="password">
+                                <!-- <div class="password">
                                     <i class="iconfont icon-lock"></i>
                                     <input type="password" placeholder="密码">
+                                </div> -->
+                                <div class="validate-code">
+                                    <input type="text" placeholder="请输入验证码" id="validateCode">
+                                    <button type="button" class="getValidateBtn">获取验证码</button>
+                                    <div class="check-code"></div>
                                 </div>
                                 <div class="remember">
-                                    <input type="checkbox">&nbsp;&nbsp;记住密码
+                                    <!-- <input type="checkbox">&nbsp;&nbsp;记住密码 -->
                                 </div>
-                                <button type="button">登&nbsp;录</button>
+                                <button type="button" class="loginBtn">登&nbsp;录</button>
                                 <div class="forget_register">
-                                    <a href="">忘记密码</a><a href="./register.html" class="register">立即注册&gt;</a>
+                                    <!-- <a href="">忘记密码</a> --><a href="./register.html" class="register">立即注册&gt;</a>
                                 </div>
                             </div>
                             <div class="tab_content_item"></div>
-                            <div class="tab_content_item">二维码</div>
+                            <div class="tab_content_item">
+                                <div id="wx-code" style="text-align: center;">
+                                    
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -58,6 +68,7 @@
         </div>
     </div>
     <script src="./assert/jquery.min.js"></script>
+    <script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
     <script src="./js/login.js"></script>
 </body>
 

@@ -1,0 +1,79 @@
+input::-webkit-input-placeholder {
+    /* WebKit browsers*/
+    color: #999;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18*/
+    color: #999;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+input::-moz-placeholder {
+    /* Mozilla Firefox 19+*/
+    color: #999;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+input:-ms-input-placeholder {
+    /* Internet Explorer 10+*/
+    color: #999;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.main-container{
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 20px 40px;
+	font-size: 14px;
+	color: #222222;
+}
+.main-container .form-control{
+	width: 100%;
+	margin: 10px 0;
+}
+.main-container .form-control:after{
+	content: '';
+	display: table;
+	clear: both;
+	zoom: 1;
+}
+.main-container .form-control .label{
+	width: 20%;
+	float: left;
+	text-align: right;
+	line-height: 40px;
+}
+.main-container .form-control .form-input{
+	width: 80%;
+	float: left;
+	text-align: left;
+	padding-left: 10px;
+	vertical-align: middle;
+}
+
+.main-container .form-control .form-input .css-control{
+	width: 90%;
+	height: 40px;
+	padding-left: 10px;
+}
+
+.main-container .form-control .form-input .css-control.select-control{
+	width: 60%;
+}
+
+#submitBtn{
+    display: block;
+    margin: 20px auto;
+    background: #ee8823;
+    padding: 8px 30px;
+    color: #fff;
+    border: 1px solid #ee8823;
+    cursor: pointer;
+}

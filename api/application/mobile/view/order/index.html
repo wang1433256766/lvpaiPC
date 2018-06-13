@@ -1,0 +1,399 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>订单列表</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="/static/mobile/css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/public.css" />
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/order.css" />
+		<script type="text/javascript" charset="utf-8">
+			(function(doc, win) {
+				var docEl = doc.documentElement,
+					resizeEvt = 'onorientationchange' in window ? 'onorientationchange' : 'resize',
+					recalc = function() {
+						var clientWidth = docEl.clientWidth;
+						if(!clientWidth) return;
+						if(clientWidth >= 750) {
+							docEl.style.fontSize = '100px';
+						} else {
+							docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+						}
+					};
+
+				if(!doc.addEventListener) return;
+				win.addEventListener(resizeEvt, recalc, false);
+				doc.addEventListener('DOMContentLoaded', recalc, false);
+			})(document, window);
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" href="/mobile/member/member_bus"></a>
+			<h1 class="mui-title">订单列表</h1>
+		</header>
+		<div class="mui-content">
+			<!--选项卡-->
+			<div id="slider" class="mui-slider">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item mui-active" href="#item1mobile">
+						全部
+					</a>
+					<a class="mui-control-item" href="#item2mobile">
+						待付款
+					</a>
+					<a class="mui-control-item" href="#item3mobile">
+						待使用
+					</a>
+					<a class="mui-control-item" href="#item4mobile">
+						已完成
+					</a>
+					<a class="mui-control-item" href="#item5mobile">
+						售后
+					</a>
+				</div>
+
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<!--内容-->
+								<ul class="dingdan">
+									<!--待付款-->
+									{volist name="all" id="v"}
+									<li>
+
+										<div class="riqi">
+											<p>下单日期：<span>{:date('Y-m-d H:i',$v.add_time)}</span></p>
+											{if $v.status == 0}
+											<em class="zhifu">{:get_status($v.status)}</em>
+											{elseif $v.status == 1}
+											<em class="shiyong">{:get_status($v.status)}</em>
+											{elseif $v.status == 2}
+											<em class="chuli">{:get_status($v.status)}</em>
+											{elseif $v.status == 4}
+											<em class="yituikuan">{:get_status($v.status)}</em>
+											{elseif $v.status == 5}
+											<em class="wancheng">{:get_status($v.status)}</em>
+											{elseif $v.status == 6}
+											<em class="chuli">{:get_status($v.status)}</em>
+											{/if}
+										</div>
+										<a href="javascript:;">
+											<div class="xingxi" data-id="{$v.id}" data-status="{$v.status}">
+												<p class="p1 mui-clearfix">
+													<span class="fl">{$v.ticket_name}</span>
+													<span class="fr"><del>￥{$v.cost_price*$v.num}</del></span>
+												</p>
+												<div class="jiage mui-clearfix">
+													<p class="fl">
+														<span>￥{$v.price}</span><em>X{$v.num}</em>
+													</p>
+													<p class="fr">
+														合计：<span>￥{$v.order_total}</span>
+													</p>
+												</div>
+											</div>
+										</a>
+
+										<div class="box_bt">
+											{if $v.status == 0}
+											<button type="button" class="mui-btn zhifu" onclick="location='/mobile/order/notpay/id/{$v.id}'">立即支付</button>
+											<button type="button" class="mui-btn" onclick="cancel({$v.id})">取消订单</button>
+											{elseif $v.status == 1}
+											<button type="button" class="mui-btn" onclick="apply({$v.id})">申请退款</button>
+											{elseif $v.status == 2}
+											<button type="button" class="mui-btn" onclick="applycancel({$v.id})">取消退款</button>
+											{elseif $v.status == 4}
+											<button type="button" class="mui-btn" onclick="del({$v.id})">删除订单</button>
+											{elseif $v.status == 5}
+											<button type="button" class="mui-btn disnping" onclick="comment({$v.id})">我要点评</button>
+											{elseif $v.status == 6}
+											<button type="button" class="mui-btn" onclick="apply({$v.id})">申请退款</button>
+											<button type="button" class="mui-btn" onclick="applycancel({$v.id})">取消退款</button>
+											{/if}
+										</div>
+									</li>
+									{/volist}
+								</ul>
+								<!--内容 end-->
+							</div>
+						</div>
+					</div>
+					<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll2" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<!--内容-->
+								<ul class="dingdan">
+									<!--待付款-->
+									{volist name="notpay" id="n"}
+									<li>
+										<div class="riqi">
+											<p>下单日期：<span>{:date('Y-m-d H:i',$n.add_time)}</span></p>
+											<em class="zhifu">{:get_status($n.status)}</em>
+										</div>
+										<a href="javascript:;">
+											<div class="xingxi" data-id="{$n.id}" data-status="{$n.status}">
+												<p class="p1 mui-clearfix">
+													<span class="fl">{$n.ticket_name}</span>
+													<span class="fr"><del>￥{$n.cost_price*$v.num}</del></span>
+												</p>
+												<div class="jiage mui-clearfix">
+													<p class="fl">
+														<span>￥{$n.price}</span><em>X{$n.num}</em>
+													</p>
+													<p class="fr">
+														合计：<span>￥{$n.order_total}</span>
+													</p>
+												</div>
+											</div>
+										</a>
+										<div class="box_bt">
+											<button type="button" class="mui-btn zhifu" onclick="location='/mobile/order/notpay/id/{$n.id}'">立即支付</button>
+											<button type="button" class="mui-btn" onclick="cancel({$n.id})">取消订单</button>
+										</div>
+									</li>
+									{/volist}
+									<!--待付款 end-->
+								</ul>
+								<!--内容 end-->
+							</div>
+						</div>
+
+					</div>
+					<div id="item3mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll3" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<!--内容-->
+								<ul class="dingdan">
+									<!--待出行-->
+									{volist name="notuse" id="n"}
+									<li>
+										<div class="riqi">
+											<p>下单日期：<span>{:date('Y-m-d H:i',$n.add_time)}</span></p>
+											<em class="shiyong">{:get_status($n.status)}</em>
+										</div>
+										<a href="javascript:;">
+											<div class="xingxi" data-id="{$n.id}" data-status="{$n.status}">
+												<p class="p1 mui-clearfix">
+													<span class="fl">{$n.ticket_name}</span>
+													<span class="fr"><del>￥{$n.cost_price*$v.num}</del></span>
+												</p>
+												<div class="jiage mui-clearfix">
+													<p class="fl">
+														<span>￥{$n.price}</span><em>X{$n.num}</em>
+													</p>
+													<p class="fr">
+														合计：<span>￥{$n.order_total}</span>
+													</p>
+												</div>
+											</div>
+										</a>
+										<div class="box_bt">
+											<button type="button" class="mui-btn" onclick="apply({$n.id})">申请退款</button>
+										</div>
+									</li>
+									{/volist}
+									<!--待出行 end-->
+								</ul>
+								<!--内容 end-->
+							</div>
+						</div>
+
+					</div>
+					<div id="item4mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll4" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<!--内容-->
+								<ul class="dingdan">
+									<!--已完成-->
+									{volist name="complete" id="c"}
+									<li>
+										<div class="riqi">
+
+											<p>下单日期：<span>{:date('Y-m-d H:i',$c.add_time)}</span></p>
+
+											<em class="wancheng">已完成</em>
+
+										</div>
+
+										<a href="javascript:;">
+											<div class="xingxi" data-id="{$c.id}" data-status="{$c.status}">
+
+												<p class="p1 mui-clearfix">
+
+													<span class="fl">{$c.ticket_name}</span>
+
+													<span class="fr"><del>￥{$c.cost_price*$c.num}</del></span>
+												</p>
+
+												<div class="jiage mui-clearfix">
+
+													<p class="fl">
+
+														<span>￥{$c.price}</span><em>X{$c.num}</em>
+
+													</p>
+
+													<p class="fr">
+
+														合计：<span>￥{$c.order_total}</span>
+
+													</p>
+
+												</div>
+											</div>
+										</a>
+										<div class="box_bt">
+											<button type="button" class="mui-btn disnping" onclick="comment({$c.id})">我要点评</button>
+										</div>
+                                    </li>
+									{/volist}
+									<!--已完成 end-->
+								</ul>
+								<!--内容 end-->
+							</div>
+						</div>
+
+					</div>
+					<div id="item5mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll5" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<!--内容-->
+								<ul class="dingdan">
+									<!--处理中-->
+									{volist name="after" id="a"}
+									<li>
+										<div class="riqi">
+											<p>下单日期：<span>{:date('Y-m-d H:i',$a.add_time)}</span></p>
+											{if $v.status == 2}
+											<em class="chuli">{:get_status($a.status)}</em>
+											{elseif $v.status == 4}
+											<em class="yituikuan">{:get_status($a.status)}</em>
+											{/if}
+										</div>
+										<a href="javascript:;">
+											<div class="xingxi" data-id="{$a.id}" data-status="{$a.status}">
+												<p class="p1 mui-clearfix">
+													<span class="fl">{$a.ticket_name}</span>
+													<span class="fr"><del>￥{$a.cost_price*$v.num}</del></span>
+												</p>
+												<div class="jiage mui-clearfix">
+													<p class="fl">
+														<span>￥{$a.price}</span><em>X{$a.num}</em>
+													</p>
+													<p class="fr">
+														合计：<span>￥{$a.order_total}</span>
+													</p>
+												</div>
+											</div>
+										</a>
+										<div class="box_bt">
+											{if $a.status == 2}
+											<button type="button" class="mui-btn" onclick="applycancel({$a.id})">取消退款</button>
+											{elseif $a.status == 4}
+											<button type="button" class="mui-btn" onclick="del({$a.id})">删除订单</button>
+											{/if}
+										</div>
+									</li>
+									{/volist}
+									<!--已退款 end-->
+								</ul>
+								<!--内容 end-->
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!--选项卡-->
+
+		</div>
+		<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+		<script src="/static/mobile/js/mui.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				swipeBack: false,
+			});
+			mui('#scroll1,#scroll2,#scroll3,#scroll4,#scroll5').scroll();
+		</script>
+	<script>
+		$('.xingxi').click(function () {
+		    var status = $(this).data('status');
+            var id = $(this).data('id');
+            if (status == 0) {
+				location.href = '/mobile/order/notpay/id/'+id;
+			}else if (status == 1) {
+                location.href = '/mobile/order/notuse/id/'+id;
+            }else if (status == 2) {
+                location.href = '/mobile/order/refund/id/'+id;
+            }else if (status == 4) {
+                location.href = '/mobile/order/refunddel/id/'+id;
+            }else if (status == 5) {
+                location.href = '/mobile/order/complete/id/'+id;
+            }
+            else if (status == 6) {
+                location.href = '/mobile/order/notuse/id/'+id;
+            }
+
+        });
+		function cancel(id) {
+            mui.confirm('确认要取消该订单？', '', ['是','否'], function(e) {
+                if (e.index == 1) {
+
+                } else {
+                    $.post('/mobile/order/cancel.html',{id:id},function(res){
+						if (res.status == true) {
+						    location.href = location.href;
+						}else {
+                            mui.toast(res.info);
+						}
+					},'json')
+                }
+            })
+        }
+        function apply(id) {
+        	location.href = '/mobile/order/notuse/id/'+id;
+        	return;
+            mui.prompt('请输入您的备注：', '', '', ['确定','取消'], function(e) {
+                if (e.index == 1) {
+
+                } else {
+                    $.post('/mobile/order/apply.html',{id:id,refund_reason:e.value},function(res){
+                        if (res.status == true) {
+                            location.href = location.href;
+                        }else {
+                            mui.toast(res.info);
+                        }
+                    },'json')
+                }
+            })
+        }
+        function applycancel(id) {
+            $.post('/mobile/order/applyCancel.html',{id:id},function(res){
+                if (res.status == true) {
+                    location.href = location.href;
+                }else {
+                    mui.toast(res.info);
+                }
+            },'json')
+        }
+        function del(id) {
+            $.post('/mobile/order/del.html',{id:id},function(res){
+                if (res.status == true) {
+                    location.href = location.href;
+                }else {
+                    mui.toast(res.info);
+                }
+            },'json')
+        }
+        function comment(id) {
+            location='/mobile/order/commen/id/'+id;
+        }
+
+	</script>
+	</body>
+
+</html>

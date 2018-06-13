@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>收货地址</title>
+	<link rel="stylesheet" href="/static/mobile/css/info.css">
+	<link rel="stylesheet" href="/static/mobile/js/layer/mobile/need/layer.css">
+	<style>
+		span.fr {
+			float: right;
+		}
+	</style>
+</head>
+<body>
+	<div class="box" >
+		<header><a href="/mobile/member/member_bus" class="back"></a>收货地址</header>
+		<div id="wrapper">
+			<div id="scroller">
+				{volist name='info' id='v'}
+				<div class="list">
+					<div class="list-info">
+						<p class="name"><span>{$v.username}</span><span class="fr">{$v.phone}</span></p>
+						<p>{$v.province_city}{$v.address}</p>
+					</div>
+					<div class="edit">
+						<a class="delete-btn" onclick="del({$v.id})"><span></span>删除</a><a href="/mobile/member/edit_address/id/{$v.id}" class="edit-btn"><span></span>编辑</a>
+					</div>
+				</div>
+				{/volist}
+				<!-- 此DIV不删除 -->
+				<div style="height: 2.5rem"></div>
+		</div>
+		
+		</div>
+		<a href="/mobile/member/add_address" class="add">新增</a>
+	</div>
+	<script src="/static/mobile/js/rem.js"></script>
+	<script src="/static/mobile/js/iscroll.js"></script>
+	<script src="/static/mobile/js/demoUtils.js"></script>
+	<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+	<script src="/static/mobile/js/layer/mobile/layer.js"></script>
+	<script>
+		var myScroll;
+
+	function del(id) {
+        layer.open({
+            content: '您确定要删除该收货地址吗？'
+            ,btn: ['是', '否']
+            ,yes: function(index){
+                $.post('/mobile/member/del_address',{id:id},function (res) {
+                    if (res.status == true) {
+                        window.location.href ='/mobile/member/';
+                    }else {
+                        layer.open({
+                            content: res.info
+                            ,skin: 'msg'
+                            ,time: 2 //2秒后自动关闭
+                        });
+                    }
+                },'json')
+            }
+        });
+    }
+
+	</script>
+</body>
+</html>

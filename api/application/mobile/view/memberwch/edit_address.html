@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>修改收货地址</title>
+	<link rel="stylesheet" href="/static/mobile/css/info.css">
+    <link rel="stylesheet" href="/static/mobile/js/layer/mobile/need/layer.css">
+</head>
+<body>
+	<div class="box">
+		<header><a href="javascript:history.go(-1);" class="back"></a>修改收货地址</header>
+		<div class="sider" style="border-bottom: 1px solid #ededed;">
+			<label for="">收货人</label><input type="text" value="{$data.username}" name="username" id="username" placeholder="请输入收货人姓名" class="m7">
+		</div>
+		<div class="sider" style="border-bottom: 1px solid #ededed;">
+			<label for="">手机号码</label><input type="text" value="{$data.phone}" name="phone" id="phone" placeholder="请输入真实手机号码" class="m7">
+		</div>
+		<div class="sider" style="border-bottom: 1px solid #ededed;">
+			<label for="">所在地区</label><input type="text" value="{$data.province_city}" name="province_city" id="province_city" placeholder="请输入省 市 区 街道" class="m7">
+		</div>
+		<div class="sider" style="border-bottom: 1px solid #ededed;">
+			<label for="">详细地址</label><input type="text" value="{$data.address}" name="address" id="address" placeholder="如门牌号、小区、楼栋号等" class="m7">
+		</div>
+		<a href="javascript:save()" class="preservation">保存</a>
+	</div>
+
+
+	<script src="/static/mobile/js/rem.js"></script>
+	<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/mobile/js/layer/mobile/layer.js"></script>
+<script>
+	function save() {
+	    var id = {$data.id};
+        var username = $('#username').val();
+        var phone = $('#phone').val();
+        var province_city = $('#province_city').val();
+        var address = $('#address').val();
+        if (!username || !phone || !province_city || !address) {
+            layer.open({
+                content: '请输入完整信息'
+                ,skin: 'msg'
+                ,time: 2 //2秒后自动关闭
+            });
+            return false;
+        }
+        var myreg = /^1[34578]{1}\d{9}$/;
+        if(!myreg.test(phone)){
+            alert('请输入有效的手机号码！');
+            return false;
+        }
+        $.post('/mobile/memberwch/edit_address',{id:id,username:username,phone:phone,province_city:province_city,address:address},function (res) {
+            if (res.status == true) {
+                window.location.href ='/mobile/memberwch/selectravel';
+            }else {
+                layer.open({
+                    content: res.info
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
+            }
+        },'json')
+    }
+</script>
+</body>
+</html>

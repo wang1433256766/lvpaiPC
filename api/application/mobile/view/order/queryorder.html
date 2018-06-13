@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>订单列表</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="/static/mobile/css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/public.css" />
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/order.css" />
+		<script type="text/javascript" charset="utf-8">
+			(function(doc, win) {
+				var docEl = doc.documentElement,
+					resizeEvt = 'onorientationchange' in window ? 'onorientationchange' : 'resize',
+					recalc = function() {
+						var clientWidth = docEl.clientWidth;
+						if(!clientWidth) return;
+						if(clientWidth >= 750) {
+							docEl.style.fontSize = '100px';
+						} else {
+							docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+						}
+					};
+
+				if(!doc.addEventListener) return;
+				win.addEventListener(resizeEvt, recalc, false);
+				doc.addEventListener('DOMContentLoaded', recalc, false);
+			})(document, window);
+		</script>
+	</head>
+	<body>
+		<div>
+			<input type="text" id="order_id">
+			<button type="button" class="query">查询</button>
+		</div>
+		<div class="notify" style="display: none">
+			<textarea id="result">
+		
+			
+	
+			</textarea>
+		</div>
+		<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+		<script src="/static/mobile/js/mui.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				swipeBack: false,
+			});
+			mui('#scroll1,#scroll2,#scroll3,#scroll4,#scroll5').scroll();
+		</script>
+	<script>
+		$(".query").click(function(){
+			$.ajax({
+				url:'/mobile/order/queryorder',
+				data:{order_id : $("#order_id").val()},
+				method:'get',
+				dataType:'json',
+				success:function(res){
+					console.log(res);
+					$(".notify").show();
+					$("#result").html(res);
+				}
+			})
+		})
+
+	</script>
+	</body>
+
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+<!-- Mirrored from www.zi-han.net/theme/hplus/index_v5.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:51 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>旅拍秀秀后台管理系统</title>
+    <link rel="shortcut icon" href="/static/admin/images/zhlfavicon.ico"> 
+    <link href="/static/admin/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="/static/admin/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/admin/css/animate.min.css" rel="stylesheet">
+    <link href="/static/admin/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" href="/static/admin/css/circle/style.css" media="screen" type="text/css" />
+    <style type="text/css">
+       .chart {
+            left:83.5%;
+            margin:0 0 0 -250px;
+            top:162px;    
+       }
+
+       .doughnutSummaryNumber {
+        font-size:26px;
+       }
+       .doughnutSummaryTitle {
+        font-size:13px;
+       }
+    </style>
+</head>
+
+<body class="gray-bg top-navigation">
+
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+          
+            <div class="wrapper wrapper-content" style="padding: 0px;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <span class="label label-success pull-right">(次)总</span>
+                                    <h5>秀秀互动量</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <h1 class="no-margins">{$inter_num}</h1>
+                                    <div class="stat-percent font-bold text-success">46% <i class="fa fa-bolt"></i>
+                                    </div>
+                                    <small>总计</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <span class="label label-info pull-right">(元)总</span>
+                                    <h5>商城订单</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <h1 class="no-margins">&yen;{$turnover}.00</h1>
+                                    <div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i>
+                                    </div>
+                                    <small>总订单</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <span class="label label-primary pull-right">(人)总</span>
+                                    <h5>分销商人数</h5>
+                                </div>
+                                <div class="ibox-content">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h1 class="no-margins">{$first}</h1>
+                                            <div class="font-bold text-navy"><i class="fa fa-level-up"></i> <small>一级分销</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h1 class="no-margins">{$second}</h1>
+                                            <div class="font-bold text-navy"><i class="fa fa-level-up"></i> <small>二级分销</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <span class="label label-primary pull-right">(元)总</span>
+                                    <h5>订单分布</h5>
+                                </div>
+                                <div class="ibox-content">
+
+                                    <div class="row">
+                                        <div class="col-md-6" style="width: 30%;">
+                                            <h1 class="no-margins" style="font-size: 22px;">{$amount.overing}</h1>
+                                            <div class="font-bold text-navy"><small>已完成</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" style="width: 30%;">
+                                            <h1 class="no-margins" style="font-size: 22px;">{$amount.payyed}</h1>
+                                            <div class="font-bold text-navy"><small>已支付</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" style="width: 30%;">
+                                            <h1 class="no-margins" style="font-size: 22px;">{$amount.payying}</h1>
+                                            <div class="font-bold text-navy"> <small style="">待支付</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 半年收入利润缩略图 -->
+                                    <div class="ibox-content no-padding" style="display: none;">
+                                        <div class="flot-chart m-t-lg" style="height: 55px;">
+                                            <div class="flot-chart-content" id="flot-chart1"></div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content">
+                                    <div>
+                                        <span class="pull-right text-right">
+                                        {foreach name='mvp' item="vm"}
+                                        <small>本次的销售冠军是：<strong>{$vm.name}</strong></small>
+                                       
+                                            <br/>
+                                            成交金额： ￥{$vm.order_total}
+                                        {/foreach}
+                                        </span>
+                                        <h3 class="font-bold no-margins">
+                                        半年收入利润率
+                                    </h3>
+                                        <small>营销公司(元)</small>
+                                    </div>
+
+                                    <div class="m-t-sm">
+
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div>
+                                                    <canvas id="lineChart" height="175" width="463" style="width: 463px; height: 175px;"></canvas>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <ul class="stat-list m-t-lg">
+                                                    <li>
+                                                        {foreach name="order_all_num" item="vor"}
+                                                        <h2 class="no-margins"><small>总订单</small>{$vor.order_num}<small>笔</small></h2>
+                                                       
+                                                        <small>成交金额{$vor.order_total}</small>
+                                                         {/foreach}
+                                                        <div class="progress progress-mini">
+                                                            <div class="progress-bar" style="width: 40%;"></div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        {foreach name="order_last_mouth" item="vla"}
+                                                        <h2 class="no-margins "><small>最近一个月订单</small>{$vla.order_num}<small>笔</small></h2>
+                                                        <small>成交金额{$vla.order_total}</small>
+                                                        {/foreach}
+                                                        <div class="progress progress-mini">
+                                                            <div class="progress-bar" style="width:{$grow_rate}%;"></div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="m-t-md">
+                                        <small class="pull-right">
+                                        <i class="fa fa-clock-o"> </i>
+                                        {:date('Y-m-d H:i:s',time()-1)}更新
+                                    </small>
+                                        <small>
+                                        <strong>说明：</strong> 销售额比上月增长了{if $grow_rate > 80}<span style="color:red">{:ceil($grow_rate)}</span>{/if}{if $grow_rate < 80}<span style="color:#FF7735;">{:ceil($grow_rate)}</span>{/if}{if $grow_rate < 0}<span style="color:#83D0C0;">{:ceil($grow_rate)}</span>{/if}%。
+                                    </small>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                         <div id="doughnutChart" class="chart" style="width:350px;height:295px;float: right;font-size:22px;background-color: #FFFFFF;padding: 25px 20px;"></div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>业绩排名表</h5>
+                                    <div class="ibox-tools">
+                                        <a class="collapse-link">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                            <i class="fa fa-wrench"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-user">
+                                            <li><a href="#">设置选项1</a>
+                                            </li>
+                                            <li><a href="#">设置选项2</a>
+                                            </li>
+                                        </ul>
+                                        <a class="close-link">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="row">
+                                        <div class="col-sm-9 m-b-xs">
+                                            <div data-toggle="buttons" class="btn-group">
+                                                <label class="btn btn-sm btn-white" id="option1">
+                                                    <input type="radio" name="options" checked>天</label>
+                                                <label class="btn btn-sm btn-white " id="option2">
+                                                    <input type="radio" name="options">月</label>
+                                                <label class="btn btn-sm btn-white" id="option3">
+                                                    <input type="radio"  name="options">年</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <!-- <div class="input-group">
+                                                <input type="text" placeholder="搜索" class="input-sm form-control"> <span class="input-group-btn">
+                                                                                    <button type="button" class="btn btn-sm btn-primary">搜索</button> </span>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive" style="display: block;" id='option4'>
+                                        <table class="table table-striped" >
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>姓名</th>
+                                                    <th>电话</th>
+                                                    <th>成交金额</th>
+                                                    <th>上线</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {if empty($days)}
+                                                <tr><td>今日还没有成交，需要加油哦~！</td></tr>
+                                                {else/}
+                                                {foreach name='days' key='k' item="vd"}
+                                                <tr>
+                                                    <td>{$k+1}</td>    
+                                                    <td>{$vd.name}</td>
+                                                    <td>{$vd.mobile}</span>
+                                                    </td>
+                                                    <td>{$vd.total_price}</td>
+                                                    <td>{if empty($vd.super_name)}总部{else/}{$vd.super_name}{/if}</td>
+                                                    <td><a href="/admin/index/order_list/member_id/{$vd.id}"><i class="fa fa-check text-navy"></i></a>
+                                                    </td>
+                                                </tr>
+                                                {/foreach}
+                                                {/if}
+                                            </tbody>
+                                        </table>
+                                       
+                                    </div>
+
+
+                                    <div class="table-responsive" style="display: none;" id='option5'>
+                                        <table class="table table-striped" >
+                                            <thead>
+                                                <tr>
+                                                     <th>ID</th>
+                                                    <th>姓名</th>
+                                                    <th>电话</th>
+                                                    <th>成交金额</th>
+                                                    <th>上线</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {if empty($mouths)}
+                                            <tr><td>上月还没有成交，加油哦~!</td></tr>
+                                            {else/}
+
+                                                {foreach name='mouths' key='k' item="vd"}
+                                                <tr>
+                                                    <td>{$k+1}</td>    
+                                                    <td>{$vd.name}</td>
+                                                    <td>{$vd.mobile}</span>
+                                                    </td>
+                                                    <td>{$vd.total_price}</td>
+                                                    <td>{if empty($vd.super_name)}总部{else/}{$vd.super_name}{/if}</td>
+                                                    <td><a href="/admin/index/order_list/member_id/{$vd.id}"><i class="fa fa-check text-navy"></i></a>
+                                                    </td>
+                                                </tr>
+                                                {/foreach}
+                                                {/if}
+                                            </tbody>
+                                        </table>
+                                       
+                                    </div>
+
+
+
+                                    <div class="table-responsive" style="display: none;" id='option6'>
+                                        <table class="table table-striped" >
+                                            <thead>
+                                                <tr>
+                                                   <th>ID</th>
+                                                    <th>姓名</th>
+                                                    <th>电话</th>
+                                                    <th>成交金额</th>
+                                                    <th>上线</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                 {foreach name='years' key='k' item="vd"}
+                                                <tr>
+                                                    <td>{$k+1}</td>    
+                                                    <td>{$vd.name}</td>
+                                                    <td>{$vd.mobile}</span>
+                                                    </td>
+                                                    <td>{$vd.total_price}</td>
+                                                    <td>{if empty($vd.super_name)}总部{else/}{$vd.super_name}{/if}</td>
+                                                    <td><a href="/admin/index/order_list/member_id/{$vd.id}"><i class="fa fa-check text-navy"></i></a>
+                                                    </td>
+                                                </tr>
+                                                {/foreach}
+                                            </tbody>
+                                        </table>
+                                       
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="footer">
+                <div class="pull-right">
+                
+                </div>
+                <div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/admin/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="/static/admin/js/content.min.js?v=1.0.0"></script>
+    <script src="/static/admin/js/plugins/chartJs/Chart.min.js"></script>
+    <script src="/static/admin/js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="/static/admin/js/demo/peity-demo.min.js"></script>
+    <script src="/static/admin/js/plugins/flot/jquery.flot.js"></script>
+    <script src="/static/admin/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="/static/admin/js/plugins/flot/jquery.flot.resize.js"></script>
+
+   
+ 
+    <script>
+        $(document).ready(function(){
+            var d1=[[1,6],[126,3057],[1267401600000,20434],[1270080000000,31982],[1272672000000,26602],[1275350400000,27826],[1277942400000,24302],[1280620800000,24237],[1283299200000,21004],[1285891200000,12144],[1288569600000,10577],[1291161600000,10295]];
+
+            var d2=[[1262304000000,5],[1264982400000,200],[1267401600000,1605],[1270080000000,6129],[1272672000000,11643],[1275350400000,19055],[1277942400000,30062],[1280620800000,39197],[1283299200000,37000],[1285891200000,27000],[1288569600000,21000],[1291161600000,17000]];
+
+            var data1=[{label:"数据1",data:d1,color:"#17a084"},{label:"数据2",data:d2,color:"#127e68"}];
+
+            $.plot($("#flot-chart1"),data1,{xaxis:{tickDecimals:0},series:{lines:{show:true,fill:true,fillColor:{colors:[{opacity:1},{opacity:1}]},},points:{width:0.1,show:false},},grid:{show:false,borderWidth:0},legend:{show:false,}});
+              console.log(123);
+            console.log(lineData);
+            var lineData={labels:["九月","十月","十一月","十二月","一月","二月","三月"],datasets:[{label:"示例数据",fillColor:"rgba(220,220,220,0.5)",strokeColor:"rgba(220,220,220,1)",pointColor:"rgba(220,220,220,1)",pointStrokeColor:"#fff",pointHighlightFill:"#fff",pointHighlightStroke:"rgba(220,220,220,1)",data:[0,0,0,0,0,0,0]},{label:"示例数据",fillColor:"rgba(26,179,148,0.5)",strokeColor:"rgba(26,179,148,0.7)",pointColor:"rgba(26,179,148,1)",pointStrokeColor:"#fff",pointHighlightFill:"#fff",pointHighlightStroke:"rgba(26,179,148,1)",data:[0,0,0,0,0,6212,29862]}]};
+
+            var lineOptions={scaleShowGridLines:true,scaleGridLineColor:"rgba(0,0,0,.05)",scaleGridLineWidth:1,bezierCurve:true,bezierCurveTension:0.4,pointDot:true,pointDotRadius:4,pointDotStrokeWidth:1,pointHitDetectionRadius:20,datasetStroke:true,datasetStrokeWidth:2,datasetFill:true,responsive:true,};
+            var ctx=document.getElementById("lineChart").getContext("2d");
+
+            var myNewChart=new Chart(ctx).Line(lineData,lineOptions)});
+        
+
+    </script>
+     <script type="text/javascript">
+
+        // $(document).ready(function(){
+     $("#option1").click(function(){
+        console.log(1)
+          $("#option4").show();
+          $("#option5").hide();
+          $("#option6").hide();
+      });
+
+      $("#option2").click(function(){
+        console.log(2)
+          $("#option4").hide();
+          $("#option5").show();
+          $("#option6").hide();
+      });
+
+
+      $("#option3").click(function(){
+        console.log(3)
+          $("#option4").hide();
+          $("#option5").hide();
+          $("#option6").show();
+      });
+
+
+          //  });
+     
+    </script>
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $(function(){
+          $("#doughnutChart").drawDoughnutChart([
+            { title: "已关注",         value : {$user_fenbu.followed},  color: "#1AB394" },
+            { title: "未关注", value:  {$user_fenbu.no_follow},   color: "#8CD9C9" },
+            { title: "已注册",      value:  {$user_fenbu.logined},   color: "#6DBCDB" },
+          ]);
+        });
+
+        ;(function($, undefined) {
+          $.fn.drawDoughnutChart = function(data, options) {
+            var $this = this,
+              W = $this.width(),
+              H = $this.height(),
+              centerX = W/2,
+              centerY = H/2,
+              cos = Math.cos,
+              sin = Math.sin,
+              PI = Math.PI,
+              settings = $.extend({
+                segmentShowStroke : true,
+                segmentStrokeColor : "#0C1013",
+                segmentStrokeWidth : 1,
+                baseColor: "rgba(0,0,0,0.5)",
+                baseOffset: 4,
+                edgeOffset : 10,//offset from edge of $this
+                percentageInnerCutout : 75,
+                animation : true,
+                animationSteps : 90,
+                animationEasing : "easeInOutExpo",
+                animateRotate : true,
+                tipOffsetX: -8,
+                tipOffsetY: -45,
+                tipClass: "doughnutTip",
+                summaryClass: "doughnutSummary",
+                summaryTitle: "总用户数:",
+                summaryTitleClass: "doughnutSummaryTitle",
+                summaryNumberClass: "doughnutSummaryNumber",
+                beforeDraw: function() {  },
+                afterDrawed : function() {  },
+                onPathEnter : function(e,data) {  },
+                onPathLeave : function(e,data) {  }
+              }, options),
+              animationOptions = {
+                linear : function (t) {
+                  return t;
+                },
+                easeInOutExpo: function (t) {
+                  var v = t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t;
+                  return (v>1) ? 1 : v;
+                }
+              },
+              requestAnimFrame = function() {
+                return window.requestAnimationFrame ||
+                  window.webkitRequestAnimationFrame ||
+                  window.mozRequestAnimationFrame ||
+                  window.oRequestAnimationFrame ||
+                  window.msRequestAnimationFrame ||
+                  function(callback) {
+                    window.setTimeout(callback, 1000 / 60);
+                  };
+              }();
+
+            settings.beforeDraw.call($this);
+
+            var $svg = $('<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>').appendTo($this),
+                $paths = [],
+                easingFunction = animationOptions[settings.animationEasing],
+                doughnutRadius = Min([H / 2,W / 2]) - settings.edgeOffset,
+                cutoutRadius = doughnutRadius * (settings.percentageInnerCutout / 100),
+                segmentTotal = 0;
+
+            //Draw base doughnut
+            var baseDoughnutRadius = doughnutRadius + settings.baseOffset,
+                baseCutoutRadius = cutoutRadius - settings.baseOffset;
+            var drawBaseDoughnut = function() {
+                //Calculate values for the path.
+                //We needn't calculate startRadius, segmentAngle and endRadius, because base doughnut doesn't animate.
+                var startRadius = -1.570,// -Math.PI/2
+                    segmentAngle = 6.2831,// 1 * ((99.9999/100) * (PI*2)),
+                    endRadius = 4.7131,// startRadius + segmentAngle
+                    startX = centerX + cos(startRadius) * baseDoughnutRadius,
+                    startY = centerY + sin(startRadius) * baseDoughnutRadius,
+                    endX2 = centerX + cos(startRadius) * baseCutoutRadius,
+                    endY2 = centerY + sin(startRadius) * baseCutoutRadius,
+                    endX = centerX + cos(endRadius) * baseDoughnutRadius,
+                    endY = centerY + sin(endRadius) * baseDoughnutRadius,
+                    startX2 = centerX + cos(endRadius) * baseCutoutRadius,
+                    startY2 = centerY + sin(endRadius) * baseCutoutRadius;
+                var cmd = [
+                  'M', startX, startY,
+                  'A', baseDoughnutRadius, baseDoughnutRadius, 0, 1, 1, endX, endY,
+                  'L', startX2, startY2,
+                  'A', baseCutoutRadius, baseCutoutRadius, 0, 1, 0, endX2, endY2,//reverse
+                  'Z'
+                ];
+                $(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+                  .attr({
+                    "d": cmd.join(' '),
+                    "fill": settings.baseColor
+                  })
+                  .appendTo($svg);
+            }();
+
+            //Set up pie segments wrapper
+            var $pathGroup = $(document.createElementNS('http://www.w3.org/2000/svg', 'g'));
+            $pathGroup.attr({opacity: 0}).appendTo($svg);
+
+            //Set up tooltip
+            var $tip = $('<div class="' + settings.tipClass + '" />').appendTo('body').hide(),
+                tipW = $tip.width(),
+                tipH = $tip.height();
+
+            //Set up center text area
+            var summarySize = (cutoutRadius - (doughnutRadius - cutoutRadius)) * 2,
+                $summary = $('<div class="' + settings.summaryClass + '" />')
+                           .appendTo($this)
+                           .css({ 
+                             width: summarySize + "px",
+                             height: summarySize + "px",
+                             "margin-left": -(summarySize / 2) + "px",
+                             "margin-top": -(summarySize / 2) + "px"
+                           });
+            var $summaryTitle = $('<p class="' + settings.summaryTitleClass + '">' + settings.summaryTitle + '</p>').appendTo($summary);
+            var $summaryNumber = $('<p class="' + settings.summaryNumberClass + '"></p>').appendTo($summary).css({opacity: 0});
+
+            for (var i = 0, len = data.length; i < len; i++) {
+              segmentTotal += data[i].value;
+              $paths[i] = $(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
+                .attr({
+                  "stroke-width": settings.segmentStrokeWidth,
+                  "stroke": settings.segmentStrokeColor,
+                  "fill": data[i].color,
+                  "data-order": i
+                })
+                .appendTo($pathGroup)
+                .on("mouseenter", pathMouseEnter)
+                .on("mouseleave", pathMouseLeave)
+                .on("mousemove", pathMouseMove);
+            }
+
+            //Animation start
+            animationLoop(drawPieSegments);
+
+            function pathMouseEnter(e) {
+              var order = $(this).data().order;
+              $tip.text(data[order].title + ": " + data[order].value)
+                  .fadeIn(200);
+              settings.onPathEnter.apply($(this),[e,data]);
+            }
+            function pathMouseLeave(e) {
+              $tip.hide();
+              settings.onPathLeave.apply($(this),[e,data]);
+            }
+            function pathMouseMove(e) {
+              $tip.css({
+                top: e.pageY + settings.tipOffsetY,
+                left: e.pageX - $tip.width() / 2 + settings.tipOffsetX
+              });
+            }
+            function drawPieSegments (animationDecimal) {
+              var startRadius = -PI / 2,//-90 degree
+                  rotateAnimation = 1;
+              if (settings.animation && settings.animateRotate) rotateAnimation = animationDecimal;//count up between0~1
+
+              drawDoughnutText(animationDecimal, segmentTotal);
+
+              $pathGroup.attr("opacity", animationDecimal);
+
+              //draw each path
+              for (var i = 0, len = data.length; i < len; i++) {
+                var segmentAngle = rotateAnimation * ((data[i].value / segmentTotal) * (PI * 2)),
+                    endRadius = startRadius + segmentAngle,
+                    largeArc = ((endRadius - startRadius) % (PI * 2)) > PI ? 1 : 0,
+                    startX = centerX + cos(startRadius) * doughnutRadius,
+                    startY = centerY + sin(startRadius) * doughnutRadius,
+                    endX2 = centerX + cos(startRadius) * cutoutRadius,
+                    endY2 = centerY + sin(startRadius) * cutoutRadius,
+                    endX = centerX + cos(endRadius) * doughnutRadius,
+                    endY = centerY + sin(endRadius) * doughnutRadius,
+                    startX2 = centerX + cos(endRadius) * cutoutRadius,
+                    startY2 = centerY + sin(endRadius) * cutoutRadius;
+                var cmd = [
+                  'M', startX, startY,//Move pointer
+                  'A', doughnutRadius, doughnutRadius, 0, largeArc, 1, endX, endY,//Draw outer arc path
+                  'L', startX2, startY2,//Draw line path(this line connects outer and innner arc paths)
+                  'A', cutoutRadius, cutoutRadius, 0, largeArc, 0, endX2, endY2,//Draw inner arc path
+                  'Z'//Cloth path
+                ];
+                $paths[i].attr("d", cmd.join(' '));
+                startRadius += segmentAngle;
+              }
+            }
+
+            function drawDoughnutText(animationDecimal, segmentTotal) {
+              $summaryNumber
+                .css({opacity: animationDecimal})
+                .text((segmentTotal * animationDecimal).toFixed(1));
+            }
+            function animateFrame(cnt, drawData) {
+              var easeAdjustedAnimationPercent =(settings.animation)? CapValue(easingFunction(cnt), null, 0) : 1;
+              drawData(easeAdjustedAnimationPercent);
+            }
+            function animationLoop(drawData) {
+              var animFrameAmount = (settings.animation)? 1 / CapValue(settings.animationSteps, Number.MAX_VALUE, 1) : 1,
+                  cnt =(settings.animation)? 0 : 1;
+              requestAnimFrame(function() {
+                  cnt += animFrameAmount;
+                  animateFrame(cnt, drawData);
+                  if (cnt <= 1) {
+                    requestAnimFrame(arguments.callee);
+                  } else {
+                    settings.afterDrawed.call($this);
+                  }
+              });
+            }
+            function Max(arr) {
+              return Math.max.apply(null, arr);
+            }
+            function Min(arr) {
+              return Math.min.apply(null, arr);
+            }
+            function isNumber(n) {
+              return !isNaN(parseFloat(n)) && isFinite(n);
+            }
+            function CapValue(valueToCap, maxValue, minValue) {
+              if (isNumber(maxValue) && valueToCap > maxValue) return maxValue;
+              if (isNumber(minValue) && valueToCap < minValue) return minValue;
+              return valueToCap;
+            }
+            return $this;
+          };
+        })(jQuery);
+    </script>
+</body>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/index_v5.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:18:52 GMT -->
+</html>

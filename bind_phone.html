@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>绑定手机号</title>
+	<style>
+		* {
+		    margin: 0;
+		    padding: 0;
+		    -moz-box-sizing: border-box;
+		    -webkit-box-sizing: border-box;
+		    box-sizing: border-box;
+		}
+
+		html,
+		body {
+		    margin: 0;
+		    padding: 0;
+		}
+		input::-webkit-input-placeholder {
+		    /* WebKit browsers*/
+		    color: #999;
+		    font-size: 16px;
+		    opacity: 0.8;
+		}
+
+		input:-moz-placeholder {
+		    /* Mozilla Firefox 4 to 18*/
+		    color: #999;
+		    font-size: 16px;
+		    opacity: 0.8;
+		}
+
+		input::-moz-placeholder {
+		    /* Mozilla Firefox 19+*/
+		    color: #999;
+		    font-size: 16px;
+		    opacity: 0.8;
+		}
+
+		input:-ms-input-placeholder {
+		    /* Internet Explorer 10+*/
+		    color: #999;
+		    font-size: 16px;
+		    opacity: 0.8;
+		}
+
+		.main-container{
+			width: 100%;
+			min-width: 800px;
+			margin: 0 auto;
+			padding: 20px 40px;
+			padding-top: 60px;
+			font-size: 14px;
+			color: #222222;
+		}
+		.main-container .form-control{
+			width: 100%;
+			margin: 10px 0;
+		}
+		.main-container .form-control:after{
+			content: '';
+			display: table;
+			clear: both;
+			zoom: 1;
+		}
+		.main-container .form-control .label{
+			width: 20%;
+			float: left;
+			text-align: right;
+			line-height: 40px;
+		}
+		.main-container .form-control .form-input{
+			width: 80%;
+			float: left;
+			text-align: left;
+			padding-left: 10px;
+			vertical-align: middle;
+		}
+
+		.main-container .form-control .form-input .css-control{
+			width: 60%;
+			height: 40px;
+			padding-left: 10px;
+		}
+
+		.main-container .form-control .form-input .css-control.validate{
+			display: inline-block;
+		    width: 367px;
+		    height: 42px;
+		    padding-left: 14px;
+		    color: #444;
+		    font-size: 16px;
+		    opacity: 0.8;
+		    border: 1px solid #999999;
+		    vertical-align: top;
+		}
+
+		.getValidateBtn{
+			display: inline-block;
+		    width: 174px;
+		    height: 42px;
+		    text-align: center;
+		    color: #fff;
+		    background: #ee8823;
+		    border: 0;
+		    cursor: pointer;
+		}
+
+		#submitBtn{
+		    display: block;
+		    margin: 20px auto;
+		    background: #ee8823;
+		    padding: 8px 30px;
+		    color: #fff;
+		    border: 1px solid #ee8823;
+		    cursor: pointer;
+		}
+		.check-name, .check-phone, .check-code{
+		    color: red;
+		}
+	</style>
+</head>
+<body>
+	<div class="main-container">
+		<div class="form-control">
+			<div class="label"><span style="color:red">*</span>真实姓名：</div>
+			<div class="form-input">
+				<input id="realname" type="text" placeholder="请填写真实姓名" class="css-control">
+				<div class="check-name"></div>
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label"><span style="color:red">*</span>要绑定的手机号：</div>
+			<div class="form-input">
+				<input id="phone" type="text" placeholder="请填写手机号" class="css-control">
+				<div class="check-phone"></div>
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label">所属旅行社：</div>
+			<div class="form-input">
+				<input id="traverName" type="text" placeholder="请填写旅行社名称" class="css-control">
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label"><span style="color:red">*</span>验证码：</div>
+			<div class="form-input">
+				<input id="velidateCode" type="text" placeholder="请填写验证码" class="css-control validate">
+                <button type="button" class="getValidateBtn">获取验证码</button>
+                <div class="check-code"></div>
+			</div>
+		</div>
+		
+		<div class="form-control">
+			<button type="button" id="submitBtn">确&nbsp;认</button>
+		</div>
+	</div>
+	<script src="./assert/jquery.min.js"></script>
+	<script src="./assert/layer/layer.js"></script>
+	<script>
+		$(function(){
+			var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;  //手机号正则
+			var checkPhone = $(".check-phone"),
+		        checkCode = $(".check-code"),
+		        checkName = $(".check-name"),
+		        name = $("#realname"),
+		        mobile = $("#phone"),
+		        validateCode = $("#velidateCode");
+
+		    //手机号校验
+		    mobile.bind('blur', function(){
+		        if(mobile.val().trim().length>0){
+		            if(!myreg.test(mobile.val())){
+		                checkPhone.html('请填写正确的手机号！'); 
+		            }else{
+		                checkPhone.html('');
+		            }
+		        }
+		    })
+		    mobile.bind('input propertychange', function(){
+		        if(myreg.test(mobile.val())){
+		            checkPhone.html(''); 
+		        }
+		    })
+		    //获取验证码
+		    $(".getValidateBtn").on('click', function(){
+		        var flag = true;
+		        if(mobile.val().trim().length>0){
+		            if(!myreg.test(mobile.val())){
+		                checkPhone.html('请填写正确的手机号！'); 
+		                flag = false;
+		            }else{
+		                checkPhone.html('');
+		            }
+		        }else{
+		            checkPhone.html('请填写手机号！'); 
+		            flag = false;
+		        }
+		        
+		        if(flag == false){
+		            return false;
+		        }
+
+		        $.ajax({
+		            type: 'POST',
+		            url: 'http://lvpai.zhonghuilv.net/pc/login/getRegisterCode',
+		            dataType: 'json',
+		            xhrFields: {
+		                withCredentials: true
+		            },
+		            data: {mobile: mobile.val()},
+		            success: function(res){
+		                if(res.status == 0){
+		                    addCookie("secremain", 60, 60); //添加cookie记录,有效时间60s
+		                    settime($(".getValidateBtn")); //开始倒计时
+		                }else{
+		                    checkPhone.html(res.msg);
+		                }
+		                
+		            }
+		        });
+		        
+
+		    });
+		    var v = getCookieValue("secremain") ? getCookieValue("secremain") : 0;//获取cookie值
+
+		    if(v > 0) {
+		        settime($(".getValidateBtn")); //开始倒计时
+		    }
+
+		    //提交绑定
+		    $("#submitBtn").click(function(){
+		    	var flag = true;
+		    	if(!name.val()){
+		    		checkName.html('请填写真实姓名');
+		    		flag = false;
+		    	}
+		        if(mobile.val().trim().length>0){
+		            if(!myreg.test(mobile.val())){
+		                checkPhone.html('请填写正确的手机号！'); 
+		                flag = false;
+		            }else{
+		                checkPhone.html('');
+		            }
+		        }else{
+		            checkPhone.html('请填写手机号！'); 
+		            flag = false;
+		        }
+
+		        if(validateCode.val().trim().length<=0){
+		            checkCode.html('请填写验证码！'); 
+		            flag = false;
+		        }
+
+		        validateCode.bind('input propertychange', function(){
+		            if(validateCode.val().trim().length == 6){
+		                checkCode.html(''); 
+		            }
+		        })
+		        
+		        if(flag == false){
+		            return false;
+		        }
+
+		        $.ajax({
+		            type: 'POST',
+		            url: 'http://lvpai.zhonghuilv.net/pc/login/validateRegisterCode',
+		            dataType: 'json',
+		            xhrFields: {
+		                withCredentials: true
+		            },
+		            data: {name:name.val(),code:validateCode.val(),travel_agency:$("#traverName").val()},
+		            success: function(res){
+		                //console.log(res.status);
+		                if(res.status == 0){
+		                	layer.msg(res.msg,{
+		                        icon: 1,
+		                        time: 2000
+		                    },function(){
+		                        window.location.href = "./index.html";
+		                    });
+		                }else{
+		                    checkCode.html(res.msg);
+		                }
+		            }
+		        })
+		    })
+		});
+
+		//发送验证码时添加cookie
+		function addCookie(name, value, expiresHours) {
+		    var cookieString = name + "=" + escape(value);
+		    //判断是否设置过期时间,0代表关闭浏览器时失效
+		    if(expiresHours > 0) {
+		        var date = new Date();
+		        date.setTime(date.getTime() + expiresHours * 1000);
+		        cookieString = cookieString + ";expires=" + date.toUTCString();
+		    }
+		    document.cookie = cookieString;
+		}
+		//修改cookie的值
+		function editCookie(name, value, expiresHours) {
+		    var cookieString = name + "=" + escape(value);
+		    if(expiresHours > 0) {
+		        var date = new Date();
+		        date.setTime(date.getTime() + expiresHours * 1000); //单位是毫秒
+		        cookieString = cookieString + ";expires=" + date.toGMTString();
+		    }
+		    document.cookie = cookieString;
+		}
+
+
+		//根据名字获取cookie的值
+		function getCookieValue(name) {
+		    var strCookie = document.cookie;
+		    var arrCookie = strCookie.split("; ");
+		    for(var i = 0; i < arrCookie.length; i++) {
+		        var arr = arrCookie[i].split("=");
+		        if(arr[0] == name) {
+		            return unescape(arr[1]);
+		            break;
+		        }
+		    }
+
+		}
+
+		//开始倒计时
+		var countdown;
+		function settime(obj) {
+		    countdown = getCookieValue("secremain");
+		    var tim = setInterval(function() {
+		            countdown--;
+		            obj.attr("disabled", true);
+		            obj.css('cursor','not-allowed');
+		            obj.text("重新发送(" + countdown + ")");
+		            if(countdown <= 0 ) {
+		                clearInterval(tim);
+		                $(obj).removeAttr("disabled");
+		                obj.css('cursor','pointer');
+		                $(obj).text("获取验证码");
+		            }
+		            editCookie("secremain", countdown, countdown + 1);
+		        }, 1000) //每1000毫秒执行一次
+
+		}
+	</script>
+</body>
+</html>

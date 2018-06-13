@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>我的秀秀</title>
+    <link href="css/css.css" rel="stylesheet"/>
+</head>
+<body>
+	<header class="head-gugu">
+		<a href="javascript:;">
+			<img class="head-search" src="images/show-back.png"/>
+		</a>
+		<h2>我的秀秀</h2>
+	</header>
+	<!--正文-->
+		<div class="my-show" style="padding-top: 0.8rem;">
+			<div class="con"><!--自适应包裹div-->
+				<div class="gugu-cont">
+					<!--列表内容-->
+					<ul class="gugu-list">
+						<li>
+							<div class="gugu-list-tit layout">
+								<img src="images/head.png" alt="" />
+								<p>森森森</p>
+								<span>5分钟前</span>
+							</div>
+							<div class="gugu-list-cont">
+									<p class="gugu-list-text">
+										文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容
+									</p>
+									<ul class="gugu-list-img">
+										<li>
+											<img src="images/tmp_img_01.jpg" alt="" />
+										</li>
+										<li>
+											<img src="images/tmp_img_02.jpg" alt="" />
+										</li>
+										<li>
+											<img src="images/tmp_img_01.jpg" alt="" />
+										</li>
+										<li>
+											<img src="images/tmp_img_02.jpg" alt="" />
+										</li>
+										<li>
+											<img src="images/tmp_img_01.jpg" alt="" />
+										</li>
+										<li>
+											<img src="images/tmp_img_02.jpg" alt="" />
+										</li>
+									</ul>
+									<div class="gugu-list-map">
+										<p class="fl"><i></i><em>平江</em></p>
+										<ul>
+											<li class="up"><span></span><b>32</b></li>
+											<li><span><img src="images/comment.png"></span><b>12</b></li>
+										</ul>
+									</div>
+							</div>
+						</li>
+						<li>
+							<div class="gugu-list-tit layout">
+								<img src="images/head.png" alt="" />
+								<p>森森森</p>
+								<span>5分钟前</span>
+							</div>
+							<div class="gugu-list-cont">
+									<p class="gugu-list-text">
+										文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容
+									</p>
+									<!--视频-->
+									<div class="gugu-list-vidoe">
+										<video  poster="images/video_tmp_bg_01.jpg" controls width="100%">
+											<source src="video/xiaoliao.mp4" VALUE="0" type="video/mp4">
+										</video>
+									</div>
+									<!--视频end-->
+									<div class="gugu-list-map">
+										<p class="fl"><i></i><em>平江</em></p>
+										<ul>
+											<li class="up"><span></span><b>32</b></li>
+											<li><span><img src="images/comment.png"></span><b>12</b></li>
+										</ul>
+									</div>
+							</div>
+						</li>
+						<li>
+							<div class="gugu-list-tit layout">
+								<img src="images/head.png" alt="" />
+								<p>森森森</p>
+								<span>5分钟前</span>
+							</div>
+							<div class="gugu-list-cont">
+									<p class="gugu-list-text">
+										文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容
+									</p>
+									<ul class="gugu-list-img">
+										<li>
+											<img src="images/tmp_img_01.jpg" alt="" />
+										</li>
+										<li>
+											<img src="images/tmp_img_02.jpg" alt="" />
+										</li>
+										
+									</ul>
+									<div class="gugu-list-map">
+										<p class="fl"><i></i><em>平江</em></p>
+										<ul>
+											<li class="up"><span></span><b>32</b></li>
+											<li><span><img src="images/comment.png"></span><b>12</b></li>
+										</ul>
+									</div>
+							</div>
+						</li>
+					</ul>
+					<!--列表内容结束-->
+				</div>
+			</div>
+		</div>
+	<!--正文结束-->
+	<script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script src="js/rem.js" type="text/javascript"></script>
+	<script>
+		$(function(){
+			$(".gugu-list-img").each(function(){
+				var ImgList=$(this).children('li')
+				if( ImgList.length == 4 || ImgList.length == 2){
+					ImgList.addClass('two')
+				}
+				if(ImgList.length == 1){
+					ImgList.addClass('one')
+				}
+				if(ImgList.length == 3 || ImgList.length > 4){
+					ImgList.addClass('three')
+				}
+			});
+			$('.up').click(function(){
+				$(this).addClass('active')
+			});
+		})
+	</script>
+</body>
+</html>

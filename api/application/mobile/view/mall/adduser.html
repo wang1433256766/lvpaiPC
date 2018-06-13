@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>新增出行人员</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="/static/mobile/css/mui.min.css">
+		<link rel="stylesheet" href="/static/mobile/css/addedWorker.css" />
+		<script src="/static/mobile/js/jquery-1.9.1.min.js"></script>
+		<script src="/static/mobile/js/match.js"></script>
+		<script src="/static/mobile/js/mui.min.js"></script>
+	</head>
+	<body>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>中文姓名</label>
+					<input type="hidden" name="num" id="num" value="{$num}">
+					<input type="text" placeholder="请输入姓名" name="use_name" id="use_name">
+				</div>
+				<div class="mui-input-row">
+					<label>证件号码</label>
+					<input type="text" class="mui-input-clear" placeholder="请输入身份证号码" name="use_card" id="use_card">
+				</div>
+
+				<div class="mui-row mui-input-row mui-radio">
+					<label>性别</label>
+					<div class="rad">
+						<input name="sex" value="1" type="radio" class="iput" checked="checked">男
+						<input name="sex" value="0" type="radio" class="iput iputRg">女
+					</div>
+				</div>
+			
+			</form>
+		</div>
+		<!--保存按钮-->
+		<div class="btnAction">
+			<button type="button" class="mui-btn mui-btn-primary mui-btn-block" onclick="add()">保存</button>
+		</div>
+	<script>
+		function add() {
+			var use_name = $('#use_name').val();
+			var use_card = $('#use_card').val();
+            var sex = $("input[name='sex']:checked").val();
+            if (!use_name || !use_card) {
+			    mui.toast('请输入完整信息!');
+                return false;
+			}
+			var num = $('#num').val();
+            $.post('/mobile/mall/ajax_save.html',{use_name:use_name,use_card:use_card,sex:sex},function (res) {
+                if (res.status == false) {
+                    mui.toast(res.info);
+                    return false;
+                }else {
+                    location.href='/mobile/mall/selecttravel/num/'+num;
+                }
+            },'json');
+        }
+	</script>
+	</body>
+</html>

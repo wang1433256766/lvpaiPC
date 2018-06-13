@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link rel="stylesheet" href="/static/mobile/css/lp-guanli.css">
+    <title>分销商管理</title>
+    <script type="text/javascript" charset="utf-8">
+    (function(doc, win) {
+      var docEl = doc.documentElement,
+        resizeEvt = 'onorientationchange' in window ? 'onorientationchange' : 'resize',
+        recalc = function() {
+          var clientWidth = docEl.clientWidth;
+          if(!clientWidth) return;
+          if(clientWidth >= 750) {
+            docEl.style.fontSize = '100px';
+          } else {
+            docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+          }
+        };
+
+      if(!doc.addEventListener) return;
+      win.addEventListener(resizeEvt, recalc, false);
+      doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
+  </script>
+</head>
+<body>
+<div class="html">
+    <header>
+        <a href="/mobile/member/member_bus"><span class="left"><img src="/static/mobile/images/back.png"></span></a>
+        <p>分销商管理</p>
+        <span class="right"></span>
+    </header>
+    <div class="content">
+       <div class="gl-tit">
+       		<p>分销商<em>{$fx_user_number}</em>名</p>
+       		<p><a href="/mobile/member/fenxiao_poster/member_id/{$member_id}">邀请分销商</a></p>
+       </div>
+       <div class="gl-cont">
+       		
+          {volist name='info' id='v'}
+       		<div class="gl-cont-list">
+       			<p class="layout"><span>{$v.name}</span><span>{$v.mobile}</span></p>
+       			<a class="gl-details" href="/mobile/member/fenxiao_list/member_id/{$v.id}">
+       				<div>
+       					<p>总销量</p>
+       					<p><em>{$v.order_num}</em>单</p>
+       				</div>
+       				<div>
+       					<p>分销金额</p>
+       					<p><em>{$v.order_price}</em>元</p>
+       				</div>
+       				<div>
+       					<p>贡献佣金</p>
+       					<p><em>{$v.distribution*$v.num*$v.order_num - $v.second_distribution*$v.num*$v.order_num}</em>元</p>
+       				</div>
+       			</a>
+       		</div>
+       		{/volist}  
+
+       </div>
+    </div>
+    
+</div>
+<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+  function not_order()
+  {
+    alert("该分销商还未成交!");
+  }
+</script>
+</body>
+</html>

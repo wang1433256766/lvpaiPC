@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>赠送客户</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="/static/mobile/css/mui.min.css">
+		<link rel="stylesheet" href="/static/mobile/css/donateClient.css" />
+		<script src="/static/mobile/js/match.js"></script>
+		<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+	</head>
+	<body>
+		<div class="mui-content">
+			<div class="titler">
+				<div class="headList">
+					<p class="indexp">剩余旅行币</p>
+					<p class="indexsz" id='score'>{$info.score}</p>
+				</div>
+			</div>
+			
+			<form class="mui-input-group">
+				
+				<div class="mui-input-row">
+					<label>客户</label>
+				{if $type==0}
+					<!-- <input type="text" placeholder="请选择客户"> -->
+						<span class="xz-btn" onclick="location='/mobile/member/member_pick'">选择客户信息</span>
+				{else/}
+					<span class="xz-btn" onclick="location='/mobile/member/member_pick'">{$member_client.nickname}&nbsp;&nbsp;&nbsp;{$member_client.mobile}</span>
+					<input type="hidden" name="member_client_id" id="member_client_id" value="{$member_client.id}"/>
+				{/if}
+				</div>
+				
+				<div class="mui-input-row">
+					<label>数量</label>
+					<input type="text" class="mui-input-clear" name="sum" id="sum" placeholder="输入赠送的数量">
+				</div>
+			</form>
+		</div>
+		<div class="funds">
+			<button type="button" class="mui-btn mui-btn-primary mui-btn-block" onclick="give_client()">赠送</button>
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+	function give_client(){
+		var id = $('#member_client_id').val();
+		console.log(id);
+		var sum = parseInt($('#sum').val());
+		console.log(sum);
+		var score = parseInt($('#score').html());
+		console.log(score);
+		if(id == ''){
+			alert('请选择客户');
+			return false;
+		}
+		if(sum == ''){
+			alert('请输入数量');
+			return false;
+		}
+		if(sum>score){
+			alert('旅行币不足');
+			return false;
+		}
+		$.post('/mobile/member/member_give',{id:id,sum:sum},function(res){
+			if(res.status == true){
+				alert(res.info);
+				window.location.reload();
+			}else{
+				alert(res.info);
+			}
+		},'json')
+	}
+</script>

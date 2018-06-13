@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+
+  <title>属性列表</title>
+<!--icheck -->
+  <link href="/static/admin/js/iCheck/skins/flat/green.css" rel="stylesheet">
+
+  <link href="/static/admin/css/style1.css" rel="stylesheet">
+  <link href="/static/admin/css/style-responsive.css" rel="stylesheet">
+  <link href="/static/admin/css/iframe-main.css" rel="stylesheet">
+  <link href="http://xiumi.us/connect/ue/xiumi-ue-v1.css" rel="stylesheet" />
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/static/admin/js/html5shiv.js"></script>
+  <script src="/static/admin/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<section>
+            <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+                属性列表
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">属性管理</a>
+                </li>
+                <li class="active">属性列表</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+            <div class="row">
+
+        <div class="col-sm-12">
+        <section class="panel">
+            <header class="panel-heading">
+                属性列表
+                        <div class="pull-right">
+                                 <select class="input-sm m-bot15" name="position" onchange="search(this)">
+                                    <option value="0">所有属性</option>
+                                     {volist name='attr' id='v'}
+                                    <option value="{$v.id}">{$v.name}</option>
+                                    {/volist}
+                                </select>                           
+                            <a class="btn btn-success btn-sm" onclick="add()" ><i class="fa fa-plus"></i>&nbsp添加属性</a>
+                            <a id="show" href="#myModal-1" data-toggle="modal" style="display:none;"></a>
+                        </div>
+            </header>
+            <div class="panel-body">
+                <section id="unseen">
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>属性名称</th>
+                            <th>上级属性</th>
+                            <th>属性类型</th>
+                            <th>排序</th>
+                            <th>是否推荐</th>                        
+                            <th class="numeric">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name='data' id='v'}
+                        <tr>
+                            <td>{$v.id}</td>
+                            <td>{$v.name}</td>
+                            <td>{:get_cat_name($v['parent_id'],'mall_spot_attr','name')}</td>
+                            <td>{if $v.type eq 1}<a class="btn btn-info btn-xs">多选</a>{else}<a class="btn btn-success btn-xs">单选</a>{/if}</td>
+                            <td>
+                              <input type="text" class="form-control" name="sort" id="sort" value="{$v.sort}" size=4 onblur="sort(this,{$v.id})">
+                            </td>
+                            <td>
+                              {if $v.base eq 1}
+                              <a onclick="status(this,{$v.id},{$v.base},'base')" class="btn btn-success btn-xs">是</a>
+                              {else/}
+                              <a class="btn btn-danger btn-xs" onclick="status(this,{$v.id},{$v.base},'base')">否</a>
+                              {/if}
+                            </td>                            
+                            <td>
+                               
+                                <a class="btn btn-primary btn-xs" onclick="edit({$v.id})">编辑</a>
+                                <a class="btn btn-danger btn-xs" onclick="del({$v.id})">删除</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+
+                            <div class="col-md-12 text-center clearfix">
+                                <ul class="pagination">
+                                   {$page}
+                                </ul>
+                            </div>
+
+                </section>
+            </div>
+        </section>
+        <!-- 添加 -->
+        <div class="row">
+        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal-1" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" id="close" class="close" type="button">×</button>
+                    <h4 class="modal-title">添加属性</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal" role="form" method="post">
+                        <div class="form-group">
+                            <label for="inputEmail1" class="col-lg-2 col-sm-2 control-label">属性名称</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword1" class="col-lg-2 col-sm-2 control-label">上级属性</label>
+                            <div class="col-sm-5">
+                                <select class="form-control" name="parent_id" id="parent_id" required>
+                                    <option value="0">无</option>
+                                    {volist name="attr" id="a"}
+                                    <option value="{$a.id}">{$a.name}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label">属性类别</label>
+                            <div class="col-sm-10 icheck">
+                                <div class="flat-green single-row">
+                                    <div class="radio" id="status_0">
+                                        <input tabindex="3" type="radio" value="0" name="type">
+                                        <label>单选</label>
+                                    </div>
+                                    <div class="radio" id="status_1">
+                                        <input tabindex="3" type="radio" value="1" name="type">
+                                        <label>多选</label>
+                                    </div>
+                                </div>
+                                                                     
+                           </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-5">
+                                <input type="hidden" name="id" value="">
+                                <button type="button" onclick="save()" class="btn btn-primary">保存</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+        </div>
+
+
+        </div>
+        
+                
+
+            </div>
+        </div>
+        <!--body wrapper end-->
+</section>
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/static/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/modernizr.min.js"></script>
+<script src="/static/admin/js/jquery.nicescroll.js"></script>
+
+
+
+<script src="/static/admin/js/iCheck/jquery.icheck.js"></script>
+
+
+<!--common scripts for all pages-->
+<script src="/static/admin/js/scripts.js"></script>
+
+<script type="text/javascript">
+$(function(){
+    $('.flat-green input').iCheck({
+        checkboxClass: 'icheckbox_flat-green',
+        radioClass: 'iradio_flat-green'
+    });
+
+});
+
+function add(){
+    $("#name").val("");
+    $("select[name='parent_id']").val(0);
+    $("#status_0 ").iCheck('check'); 
+    $("#status_1 ").iCheck('checked'); 
+    $('#show').click();       
+}
+
+function save(){
+    var name = $("input[name='name']").val();
+
+    var type = $("input[name='type']:checked").val();
+    var parent_id = $("select[name='parent_id']").val();
+    var id = $("input[name='id']").val();
+    //alert(id);
+    if(name == ""){
+        $('#close').click();
+        error_msg($(".page-heading"),'必须填写名称');
+        return false;
+    }
+    $.post('/admin/spot/ajaxAttr',{name:name,type:type,parent_id:parent_id,id:id},function(ret){
+    	//alert(ret)
+        if(ret == 'y'){
+            
+            window.location.reload();
+        }else{
+            $('#close').click();
+            error_msg($(".page-heading"),' ');
+        }
+    });
+}
+
+function edit(id){
+    $.post('/admin/base/ajax1.html',{id:id,act:'edit',tab:'mall_spot_attr'},function(ret){
+        if(ret.status){
+            $("#name").val(ret.info.name);
+            $("select[name='parent_id']").val(ret.info.parent_id);
+            
+            $("input[name='type']").each(function(index){
+                var type =  $(this).val();       
+                if (type == ret.info.type) {
+                    $(this).iCheck('check'); 
+                }
+           
+            })
+
+            $("input[name='id']").val(id);
+            $('#show').click();
+        }
+
+    },'json');
+    
+}
+function status(obj,id,value,act){
+    $.post('/admin/base/ajax1',{id:id,tab:'mall_spot_attr',act:act,value:value},function(ret){
+            if (ret.status == false) {
+                   error_msg($(".page-heading"),' ');
+                }else{
+                   success_msg($(".page-heading"),' ');
+                    window.location.reload();
+                }
+    },'json');
+}
+function del(id)
+{ 
+    if(confirm('确认删除该属性?')){
+    if (id > 0) {
+        $.post('/admin/base/ajax1.html',{id:id,act:'del',tab:'mall_spot_attr'},function(res){
+                if (res.status == false) {
+                    error_msg($(".page-heading"),' ');
+
+                }else{
+                    success_msg($(".page-heading"),' ');
+                    window.location.reload();
+                }
+        },'json')
+    };
+    }
+}
+        function sort(obj,id){
+            var value = $(obj).val();
+            $.post('/admin/base/ajax1',{id:id,tab:'mall_spot_attr',act:'sort',value:value},function(ret){
+                    if (ret.status == false) {
+                          
+                        }else{
+                           
+                        }
+            },'json');
+        }
+       function search(obj)
+      {
+            var id = $(obj).val();
+            location.href = '/admin/spot/attr/id/' + id;
+      }
+</script>
+
+</body>
+</html>

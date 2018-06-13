@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {include file="publicyang/common_header"}
+    <link href="/static/admin/yang/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="/static/admin/yang/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/admin/yang/jPicture/css/jPicture.min.css">
+</head>
+<body>
+<style>
+    .bgcolor {
+        background: #F2F2F2;
+    }
+
+</style>
+<!--Panel Other -->
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>景区订单</h5>
+
+        <div class="ibox-tools">
+            <a class="collapse-link">
+                <i class="fa fa-chevron-up"></i>
+            </a>
+            <a class="close-link">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="row row-lg">
+            <div class="col-sm-12">
+                <!-- Example Toolbar -->
+                <div class="example-wrap">
+                    <div class="example">
+                        <div class="btn-group hidden-xs" id="facilityTypeListToolbar" role="group">
+
+                        </div>
+                        <table class="table table-hover" id="faciListTable"
+                               data-pagination="true"
+                               data-show-refresh="true"
+                               data-show-toggle="true"
+                               data-showColumns="true"></table>
+                    </div>
+                </div>
+                <!-- End Example Toolbar -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <form id="list_search_faci">
+        <div style="float: left;width: 190px;margin-right: 10px" class="input-group m-b" >
+            <span class="input-group-addon">开始时间</span>
+            <input id="history_s" class="laydate-icon form-control layer-date" style="width: 190px;height: 35px" name="str_time">
+        </div>
+        <div style="float: left;width: 190px;margin-right: 10px" class="input-group m-b" >
+            <span class="input-group-addon">结束时间</span>
+            <input id="history_e" class="laydate-icon form-control layer-date" style="width: 190px;height: 35px" name="end_time">
+        </div>
+        <div style="float: left;margin-right: 10px" class="input-group m-b" >
+
+        <select class="input-sm m-bot15" id="status" name="status">
+                <option value="-1">所有订单</option>
+                <option value="0">未支付</option>
+                <option value="1">已支付</option>
+                <option value="2">处理中</option>
+                <option value="3">已取消</option>
+                <option value="4">已退款</option>
+                <option value="5">已核销</option>
+                <option value="6">部分退款</option>
+            </select>
+        </div>
+        <div style="float: left;margin-right: 10px" class="input-group m-b" >
+
+        <select class="input-sm m-bot15" id="spot_id" name="spot_id">
+                <option value="-1" {if empty($spotlist)}selected{/if}>所有景区</option>
+                {volist name="spotlist" id="v"}
+                <option value="{$v.spotId}">{$v.spotTitle}</option>
+                {/volist}
+            </select>
+        </div>
+        <div style="float: left;width: 180px;margin-right: 10px" class="input-group m-b" >
+
+         <input type="text" name="order_sn" id="order_sn" value="" class="form-control" placeholder="输入订单号搜索">
+        </div>
+        <div style="float: left;width: 180px;margin-right: 10px" class="input-group m-b" >
+
+         <input type="text" name="keyList" id="keyList" value="" class="form-control" placeholder="输入关键词搜索">
+        </div>
+        <div style="float: left;margin-right: 10px" class="input-group m-b" >
+
+        <button class="btn btn-success btn-sm" type="button" onclick="p_search()">
+                <i class="fa fa-plus"></i>&nbsp查询
+            </button>
+        </div>
+        <div style="float: left;width: 180px;margin-right: 10px" class="input-group m-b" >
+
+        <a class="btn btn-info btn-sm" onclick="exportOut();">
+                <i class="fa fa-plus"></i>&nbsp导出
+            </a>
+        </div>
+
+
+    </form>
+</div>
+<form id="editFacility" class="form-horizontal m-t" style="display: none">
+
+</form>
+<div id = "lookImgdiv" style="text-align: center;display: none">
+    <div id="img_arr">
+
+    </div>
+</div>
+
+{include file="publicyang/common_footer"}
+{include file="order/listnew_js"}
+
+<script>
+//    var start = {
+//        elem: '#history_s',
+//        format: 'YYYY-MM-DD hh:mm:ss',
+//        max: laydate.now(),
+//        istime: false,
+//        istoday: false,
+//        choose: function (datas) {
+//            end.min = datas; //开始日选好后，重置结束日的最小日期
+//            end.start = datas //将结束日的初始值设定为开始日
+//        }
+//    };
+//    var end = {
+//        elem: '#history_e',
+//        format: 'YYYY-MM-DD hh:mm:ss',
+//        max: laydate.now(),
+//        istime: false, //是否开启时间选择
+//        istoday: false,
+//        isclear: true, //是否显示清空
+//        issure: true, //是否显示确认
+//        choose: function (datas) {
+//            start.max = datas; //结束日选好后，重置开始日的最大日期
+//        }
+//    };
+//    laydate(start);
+//    laydate(end);
+//    //给input赋值
+//    $('#history_s').val(laydate.now(-1, 'YYYY-MM-DD hh:mm:ss'));
+//    $('#history_e').val(laydate.now(0, 'YYYY-MM-DD hh:mm:ss'));
+    //日期时间选择器
+    laydate.render({
+        elem: '#history_s'
+        ,type: 'datetime'
+    });
+    //日期时间选择器
+    laydate.render({
+        elem: '#history_e'
+        ,type: 'datetime'
+    });
+//$(document).ready(function () {
+//    var time = new Date();
+//    var ymdhis = "";
+//    ymdhis += time.getFullYear() + "-";
+//    ymdhis += (time.getMonth() + 1) + "-";
+//    ymdhis += time.getDate();
+//    ymdhis += " " + time.getHours() + ":";
+//    ymdhis += time.getMinutes() + ":";
+//    ymdhis += time.getSeconds();
+//    $('#history_e').val(ymdhis)
+//    var time = new Date(time.getTime()-24*3600*1000);
+//    var ymdhis = "";
+//    ymdhis += time.getFullYear() + "-";
+//    ymdhis += (time.getMonth() + 1) + "-";
+//    ymdhis += time.getDate();
+//    ymdhis += " " + time.getHours() + ":";
+//    ymdhis += time.getMinutes() + ":";
+//    ymdhis += time.getSeconds();
+//    $('#history_s').val(ymdhis);
+//});
+</script>
+
+</body>
+</html>

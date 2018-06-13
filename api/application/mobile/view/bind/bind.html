@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>绑定手机</title>
+	<link rel="stylesheet" href="/static/mobile/css/info.css">
+
+</head>
+<body>
+	<div class="box">
+		<header><a href="javascript:history.go(-1)" class="back"></a>绑定手机</header>
+		<div class="sider" style="margin-bottom: 0.2rem;">
+			<label for="">姓名</label><input type="text" id="name" name="name" value="{$member.name}" placeholder="请输入真实姓名">
+		</div>
+		<div class="sider" style="border-bottom: none;">
+			<label for="">手机号</label><input type="text" id="mobile" name="mobile" value="{$member.mobile}" placeholder="请输入真实手机号码">
+		</div>
+		<div class="sider" style="border-bottom: none;">
+			<label for="">旅行社</label><input type="text" id="travel_agency" name="travel_agency" value="{$member.travel_agency}" placeholder="如果您是旅行社">
+		</div> 
+		<div class="sider">
+			<!-- sendhui为发送验证吗 删除sendhui就是正常 -->
+			<label for="">验证码</label><input type="text" id="code" placeholder="输入短信验证码"> <button id="sendCode" class="send">发送验证码</button>
+		</div>
+		<!-- bindhui删除就是正常 -->
+		<a onclick="form_check()" class="bind">绑 定</a>
+	</div>
+
+	<script src="/static/mobile/js/rem.js"></script>
+	<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+	<script src="/static/mobile/js/send.js?0.1"></script>
+	<script type="text/javascript">
+		function form_check() {
+		        var name = $("#name").val();
+		        if (name == '') { alert('请填写姓名');  return false;};
+		        var mobile = $("#mobile").val();
+		        if (mobile == '') { alert('请填写手机号码'); return false;};
+		        var code = $("#code").val();
+		        if (code == '') { alert('请输入验证码'); return false;};
+		        var travel_agency=$('#travel_agency').val();
+		        $.post('/mobile/bind/login.html', {name:name,mobile:mobile,code:code,travel_agency:travel_agency}, function(res) {
+		            if(res.status == true){
+		                alert(res.info);
+		                location.href='/mobile/member/member_bus'
+		            }else {
+		                alert(res.info);
+		            }
+		        },'json');
+		    }
+
+		     //发送手机验证码
+    $(function(){
+        //点击按钮发送验证码
+        $("#sendCode").click(function(){
+            var mobile = $("#mobile").val();
+            var myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
+
+            if(mobile == ''){
+                alert("请先填写手机号码!");
+                return false;
+            }else if(!myreg.test(mobile)){
+                alert('请输入有效的手机号码！');
+                return false;
+            }
+            sendCode($('#sendCode'));
+        });
+
+    var name = $("#sendCode").attr('id');
+    v = getCookieValue(name);//获取cookie值
+    if(v>0){
+        settime($("#sendCode"));//开始倒计时
+    }
+
+    });
+	</script>
+</body>
+</html>

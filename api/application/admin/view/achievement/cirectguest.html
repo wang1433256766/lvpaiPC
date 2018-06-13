@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {include file="publicyang/common_header"}
+    <link href="/static/admin/yang/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="/static/admin/yang/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link href="/static/admin/yang/js/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+</head>
+<body>
+<style>
+    .bgcolor {
+        background: #F2F2F2;
+    }
+
+</style>
+<!--Panel Other -->
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>直客业绩列表</h5>
+
+        <div class="ibox-tools">
+            <a class="collapse-link">
+                <i class="fa fa-chevron-up"></i>
+            </a>
+            <a class="close-link">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="row row-lg">
+            <div class="col-sm-12">
+                <!-- Example Toolbar -->
+                <div class="example-wrap">
+                    <div class="example">
+                        <div class="btn-group hidden-xs" id="facilityTypeListToolbar" role="group">
+
+                        </div>
+                        <table class="table table-hover" id="faciListTable"
+                               data-pagination="true"
+                               data-show-refresh="true"
+                               data-show-toggle="true"
+                               data-showColumns="true"></table>
+                    </div>
+                </div>
+                <!-- End Example Toolbar -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <form id="list_search_faci" >
+        <div style="float: left;width: 180px;margin-right: 10px" class="input-group m-b" >
+            <span class="input-group-addon">时间</span>
+            <input id="history_s" class="laydate-icon form-control layer-date" style="width: 180px;height: 35px" name="str_time">
+        </div>
+        <span style="float: left;">直客销售：</span>
+        <div style="float: left;width: 180px;margin-right: 10px;" class="input-group m-b" >
+
+            <select id="slpk" class="selectpicker" name="xs_id" data-live-search="true"   style="height: 35px;">
+                <option value="-1">全部</option>
+                {volist name="user_rs" id="v"}
+                <option value="{$v.id}">{$v.name}</option>
+                {/volist}
+            </select>
+
+        </div>
+
+        <button class="btn btn-success btn-sm" type="button" onclick="p_search();" class="btn">查询</button>
+
+        <button class="btn btn-info btn-sm" type="button" onclick="exportOut();" class="btn">导出</button>
+        <div style="clear: both"></div>
+        <div style="float: left;width: 90px;margin-right: 10px" class="input-group m-b" >
+            <span class="input-group-addon">支付总额</span>
+            <input type="text" id="payment" style="height: 35px;width: 90px;" disabled="disabled">
+        </div>
+        <div style="float: left;width: 90px;margin-right: 10px" class="input-group m-b" >
+            <span class="input-group-addon">订单总价</span>
+            <input type="text" id="total_all" style="height: 35px;width: 90px;" disabled="disabled">
+        </div>
+        <div style="float: left;width: 50px;margin-right: 10px" class="input-group m-b" >
+            <span class="input-group-addon">退款总额</span>
+            <input type="text" id="refund_price" style="height: 35px;width: 50px;" disabled="disabled">
+        </div>
+        <div style="float: left;width: 80px;margin-right: 10px" class="input-group m-b" >
+            <span class="input-group-addon">佣金</span>
+            <input type="text" id="promote_fee" style="height: 35px;width: 80px;" disabled="disabled">
+        </div>
+        <div style="float: left;width: 40px;margin-right: 10px" class="input-group m-b" >
+            <span class="input-group-addon">订单数</span>
+            <input type="text" id="num" style="height: 35px;width: 40px;" disabled="disabled">
+        </div>
+        <div style="float: left;width: 40px;margin-right: 10px" class="input-group m-b" >
+            <span class="input-group-addon">已核销</span>
+            <input type="text" id="ok" style="height: 35px;width: 40px;" disabled="disabled">
+        </div>
+        </fieldset>
+    </form>
+</div>
+<form id="editFacility" class="form-horizontal m-t" style="display: none">
+
+</form>
+<div id = "lookImgdiv" style="text-align: center;display: none">
+    <div id="img_arr">
+
+    </div>
+</div>
+
+{include file="publicyang/common_footer"}
+{include file="achievement/cirectguest_js"}
+<script src="/static/admin/yang/js/bootstrap-select/dist/js/bootstrap-select.js"></script>
+<script>
+    //年月范围选择
+    laydate.render({
+        elem: '#history_s'
+        ,type: 'month'
+        ,range: true //或 range: '~' 来自定义分割字符
+    });
+
+</script>
+
+</body>
+</html>

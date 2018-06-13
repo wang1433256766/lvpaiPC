@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>提现明细</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="/static/mobile/css/mui.min.css">
+		<link rel="stylesheet" href="/static/mobile/css/depositDetails.css" />
+		<script src="/static/mobile/js/match.js"></script>
+		<script src="/static/mobile/js/mui.min.js"></script>
+	</head>
+	<body>
+		<!--公共头部-->
+		
+		<!--主体内容-->
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				{volist name='info' id="v"}
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;">
+						<div class="mui-media-body">
+							<p class="roulette">佣金提现</p>
+							<p class='mui-ellipsis p1'>{:date('Y-m-d H:i:s',$v['createtime'])}</p>
+						</div>
+						<div class="mui-media-body zlist">
+							<p class="roulette" style="color: orange;text-align: right;">￥{$v.money}</p>
+							<p class='mui-ellipsis p1' style="text-align: right">{$v['status']}</p>
+							<!--<p class="numb">￥{$v.money}</p>-->
+						</div>
+					</a>
+				</li>
+				{/volist}
+			</ul>	
+		</div>
+	</body>
+</html>

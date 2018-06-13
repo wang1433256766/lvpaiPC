@@ -12,6 +12,113 @@ body {
     padding: 0;
 }
 
+input::-webkit-input-placeholder {
+    /* WebKit browsers*/
+    color: #999;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18*/
+    color: #999;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+input::-moz-placeholder {
+    /* Mozilla Firefox 19+*/
+    color: #999;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+input:-ms-input-placeholder {
+    /* Internet Explorer 10+*/
+    color: #999;
+    font-size: 16px;
+    opacity: 0.8;
+}
+
 .wrapper {
     width: 100%;
+}
+
+.header .self-info {
+    float: left;
+    width: 200px;
+    height: 100px;
+    line-height: 100px;
+    text-align: right;
+    color: #666666;
+}
+
+.header .self-info .head-portrait {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    background: url('../images/head-img.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size:100%;
+    vertical-align: middle;
+}
+
+.header .self-info .self-name {
+    display: inline-block;
+    height: 100px;
+    line-height: 100px;
+    padding-left: 10px;
+    /* cursor: pointer; */
+    position: relative;
+}
+
+.header .self-info .self-name .logout{
+    text-decoration: none;
+    font-weight: bolder;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    color: #000;
+    cursor: pointer;
+}
+
+.header .self-info .self-name:hover ul {
+    display: block;
+}
+
+.header .self-info .self-name ul {
+    display: none;
+    list-style: none;
+    position: absolute;
+    top: 90px;
+    right: 0;
+    width: 125px;
+    background: #f8f8f8;
+    text-align: center;
+    z-index: 99;
+}
+
+.header .self-info .self-name ul li {
+    height: 40px;
+    line-height: 40px;
+}
+
+.header .self-info .self-name ul li a {
+    display: block;
+    margin: 0 auto;
+    text-decoration: none;
+    width: 80%;
+    height: 40px;
+    line-height: 40px;
+    color: #444;
+    font-size: 14px;
+    border-bottom: 1px solid #eeeeee;
+    cursor: pointer;
+}
+
+.header .self-info .self-name ul li.active a,
+.header .self-info .self-name ul li a:hover {
+    color: #ee8823;
 }

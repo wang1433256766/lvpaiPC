@@ -1,0 +1,322 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="/static/mobile/css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/mui.picker.min.css" />
+		<link rel="stylesheet" href="/static/mobile/js/layer/mobile/need/layer.css">
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/order.css"/>
+		<script type="text/javascript">
+	     (function (doc, win) {
+	        var docEl = doc.documentElement,
+	            resizeEvt = 'onorientationchange' in window ? 'onorientationchange' : 'resize',
+	            recalc = function () {
+	                var clientWidth = docEl.clientWidth;
+	                if (!clientWidth) return;
+	                if(clientWidth>=750){
+	                    docEl.style.fontSize = '100px';
+	                }else{
+	                    docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+	                }
+	            };
+	
+	        if (!doc.addEventListener) return;
+	        win.addEventListener(resizeEvt, recalc, false);
+	        doc.addEventListener('DOMContentLoaded', recalc, false);
+	    })(document, window);
+	    </script>
+	    <style type="text/css">
+	    	.travel_agency input{
+	    		font-size: 0.3rem;
+	    		width: 82%;
+	    		float:right;
+	    	}
+	    </style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">提交订单</h1>
+		</header>
+		<div class="mui-content">
+			<form action="/mobile/mall/suborder" method="post" id="add_order">
+			<ul class="dingdan">
+				<!--处理中-->
+		    	<li>
+		    		
+		    		<a href="javascript:;">
+		    			<div class="xingxi bgb">
+			    			<p class="p1 mui-clearfix">
+			    				<span class="fl">{$data.ticket_name}</span>
+								<input type="hidden" name="id" value="{$data.id}" id="id">
+								<input type="hidden" name="ids" value="{$ids}" id="ids">
+			    				<input type="hidden" name="num" value="{$len}" id="num">
+								<input type="hidden" name="use_date" value="" id="use_date">
+			    			</p>
+			    			<div class="mui-clearfix details-jg">
+			    				<p class="fl">
+									<span>￥<span id="price">{$data.shop_price}</span><em>元/人</em></span>
+			    				</p>
+			    			</div>
+			    		</div>
+			    	</a>
+		    	</li>
+		    	<!--处理中 end-->
+			</ul>
+			<div class="details-date">
+				<a class="demo1" id='demo2' data-options='{"type":"date","beginYear":2018,"endYear":2019}'>
+					<p class="mui-clearfix">
+						<span class="fl">游玩日期</span>
+						<span id="demo-text" class="fr">{$use_date}</span>
+					</p>	
+				</a>
+				<div class="xq_riqi_two">
+					<span>数量</span>
+
+						<div class="mui-numbox" id="test" data-numbox-step='1' data-numbox-min="{if condition='$data.is_team eq 1'}10{/if}{if condition='$data.is_team eq 0' }0{/if}" data-numbox-max='200'>
+						<button class="mui-btn mui-btn-numbox-minus testBtn" type="button">-</button>
+						<input class="mui-input-numbox" type="number" />
+						<button class="mui-btn mui-btn-numbox-plus testBtn" type="button" >+</button>
+						</div>
+				</div>
+				{if $data.is_team == 1}
+				<div class="xq_riqi_two travel_agency">
+					<span>团队名称</span><input  type="text" value="{$travel_agency}" id="travel_agency"/>
+				</div>
+				{else/}
+				{/if}
+			</div>
+			<div class="xq_info">
+				<a class="demo2"  onclick="jump()">
+					<p class="mui-clearfix">
+						<span class="fl">身份证(填写信息直接入园)</span>
+						<span id="demo-text1" class="fr">选择出游人</span>
+					</p>
+				</a>
+					{if empty($info)}
+					<p class="p1">出游人<span id="cyr1">选择出游人信息</span></p>
+					{else /}
+					{volist name="info" id="i"}
+					<p class="p1">出游人<span>{$i.use_name}&nbsp;&nbsp;{$i.use_card}</span></p>
+					{/volist}
+					{/if}
+			</div>
+			<!--<div class="mui-input-row mui-checkbox dikou">
+				<p class="fl">当前可用<i class="orange">{$score}</i>个旅游币抵扣</p>
+				<p class="fr">￥<i id="score">{$score/20}</i><input name="checkbox1" id="checkbox1" value="Item1" type="checkbox"></p>
+			</div>-->
+			<p class="but-p">使用门票后,可获得<i class="orange" id="coin"></i>旅游币</p>
+			</form>
+		</div>
+		
+		<div class="foot-nav">
+			<p class="fl">订单总额<i id="total"></i><a href="#minxi">明细</a></p>
+			<button type="button" class="mui-btn tijiao" onclick="submit()">提交订单</button>
+		</div>
+		<!--弹出层-->
+		<div id="minxi" class="mui-popover mui-popover-action mui-popover-bottom">
+			<h5>费用说明</h5>
+			<p><span class="fl">门票</span><span class="fr">￥{$data.shop_price}×<i id="tnum">{if condition='$data.is_team eq 1'}10{/if}{if condition='$data.is_team eq 0' }0{/if}</i></span></p>
+			<!--<p><span class="fl">旅行币抵扣</span><span id="discount"><del class="fr">￥{$score/20}</del></span></p>-->
+		</div>
+<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+<script src="/static/mobile/js/layer/mobile/layer.js"></script>
+<script src="/static/mobile/js/mui.min.js"></script>
+<script src="/static/mobile/js/mui.picker.min.js"></script>
+<script type="text/javascript">
+    var n={$date[0]};
+    var y={$date[1]-1};
+    var r={$date[2]};
+    var is_team={$data.is_team};
+    var type={$type};
+    var sale_type={sale_type};
+    var curdate=new Date(n,y,r);
+	mui.init({
+		swipeBack: false,
+	});
+	(function($) {
+		$.init();
+		mui('#test').numbox();
+		//mui('#test').numbox().setValue(10);
+		var result = $('#demo-text')[0];
+		var btns = $('.demo1');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+                var options={
+                    type:"date",
+                    beginDate:curdate,
+                }
+                var picker = new mui.DtPicker(options);
+                picker.show(function(rs) {
+                    //$(obj).siblings().html('游玩时间 : '+rs.text);
+                    result.innerText = rs.text;
+                    picker.dispose();
+                });
+//				var optionsJson = this.getAttribute('data-options') || '{}';
+//				var options = JSON.parse(optionsJson);
+//				var id = this.getAttribute('id');
+//
+//				var picker = new $.DtPicker(options);
+//				picker.show(function(rs) {
+//					result.innerText = rs.text;
+//					picker.dispose();
+//				});
+			}, false);
+		});
+	})(mui);
+	
+</script>
+<script>
+    sub();
+ 
+
+    $('.testBtn').click(()=>{
+    	console.log(111111,mui('#test').numbox().getValue());
+    	$('#tnum').html(mui('#test').numbox().getValue());
+    	sub();
+    	
+    })
+  
+
+    function jump(){
+      //var num = Math.floor(document.getElementById("test").value);
+      var num =mui('#test').numbox().getValue();
+      var date = $('#demo-text').html();
+	  window.location.href="/mobile/mall/selecttravel/num/"+num+'/use_date/'+date;
+	}
+	function sub() {
+       // var check = $("input[name='checkbox1']").prop('checked');
+       var check='';
+		var price = $('#price').html();
+		var num =mui('#test').numbox().getValue();
+		var total = price*num;
+		var score = $('#score').html();
+        $('#coin').html(total*0.05*20);
+		if (check == true) {
+		    $('#discount').html('<i class="fr">￥'+score+'</i>');
+		    total = total - score;
+		    if (total <= 0) {
+                $('#discount').html('<i class="fr">￥'+price*num+'</i>');
+		        total = 0.01;
+			}
+		}else {
+            $('#discount').html('<del class="fr">￥'+score+'</del>');
+		}
+        $('#total').html('￥'+total);
+    }
+
+    function submit() {
+    	var date = $('#demo-text').html();
+    	var nums =mui('#test').numbox().getValue();
+    	var num = $('#num').val();
+    	var id = $('#id').val();
+    	var ids = $('#ids').val()?$('#ids').val():'';
+    	var check = $("input[name='checkbox1']").prop('checked')?1:0;
+    	// 1是团队票  0不是团队票 现在是没开放状态 需要改if条件 去掉&&is_team==1
+    	if(is_team==0){
+				
+				if (date == '请选择日期') {
+		            layer.open({
+		                content: '请选择出游日期！'
+		                ,skin: 'msg'
+		                ,time: 2 //2秒后自动关闭
+		            });
+		            return false;
+				}
+				$('#use_date').val(date);
+				
+				//console.log(id);
+				if (!ids) {
+		            layer.open({
+		                content: '请选择出游人！'
+		                ,skin: 'msg'
+		                ,time: 2 //2秒后自动关闭
+		            });
+		            return false;
+				}
+				if (nums != num) {
+		            layer.open({
+		                content: '门票数量与出游人数量不符！'
+		                ,skin: 'msg'
+		                ,time: 2 //2秒后自动关闭
+		            });
+		            return false;
+				}
+		       
+
+		        console.log(id);
+		        $.post('/mobile/mall/order.html',{id:id,num:nums,ids:ids,use_date:date,check:check},function(res){
+					if (res.status == true) {
+		                window.location.href ='/mobile/order/suborder/id/'+res.info
+					}else {
+
+		                layer.open({
+		                    content: res.info
+		                    ,skin: 'msg'
+		                    ,time: 2 //2秒后自动关闭
+		                });
+					}
+				},'json')
+
+    }
+   // else if(is_team==1){
+    else if(is_team==1){
+    	    var travel_agency=$('#travel_agency').val();
+    	    if (date == '请选择日期') {
+		            layer.open({
+		                content: '请选择出游日期！'
+		                ,skin: 'msg'
+		                ,time: 2 //2秒后自动关闭
+		            });
+		            return false;
+				}
+				$('#use_date').val(date);
+
+			if(travel_agency=='' || travel_agency==null){
+				 layer.open({
+		                content: '请填写团队名称！'
+		                ,skin: 'msg'
+		                ,time: 2 //2秒后自动关闭
+		            });
+		            return false;
+			}
+			/*if(type!=1||sale_type!=2){
+				layer.open({
+		                content: '请联系中惠旅集团授权的旅行社报团！！'
+		                ,skin: 'msg'
+		                ,time: 2 //2秒后自动关闭
+		            });
+		            return false;
+			}*/
+			//如果出游人不符合票数
+			if (nums != num) {
+		            
+		            ids='';
+				}	
+    	      console.log(nums);
+    	     $.post('/mobile/mall/team_order.html',{id:id,num:nums,ids:ids,use_date:date,check:check,travel_agency:travel_agency},function(res){
+					if (res.status == true) {
+		                window.location.href ='/mobile/order/suborder/id/'+res.info
+					}else {
+
+		                layer.open({
+		                    content: res.info
+		                    ,skin: 'msg'
+		                    ,time: 2 //2秒后自动关闭
+		                });
+					}
+				},'json')
+
+    }
+
+}
+
+</script>
+</body>
+
+</html>

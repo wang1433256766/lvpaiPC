@@ -1,0 +1,62 @@
+<!--Created by wyg on 2018/1/23-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link rel="stylesheet" href="/static/mobile/css/commodityEvaluation.css">
+    <link rel="stylesheet" href="/static/mobile/js/layer/mobile/need/layer.css">
+    <title>商品评价</title>
+</head>
+<body>
+<div class="html">
+    <header>
+        <span class="left"><a href="javascript:history.go(-1);"><img src="/static/mobile/img/back.png"></a></span>
+        <p>商品评价</p>
+        <span class="right"></span> <!--占位误删-->
+    </header>
+    <div class="content">
+        <div class="cTitle">
+            <p>商品评价</p>
+            <span>({$num})</span>
+        </div>
+        <div class="list">
+            {volist name="comment" id='v'}
+            <li>
+                <div>
+                    <img src="{$v.headimg}">
+                    <p>
+                        <span>{$v.nickname}</span>
+                        <span>{:date('Y-m-d',$v.add_time)}</span>
+                    </p>
+                </div>
+                <p>{$v.content}</p>
+            </li>
+            {/volist}
+        </div>
+    </div>
+    <footer>
+        <div class="kf" onclick="kf()">
+            <img src="/static/mobile/img/kefu.png">
+            <span>联系客服</span>
+        </div>
+        <div class="btn" onclick="location='/mobile/mall/createorder/id/{$id}'">立即购买</div>
+    </footer>
+</div>
+<script src="/static/mobile/js/rem.js" type="text/javascript"></script>
+<script src="/static/mobile/js/jquery-1.9.1.min.js"></script>
+<script src="/static/mobile/js/layer/mobile/layer.js"></script>
+<script>
+    function kf() {
+        layer.open({
+            content: '客服电话：4000073177'
+            ,btn: '拨打电话',
+            yes: function(index, layero){
+                window.location.href = "tel://4000073177";
+            }
+        });
+    }
+</script>
+</body>
+</html>

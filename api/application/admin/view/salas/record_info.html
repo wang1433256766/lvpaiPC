@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+
+  <title>{$member}的订单</title>
+  <!--icheck -->
+  <link href="/static/admin/js/iCheck/skins/flat/green.css" rel="stylesheet">
+  <!--pickers css-->
+  <link rel="stylesheet" type="text/css" href="/static/admin/js/bootstrap-datepicker/css/datepicker-custom.css" />
+  <!--common css-->
+  <link href="/static/admin/css/styles.css" rel="stylesheet">
+  <link href="/static/admin/css/style-responsive.css" rel="stylesheet">
+  <link href="/static/admin/css/iframe-main.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/static/admin/js/html5shiv.js"></script>
+  <script src="/static/admin/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<section>
+            <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+                {$member}订单
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">订单管理</a>
+                </li>
+                <li class="active">{$member}的订单</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+          
+            <div class="row">
+                <div class="col-sm-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            景区订单
+                        <div class="pull-right ">
+ 
+                            <a id="show" href="#myModal" data-toggle="modal" style="display:none;"></a>
+                        </div>
+                        </header>
+
+                                    <div class="panel-body">
+                                        <form action="/admin/salas/record_info.html" id="searchForm" method="get" class="form-inline">
+                                              
+                                            <div class="form-group pull-right ">   
+                                                    <div class="col-md-4">
+                                                        <div class="input-group input-large custom-date-range" data-date="2013/09/13" data-date-format="yyyy/mm/dd">
+                                                            <input type="text" class="form-control dpd1" value="{$info.from}" name="from">
+                                                            <span class="input-group-addon">至</span>
+                                                            <input type="text" class="form-control dpd2" value="{$info.to}" name="to">
+                                                        </div>
+                                                    </div>
+                                                    <select class="input-sm m-bot15" name="status">
+                                                        <option value="-1" {if $info['status'] eq '-1' }selected{/if}>所有订单</option>
+                                                        {volist name="order_status" id="v"}
+                                                        <option value="{$key}" {if $info['status'] eq $key}selected{/if}>{$v}</option>
+                                                        {/volist}
+                                                    </select>
+                                                    <select class="input-sm m-bot15" name="types" onchange="setTypes(this)">
+                                                        <option value="" {if empty($info['type']) }selected{/if} >选择类型</option>
+                                                        <option value="order_sn" {if $info['type'] eq 'order_sn'}selected{/if}>订单编号</option>
+                                                        <option value="tel" {if $info['type'] eq 'tel'}selected{/if}>电话号码</option>
+<!--                                                         <option value="member_id">会员ID</option>
+                                                        <option value="promote_id">推广ID</option> -->
+                                                    </select>
+                                                    <select class="input-sm m-bot15" name="spot_id">
+                                                        <option value="-1" {if empty($spotlist)}selected{/if}>所有景区</option>
+                                                        {volist name="spotlist" id="v"}
+                                                        <option value="{$v.spotId}">{$v.spotTitle}</option>
+                                                        {/volist}
+                                                    </select>
+
+                                                    <input type="text" name="key" id="key" value="{$info.key}" class="form-control" placeholder="输入关键词搜索">      
+                                                    <input type="hidden" name="type" id="type" value="{$info.type}">      
+                                                    <button class="btn btn-success btn-sm" type="button" onclick="search()">
+                                                      <i class="fa fa-plus"></i>&nbsp确认
+                                                    </button>
+                                                    <a class="btn btn-info btn-sm" onclick="location.href='/admin/order/export.html'">
+                                                      <i class="fa fa-plus"></i>&nbsp导出
+                                                    </a>
+                                            </div>
+                                         </form>                                                                                
+
+                                    </div>
+
+                        <div class="panel-body">
+                                                     
+                            <table class="table  table-hover ">
+                                <thead>
+                                <tr>
+                                	  <th>订购日期</th>
+                                    <th>订单编号</th>
+                                    <th>商品名称</th>
+                                    <th>用户电话</th>
+                                    <th>订购数量</th>
+                                    <th>支付金额</th>
+                                    <th>订单状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                 {volist name="data" id="v"}
+                                <tr>
+                                	<td>{:date('Y-m-d H:i:s',$v['add_time'])}</td>
+                                    <td>{$v.order_sn}</td>
+                                    <td>{$v.ticket_name}</td>                                  
+                                    <td>{$v.mobile}</td>
+                                    <td>{$v.num}</td>
+                                    <td>{$v.order_total}</td>
+                                    <td>
+                                      {if $v.status eq 0}
+                                      <a class="btn btn-warning btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">未支付</a>
+                                      {elseif $v.status eq 1}
+                                      <a class="btn btn-info btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">已支付</a>
+                                      {elseif $v.status eq 2}
+                                      <a class="btn btn-primary btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">处理中</a>
+                                      {elseif $v.status eq 3}
+                                      <a class="btn btn-danger btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">已取消</a>
+                                      {elseif $v.status eq 4}
+                                      <a class="btn btn-default btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">已退款</a>
+                                      {elseif $v.status eq 5}
+                                      <a class="btn btn-success btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">已核销</a>
+                                      {elseif $v.status eq 6}
+                                      <a class="btn btn-success btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">部分退款</a>
+                                      {/if}
+                                    </td>
+                                    <td>
+                                        <a id="show" href="#myModal" data-toggle="modal" style="display:none;"></a>
+                                        <a class="btn btn-info btn-xs" href="/admin/order/detail/id/{$v.id}.html">查看</a>
+                                    </td>
+                                </tr>
+                                 {/volist}
+                                </tbody>
+                            </table>
+                            <div class="col-md-12 text-center clearfix">
+                                <ul class="pagination">
+                                    {$page}
+                                </ul>
+                            </div>                           
+                        </div>
+                    </section>
+                </div>
+            </div>
+        
+        </div>
+        <!--body wrapper end-->
+</section>
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/static/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/modernizr.min.js"></script>
+<script src="/static/admin/js/jquery.nicescroll.js"></script>
+<!--icheck -->
+<script src="/static/admin/js/iCheck/jquery.icheck.js"></script>
+<!--pickers plugins-->
+<script type="text/javascript" src="/static/admin/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<!--common scripts for all pages-->
+<script src="/static/admin/js/scripts.js"></script>
+<script type="text/javascript">
+$(function(){
+
+    // disabling dates
+    var nowTemp = new Date();
+    var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+
+    var checkin = $('.dpd1').datepicker({
+        onRender: function(date) {
+            return date.valueOf() < now.valueOf() ? 'disabled' : '';
+        }
+    }).on('changeDate', function(ev) {
+            if (ev.date.valueOf() > checkout.date.valueOf()) {
+                var newDate = new Date(ev.date)
+                newDate.setDate(newDate.getDate() + 1);
+                checkout.setValue(newDate);
+            }
+            checkin.hide();
+            $('.dpd2')[0].focus();
+        }).data('datepicker');
+    var checkout = $('.dpd2').datepicker({
+        onRender: function(date) {
+            return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+        }
+    }).on('changeDate', function(ev) {
+            checkout.hide();
+        }).data('datepicker');
+});
+  
+  
+$(function(){
+    $('.flat-green input').iCheck({
+        checkboxClass: 'icheckbox_flat-green',
+        radioClass: 'iradio_flat-green'
+    });
+
+
+      window.prettyPrint && prettyPrint();
+      $('.default-date-picker').datepicker({
+          format: 'yyyy-mm-dd'
+      });
+});
+
+
+
+    function edit(id)
+    {
+        $.post('/base/ajax',{id:id,act:'edit',tab:'order'},function(res){
+            if (res.status == false) { 
+                error_msg($(".page-heading"),'');
+                return false;
+            }
+            $("#id").val(res.info.id);
+            $("#order_sn").val(res.info.order_sn);
+            $("#use_date").val(res.info.use_date);
+            $('#status_'+ res.info.status).iCheck('check');
+            if (res.info.status == 3) {
+                $("#use_date").removeAttr('disabled');
+            }else{
+                $("#use_date").attr('disabled','disabled');
+            }
+            $("#modal_title").html("修改订单");
+            $("#save").attr("onclick",'save('+res.info.id+')');
+            $("#show").click();
+        },'json')
+
+    }
+
+
+    function save(id)
+    {
+        var id = $("#id").val();
+        var status = $('input[name="status"]:checked ').val();
+        var use_date = $("#use_date").val();
+
+        if (id > 0) {
+           $.post("/order/ajax.html",{id:id,status:status,use_date:use_date},function(res){
+                if (res.status == false) {
+                    error_msg($(".page-heading"),'');
+                    return false;
+                }
+                else{
+                    $(".close").click();
+                    success_msg($(".page-heading"),' ');
+                    setTimeout(function (){
+                        window.location.reload();
+                    }, 3000);
+                }
+            },'json')
+        }
+    }
+
+
+  function check(id)
+  {
+        $.post('/admin/order/check.html',{id:id},function(ret){
+                if (ret.status == false) {
+                       error_msg($(".page-heading"),' ');
+                    }else{
+                       success_msg($(".page-heading"),' ');
+                        window.location.reload();
+                    }
+        },'json');   
+  }
+  function test(id)
+  {
+        $.post('/admin/order/test.html',{id:id},function(ret){
+                if (ret.status == false) {
+                       error_msg($(".page-heading"),' ');
+                    }else{
+                       success_msg($(".page-heading"),' ');
+                        window.location.reload();
+                    }
+        },'json');   
+  }
+
+  function setTypes(obj)
+  {
+        var type = $(obj).val();
+        $('#type').val(type);
+  }
+
+  function search()
+  {
+    $('#searchForm').submit();
+  }
+
+</script>
+</body>
+</html>

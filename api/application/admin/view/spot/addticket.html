@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+
+  <title>添加门票</title>
+
+  <!--icheck -->
+  <link href="/static/admin/js/iCheck/skins/flat/green.css" rel="stylesheet">
+  <!--pickers css-->
+  <link href="/static/admin/js/bootstrap-datepicker/css/datepicker-custom.css" rel="stylesheet" type="text/css" />
+
+  <!--common css-->
+  <link href="/static/admin/css/style1.css" rel="stylesheet">
+  <link href="/static/admin/css/style-responsive.css" rel="stylesheet">
+  <link href="/static/admin/css/iframe-main.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/static/admin/js/html5shiv.js"></script>
+  <script src="/static/admin/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<section>
+
+        <div class="page-heading">
+            <h3>添加门票</h3>
+            <ul class="breadcrumb">
+                <li><a href="#">景区管理</a></li>
+                <li class="active">添加门票</li>
+            </ul>
+        </div>
+        <div class="wrapper">
+            <div class="row">
+              <div class="col-md-12">
+                    <section class="panel">
+                        <header class="panel-heading custom-tab turquoise-tab">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#indexs" data-toggle="tab">基本设置</a>
+                                </li>
+                                <li>
+                                    <a href="#date" data-toggle="tab">销售设置</a>
+                                </li>
+                                <li>
+                                    <a href="#about" data-toggle="tab">验证方式</a>
+                                </li>
+                                <li>
+                                    <a href="#reserve" data-toggle="tab">下单限制</a>
+                                </li>
+                                <li>
+                                    <a href="#refund" data-toggle="tab">退票规则</a>
+                                </li>
+                            </ul>
+                        </header>
+
+                        <form class="cmxform form-horizontal adminex-form" id="commentForm"  method="post" action="/admin/spot/addticket.html" enctype="multipart/form-data" >
+
+                          <div class="panel-body">
+                              <div class="tab-content">
+                                  <div class="tab-pane active" id="indexs">
+                                    
+                                      <section class="panel">
+                                        <div class="panel-body">
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">标题</label>
+                                                    <div class="col-sm-10">
+
+                                                        <input type="text" id="title" name="title" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="标题" placeholder="标题" data-original-title="请填写门票的名称" required>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">景区</label>
+                                                    <div class="col-sm-10">
+
+                                                        <select id="spot_id" name="spot_id" class="form-control tooltips">
+                                                          {volist name="spot" id="v"}
+                                                          <option value="{$v.id}">{$v.title}</option>
+                                                          {/volist}
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">景区类型</label>
+                                                    <div class="col-sm-10">
+
+                                                        <input type="text" id="type" name="type" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="景区类型" placeholder="景区类型" value="ZHL" required>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">出行警示及说明</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea class="form-control " id="desc" name="desc" required></textarea>
+                                                    </div>
+                                                </div>
+                                                 <div class="form-group">
+                                                    <label class="col-sm-2 control-label">入园须知</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea class="form-control " id="remark" name="remark" required></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">退改说明</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea class="form-control " id="refund_info" name="refund_info" required></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">取票地点</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text"  id="take" name="take" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="取票地点" placeholder="取票地点" data-original-title="请填写门票的取票地点" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">门票价格</label>
+                                                    <div class="col-sm-10">
+
+                                                        <label class="col-sm-2 control-label">市场价格</label>                                                              
+                                                        <div class="col-md-4 ">
+                                                            <input type="text" id="market_price"  name="market_price" class="form-control" placeholder="市场价格" required>
+                                                        </div>
+
+                                                        <label class="col-sm-2 control-label">销售价格</label>
+                                                        <div class="col-md-4 ">
+                                                            <input type="text" id="shop_price"  name="shop_price" class="form-control" placeholder="销售价格" required>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+                                              <div class="form-group last">
+
+                                                  <label class="col-sm-2 col-sm-2 control-label">销售状态</label>
+                                                  <div class="col-sm-10 icheck">
+                                                        <div class="flat-green single-row">
+                                                            <div class="radio" id="status_1">
+                                                                <input tabindex="3" type="radio" value="1" name="status">
+                                                                <label>上架</label>
+                                                            </div>
+                                                            <div class="radio" id="status_0">
+                                                                <input tabindex="3" type="radio" value="0" name="status">
+                                                                <label>下架</label>
+                                                            </div>
+                                                        </div>
+                                                                                             
+                                                  </div>
+                            
+                                              </div>
+                                            
+                                        </div>
+                                    </section>
+
+
+                                  </div>
+
+
+                                  <div class="tab-pane" id="date">
+                                    
+                                      <section class="panel">
+                                        <div class="panel-body">
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">销售日期</label>
+                                                    <div class="col-sm-10">
+
+                                                        <label class="col-sm-2 control-label">开始时间</label>                                                              
+                                                        <div class="col-md-2 ">
+                                                            <input class="form-control form-control-inline input-medium default-date-picker"  name="sale_start" size="6" type="text" placeholder="门票销售开始时间" >
+                                                        </div>
+
+                                                        <label class="col-sm-2 control-label">结束时间</label>
+                                                        <div class="col-md-2 ">
+                                                          <input class="form-control form-control-inline input-medium default-date-picker"  name="sale_end" size="6" type="text" placeholder="门票销售结束时间" >
+                                                        </div>
+    
+                                                         
+                                                    </div>
+                                                </div>
+                                                <div class="form-group last">
+                                                    <label class="col-sm-2 control-label">有效日期</label>
+                                                    <div class="col-sm-10">
+
+                                                        <label class="col-sm-2 control-label">开始时间</label>                                                              
+                                                        <div class="col-md-2 ">
+                                                          <input class="form-control form-control-inline input-medium default-date-picker"  name="begin_date" size="6" type="text" placeholder="门有效开始时间" >
+                                                        </div>
+
+                                                        <label class="col-sm-2 control-label">结束时间</label>
+                                                        <div class="col-md-2 ">
+                                                          <input class="form-control form-control-inline input-medium default-date-picker"  name="end_date" size="6" type="text" placeholder="门有效结束时间" >
+                                                        </div>
+                                                         
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">商品数据</label>
+                                                    <div class="col-sm-10">
+
+                                                        <label class="col-sm-2 control-label">库存数量</label>                                                              
+                                                        <div class="col-md-4 ">
+                                                            <input type="text" id="goods_num"  name="goods_num" value="99999" class="form-control" placeholder="库存数量" required>
+                                                        </div>
+
+                                                        <label class="col-sm-2 control-label">已售数量</label>
+                                                        <div class="col-md-4 ">
+                                                            <input type="text" id="show_num"  name="show_num" value="{:rand(999,9999)}" class="form-control" placeholder="销售价格" required>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group last">
+                                                    <label class="col-sm-2 control-label">商品订购</label>
+                                                    <div class="col-sm-10">
+
+                                                        <label class="col-sm-2 control-label">赠送积分</label>                                                              
+                                                        <div class="col-md-4 ">
+                                                            <input type="text" id="score"  name="score" value="0" class="form-control" placeholder="库存数量" required>
+                                                        </div>
+
+                                                        <label class="col-sm-2 control-label">分销提成</label>
+                                                        <div class="col-md-2 ">
+                                                            <input type="text" id="distribution"  name="distribution" value="0" class="form-control" placeholder="销售价格" required>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            
+                                        </div>
+                                    </section>
+
+                                  </div>
+                                  <div class="tab-pane" id="about">
+                                    
+                                              <div class="form-group">
+
+                                                  <label class="col-sm-2 col-sm-2 control-label">需要实名认证</label>
+                                                  <div class="col-sm-10 icheck">
+                                                        <div class="flat-green single-row">
+                                                            <div class="radio" id="real_name_1">
+                                                                <input tabindex="3" type="radio" value="1" name="real_name">
+                                                                <label>是</label>
+                                                            </div>
+                                                            <div class="radio" id="real_name_0">
+                                                                <input tabindex="3" type="radio" value="0" name="real_name">
+                                                                <label>否</label>
+                                                            </div>
+                                                        </div>
+                                                                                             
+                                                  </div>
+                            
+                                              </div>
+                                              <div class="form-group">
+
+                                                  <label class="col-sm-2 col-sm-2 control-label">需要身份证件</label>
+                                                  <div class="col-sm-10 icheck">
+                                                        <div class="flat-green single-row">
+                                                            <div class="radio" id="need_card_1">
+                                                                <input tabindex="3" type="radio" value="1" name="need_card">
+                                                                <label>是</label>
+                                                            </div>
+                                                            <div class="radio" id="need_card_0">
+                                                                <input tabindex="3" type="radio" value="0" name="need_card">
+                                                                <label>否</label>
+                                                            </div>
+                                                        </div>
+                                                                                             
+                                                  </div>
+                            
+                                              </div>
+                                              <div class="form-group last">
+
+                                                  <label class="col-sm-2 col-sm-2 control-label">验证方式</label>
+                                                  <div class="col-sm-10"> 
+                                                      <div class="col-md-4 ">
+                                                          <select class="form-control m-bot15" id="check_way" name="check_way">
+                                                              {volist name="check_way" id="v"}
+                                                              <option value="{$key}">{$v}</option>
+                                                              {/volist}
+                                                          </select>
+                                                      </div>
+                                                  </div>                                           
+                                                  
+                            
+                                              </div>
+
+                                  </div>
+                                  <div class="tab-pane" id="reserve">
+                                    
+                                              <div class="form-group">
+                                                  <label class="col-sm-2 control-label">数量限制</label>
+                                                  <div class="col-sm-10">
+
+                                                      <label class="col-sm-2 control-label">最大购买</label>                                                              
+                                                      <div class="col-md-4 ">
+                                                          <input type="text" id="market_price"  name="market_price" value="0" class="form-control" placeholder="市场价格">
+                                                      </div>
+
+                                                      <label class="col-sm-2 control-label">最小购买</label>
+                                                      <div class="col-md-4 ">
+                                                          <input type="text" id="shop_price"  name="shop_price" value="0" class="form-control" placeholder="销售价格">
+                                                      </div>
+
+                                                  </div>
+                                              </div>
+
+                                              <div class="form-group">
+                                                  <label class="col-sm-2 control-label">提前下单</label>
+                                                  <div class="col-sm-10">
+
+                                                      <label class="col-sm-2 control-label">提前天数</label>                                                              
+                                                      <div class="col-md-4 ">
+                                                          <input type="text" id="before_days"  name="before_days" value="0" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" data-original-title="0表示不需要提前，大于为表示需要提交的天数，如：提前一天 16:30是指如果客人计划预定明天的门票，必须在今天下午4:30之前把订单推送到同程系统，否则，无法通过下单验证；提前两天(或者更多)，含义与此相同"  placeholder="下单提前时间">
+                                                      </div>
+
+                                                      <label class="col-sm-2 control-label">下单时间</label>
+                                                      <div class="col-md-4 ">
+                                                          <input type="text" id="before_time"  name="before_time" value="0" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" data-original-title="需要在几天之前下单" placeholder="下单时间">
+                                                      </div>
+  
+                                                       
+                                                  </div>
+                                              </div>  
+
+                                              <div class="form-group">
+                                                  <label class="col-sm-2 control-label">限制类型</label>
+                                                  <div class="col-sm-10">
+
+                                                      <label class="col-sm-2 control-label">限制类型</label>                                                              
+                                                      <div class="col-md-4 ">
+                                                          <select class="form-control m-bot15" id="reserve_type" name="reserve_type">
+                                                              {volist name="reserve_type" id="v"}
+                                                              <option value="{$key}">{$v}</option>
+                                                              {/volist}
+                                                          </select>
+                                                      </div>
+
+                                                      <label class="col-sm-2 control-label">间隔天数</label>
+                                                      <div class="col-md-4 ">
+                                                          <input type="text" id="reserve_days_limit" value="0" name="reserve_days_limit" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" data-original-title="如果限制天数为0表示不限制，可以购买有效期内的任意一天票；如果为大于0的数字表示只能购买当前日期后的N天票，举个例子：比如苏州乐园成人票的有效期是2014-04-01到2014-12-31，今天是2014-07-09，如果这个产品的限制购买天数是2，那意思是说如果今天下单，只能选择的旅游日期是2014-07-10和2014-07-11(注：该限制需要和下单提前时间限制结合起来使用)" placeholder="限制购买天数">
+                                                      </div>
+  
+                                                       
+                                                  </div>
+                                              </div> 
+
+                                              <div class="form-group last">
+                                                  <label class="col-sm-2 control-label">购买限制</label>
+                                                  <div class="col-sm-10">
+
+                                                      <label class="col-sm-2 control-label">次数限制</label>                                                              
+                                                      <div class="col-md-4 ">
+                                                          <input type="text" id="reserve_times"  name="reserve_times" value="0" class="form-control" placeholder="次数限制">
+                                                      </div>
+
+                                                      <label class="col-sm-2 control-label">票数限制</label>
+                                                      <div class="col-md-4 ">
+                                                          <input type="text" id="reserve_total_tickets"  name="reserve_total_tickets" value="0" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" data-original-title="如果预定频次限制是无，表示没有限制；如果预定频次限制选择了1天(或者1周、1月)，则表示在同一天内最多只能预定1次，预定的最大票数为1(根据具体的次数值和总票数值来决定预定次数和总票数)" placeholder="票数限制">
+                                                      </div>
+  
+                                                       
+                                                  </div>
+                                              </div>  
+
+                                  </div>
+
+                                  <div class="tab-pane" id="refund">
+                                    
+                                              <div class="form-group">
+
+                                                  <label class="col-sm-2 col-sm-2 control-label">退款限制</label>
+                                                  <div class="col-sm-10">
+                                                        <label class="col-sm-2 col-sm-2 control-label">全额退款</label>
+                                                        <div class="col-sm-4 icheck">
+                                                              <div class="flat-green single-row">
+                                                                  <div class="radio" id="is_refund_1">
+                                                                      <input tabindex="3" type="radio" value="1" name="is_refund">
+                                                                      <label>是</label>
+                                                                  </div>
+                                                                  <div class="radio" id="is_refund_0">
+                                                                      <input tabindex="3" type="radio" value="0" name="is_refund">
+                                                                      <label>否</label>
+                                                                  </div>
+                                                              </div>
+                                                                                                   
+                                                        </div>
+                                                        <label class="col-sm-2 col-sm-2 control-label">部分退款</label>
+                                                        <div class="col-sm-4 icheck">
+                                                              <div class="flat-green single-row">
+                                                                  <div class="radio" id="is_partial_refund_1">
+                                                                      <input tabindex="3" type="radio" value="1" name="is_partial_refund">
+                                                                      <label>是</label>
+                                                                  </div>
+                                                                  <div class="radio" id="is_partial_refund_0">
+                                                                      <input tabindex="3" type="radio" value="0" name="is_partial_refund">
+                                                                      <label>否</label>
+                                                                  </div>
+                                                              </div>
+                                                                                                   
+                                                        </div>
+                                                                                             
+                                                  </div>
+                                                  
+                            
+                                              </div>
+
+
+                                              <div class="form-group">
+                                                  <label class="col-sm-2 control-label">手续费用</label>
+                                                  <div class="col-sm-10">
+
+                                                      <label class="col-sm-2 control-label">类型</label>                                                              
+                                                      <div class="col-md-4 ">
+                                                          <select class="form-control m-bot15" id="charge_type"  name="charge_type">
+                                                              {volist name="charge_type" id="v"}
+                                                              <option value="{$key}">{$v}</option>
+                                                              {/volist}
+                                                          </select>
+                                                      </div>
+
+                                                      <label class="col-sm-2 control-label">金额</label>
+                                                      <div class="col-md-4 ">
+                                                          <input type="text" id="charge"  name="charge" value="0" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" data-original-title="此处根据选择类型填写退款收取的费用" placeholder="退款收取的费用">
+                                                      </div>
+  
+                                                       
+                                                  </div>
+                                              </div>  
+
+
+                                              <div class="form-group last">
+                                                  <label class="col-sm-2 control-label">退款日期</label>
+                                                  <div class="col-sm-10">
+
+                                                      <label class="col-sm-2 control-label">天数限制</label>                                                              
+                                                      <div class="col-md-4 ">
+                                                          <input type="text" id="day"  name="day" value="100" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" data-original-title="-1提前一天,0当天,1旅游日期后一天,100随时退" placeholder="天数限制">
+                                                      </div>
+
+                                                      <label class="col-sm-2 control-label">时间限制</label>
+                                                      <div class="col-md-4 ">
+                                                          <input type="text" id="hour"  name="hour" value="0" class="form-control" placeholder="时间限制">
+                                                      </div>
+  
+                                                       
+                                                  </div>
+                                              </div>  
+
+
+                                  </div>
+                              </div>
+                          </div>
+
+                       
+                    </section>
+              </div>
+
+
+            </div>
+
+
+            <section class="panel">
+              <div class="panel-body">
+                  
+                  <button class="btn btn-info" type="button" onclick="save()">保存</button>
+                  <button class="btn btn-default" type="button">关闭</button>
+
+              </div>
+            </section>
+
+
+
+        </div>
+
+
+
+</section>
+ </form>
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/static/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/modernizr.min.js"></script>
+<script src="/static/admin/js/jquery.nicescroll.js"></script>
+
+<!--icheck -->
+<script src="/static/admin/js/iCheck/jquery.icheck.js"></script>
+<!--pickers plugins-->
+<script src="/static/admin/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+<script type="text/javascript" src="/static/admin/js/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+
+// $.extend($.validator.messages, {
+//     required: "必选字段",
+//     remote: "请修正该字段",
+//     email: "请输入正确格式的电子邮件",
+//     url: "请输入合法的网址",
+//     date: "请输入合法的日期",
+//     dateISO: "请输入合法的日期 (ISO).",
+//     number: "请输入合法的数字",
+//     digits: "只能输入整数",
+//     creditcard: "请输入合法的信用卡号",
+//     equalTo: "请再次输入相同的值",
+//     accept: "请输入拥有合法后缀名的字符串",
+//     maxlength: $.validator.format("请输入一个长度最多是 {0} 的字符串"),
+//     minlength: $.validator.format("请输入一个长度最少是 {0} 的字符串"),
+//     rangelength: $.validator.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
+//     range: $.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+//     max: $.validator.format("请输入一个最大为 {0} 的值"),
+//     min: $.validator.format("请输入一个最小为 {0} 的值")
+// });
+
+$.extend($.validator.messages, {
+    required: "必选填写该信息"
+});
+
+var Script = function () {
+    $().ready(function() {
+        $("#commentForm").validate();
+    });
+}();
+
+$(function(){
+  window.prettyPrint && prettyPrint();
+  $('.default-date-picker').datepicker({
+      format: 'yyyy-mm-dd'
+  });
+});
+
+$(function(){
+    $('.flat-green input').iCheck({
+        checkboxClass: 'icheckbox_flat-green',
+        radioClass: 'iradio_flat-green'
+    });
+
+    $('.minimal-blue input').iCheck({
+        checkboxClass: 'icheckbox_minimal-blue',
+        radioClass: 'iradio_minimal-blue',
+        increaseArea: '20%' // optional
+    });
+
+    $("#status_1").iCheck('check');
+    $("#real_name_0").iCheck('check');
+    $("#need_card_0").iCheck('check');
+    $("#is_refund_1").iCheck('check');
+    $("#is_partial_refund_1").iCheck('check');
+});
+function save(){
+  $("#commentForm").submit();
+}
+
+
+
+</script>
+
+
+</body>
+</html>

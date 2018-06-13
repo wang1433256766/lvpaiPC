@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>使用旅行币</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="/static/mobile/css/mui.min.css">
+		<link rel="stylesheet" href="/static/mobile/css/useMoney.css" />
+		<script src="/static/mobile/js/match.js"></script>
+		<script src="/static/mobile/js/mui.min.js"></script>
+        <style type="text/css">
+            .textIndex {
+                font-size: 12px; 
+            }
+            .title {
+                color: black;
+                font-weight: bold;
+            }
+
+            .integral {
+                color: #FF9000;
+                float: left;
+            }
+
+            .price {
+                float: left;
+            }
+        </style>
+	</head>
+	<body>
+		<!--头部-->
+		<header>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<div class="text-cnt">使用旅行币</div>
+			<div class="textIndex"><a href="/mobile/member/member_donate">赠送客户</a></div>
+		</header>
+	<div class="html">
+        <div class="content" >
+            {volist name="product" id="v"}
+            <li style="padding: 8px;">
+                <a href="/mobile/Memberwch/wch_info/product_id/{$v.id}" style="color: #333">
+                    <img src="{$v.image}" style="height: 300px;">
+                    <div>
+                        <p>
+                            <span class="title">{$v.name}</span>
+                            
+                        </p>
+                        <p>
+                            <span class="price" style="color: #ccc;">市场价:<span style="text-decoration:line-through;color: #ccc">￥{$v.price}</span></span>
+                            <span class="integral">{$v.integral}旅行币</span>
+                            <span class="sales">销售量：{$v.already_count}</span>
+                        </p>
+                    </div>
+                </a>
+            </li>
+            {/volist}
+        </div>
+        <!-- <footer>
+            <p>
+                <img src="/static/mobile/img/shangchengIcon.png">
+                <span class="current">商城</span>
+            </p>
+            <p>
+                <img src="/static/mobile/img/xiuxiuIcon.png">
+                <span>秀秀</span>
+            </p>
+            <p>
+                <img src="/static/mobile/img/wodeIcon.png">
+                <span>我的</span>
+            </p>
+        </footer> -->
+    </div>
+	</body>
+</html>

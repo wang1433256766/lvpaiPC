@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+
+  <title>景区订单</title>
+  <!--icheck -->
+  <link href="/static/admin/js/iCheck/skins/flat/green.css" rel="stylesheet">
+  <!--pickers css-->
+  <link rel="stylesheet" type="text/css" href="/static/admin/js/bootstrap-datepicker/css/datepicker-custom.css" />
+  <!--common css-->
+  <link href="/static/admin/css/styles.css" rel="stylesheet">
+  <link href="/static/admin/css/style-responsive.css" rel="stylesheet">
+  <link href="/static/admin/css/iframe-main.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/static/admin/js/html5shiv.js"></script>
+  <script src="/static/admin/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<section>
+            <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+                景区订单
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">订单管理</a>
+                </li>
+                <li class="active">手动核销</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+          
+            <div class="row">
+                <div class="col-sm-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            景区订单
+                        <div class="pull-right ">
+ 
+                            <a id="show" href="#myModal" data-toggle="modal" style="display:none;"></a>
+                        </div>
+                        </header>
+                        <div class="panel-body">
+                                                     
+                            <table class="table  table-hover ">
+                                <thead>
+                                <tr>
+                                	<th>订购日期</th>
+                                    <th>订单编号</th>
+                                    <th>商品名称</th>
+                                    <th>用户电话</th>
+                                    <th>订购数量</th>
+                                    <th>支付金额</th>
+                                    <th>订单状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                 {volist name="data" id="v"}
+                                <tr>
+                                	<td>{:date('Y-m-d H:i:s',$v['add_time'])}</td>
+                                    <td>{$v.order_sn}</td>
+                                    <td>{$v.ticket_name}</td>                                  
+                                    <td>{$v.mobile}</td>
+                                    <td>{$v.num}</td>
+                                    <td>{$v.payment}</td>
+                                    <td>
+                                      <a class="btn btn-info btn-xs">已支付</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-info btn-xs" onclick="check({$v.id})"> 核销</a>
+                                    </td>
+                                </tr>
+                                 {/volist}
+                                </tbody>
+                            </table>
+                            <div class="col-md-12 text-center clearfix">
+                                <ul class="pagination">
+                                    {$page}
+                                </ul>
+                            </div>                           
+                        </div>
+                    </section>
+                </div>
+            </div>
+        
+        </div>
+        <!--body wrapper end-->
+</section>
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/static/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/modernizr.min.js"></script>
+<script src="/static/admin/js/jquery.nicescroll.js"></script>
+<!--icheck -->
+<script src="/static/admin/js/iCheck/jquery.icheck.js"></script>
+<!--pickers plugins-->
+<script type="text/javascript" src="/static/admin/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<!--common scripts for all pages-->
+<script src="/static/admin/js/scripts.js"></script>
+<script src="/static/mobile/js/layer/layer.js"></script>
+<script type="text/javascript">
+    function check(id) {
+        layer.confirm('确定要核销该订单？', {
+            btn: ['是','否'] //按钮
+        }, function(){
+            $.post('/admin/order/verify_ajax',{id:id},function (res) {
+                if (res.status == true) {
+                    layer.msg(res.info, {icon: 6});
+                    setTimeout(function () {
+                        location.reload();
+                    },2000);
+
+                }else {
+                    layer.msg(res.info, {icon: 5});
+                }
+            },'json');
+
+        });
+
+    }
+</script>
+</body>
+</html>

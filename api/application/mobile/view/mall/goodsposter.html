@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{$ticket.share_title}</title>
+	<link rel="stylesheet" href="/static/mobile/css/info.css">
+</head>
+<body >
+<div class="box">
+	<img src="{$route}" style='width:100%;height:100%;'>
+
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+	<script src="/static/mobile/js/rem.js"></script>
+	<script src="/static/mobile/js/iscroll.js"></script>
+	<script src="/static/mobile/js/demoUtils.js"></script>
+	<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+<script src="/static/mobile/js/share.js?ts={$js_sign['timestamp']}"></script>
+	<script>
+		var myScroll;
+
+function loaded () {
+
+	myScroll = new IScroll('#wrapper',{ mouseWheel: true });
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+	capture: false,
+	passive: false
+} : false);
+
+		$(function(){
+			$(document).on('click', '.delete-btn', function(event) {
+				$(this).closest(".list").remove()
+				event.preventDefault();
+				/* Act on the event */
+			});
+		})
+	</script>
+<script type="text/javascript">
+    var id = {$ticket.id};
+    var member_id = {$member_id};
+    var desc = "";
+    var title = "{$ticket.share_title}";
+    var link = "";
+    var url = 'http://lvpai.zhonghuilv.net{$route}';
+    console.log(url);
+    $(document).ready(function() {
+        wx.config({
+            debug: false,
+            appId: "{$js_sign['appid']}",
+            timestamp: "{$js_sign['timestamp']}",
+            nonceStr:  "{$js_sign['nonceStr']}",
+            signature: "{$js_sign['signature']}",
+            jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo'
+            ]
+        });
+
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>订单退款</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="/static/mobile/css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/order.css"/>
+		<script type="text/javascript" charset="utf-8">
+	     (function (doc, win) {
+	        var docEl = doc.documentElement,
+	            resizeEvt = 'onorientationchange' in window ? 'onorientationchange' : 'resize',
+	            recalc = function () {
+	                var clientWidth = docEl.clientWidth;
+	                if (!clientWidth) return;
+	                if(clientWidth>=750){
+	                    docEl.style.fontSize = '100px';
+	                }else{
+	                    docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+	                }
+	            };
+	
+	        if (!doc.addEventListener) return;
+	        win.addEventListener(resizeEvt, recalc, false);
+	        doc.addEventListener('DOMContentLoaded', recalc, false);
+	    })(document, window);
+	    </script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">订单详情</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="dingdan">
+				<!--处理中-->
+		    	<li>
+		    		<div class="riqi">
+						<p>订单编号：<span>{$data.order_sn}</span></p>
+		    			<em class="chuli">处理中</em>
+		    		</div>
+		    		<a href="javascript:;">
+		    			<div class="xingxi bgb">
+			    			<p class="p1 mui-clearfix">
+			    				<span class="fl">{$data.ticket_name}</span>
+			    				
+			    			</p>
+			    			<div class="jiage mui-clearfix">
+			    				<p class="fl">
+			    					<span>￥{$data.price}</span><em>X{$data.num}</em>
+			    				</p>
+			    			</div>
+			    		</div>
+			    		<!--旅行币-->
+			    		<div class="lvxi">
+							<p class="mui-clearfix">
+								<span class="fl">游玩时间：</span>
+								<span class="fr cc">{$data.travel_date}</span>
+							</p>
+			    			<p class="mui-clearfix">
+			    				<span class="fl">旅行币折扣</span>
+			    				<span class="fr cc">-￥{$data.rebate_total}</span>
+			    			</p>
+			    			<p class="mui-clearfix">
+			    				<span class="fl">实付款:</span>
+			    				<span class="fr red">-￥{$data.total}</span>
+			    			</p>
+			    		</div>
+		    		</a>
+		    	</li>
+		    	<!--处理中 end-->
+			</ul>
+			<p class="tuikuan_tit">购票人手机号</p>
+			<div class="tuikuan_xingxi">
+				<p>{$data.mobile}</p>
+			</div>
+			<p class="tuikuan_tit">出行人信息</p>
+			<div class="tuikuan_xingxi">
+				{volist name="traveller" id="v"}
+				<p>{$v.use_name} <span class="ml20">{$v.use_card}</span></p>
+				{/volist}
+			</div>
+			
+			<div class="tuikuan_explain mt20">
+				<h5>退款说明</h5>
+				<p>{$data.refund_reason}</p>
+			</div>
+		</div>
+		<div class="foot">
+			<button type="button" class="mui-btn" onclick="applycancel({$data.id})">取消退款</button>
+		</div>
+<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+<script src="/static/mobile/js/mui.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+	mui.init({
+		swipeBack: false,
+	});
+	
+</script>
+<script>
+    function applycancel(id) {
+        $.post('/mobile/order/applyCancel.html',{id:id},function(res){
+            if (res.status == true) {
+                location.href = 'mobile/order/index';
+            }else {
+                mui.toast(res.info);
+            }
+        },'json')
+    }
+</script>
+	</body>
+
+</html>

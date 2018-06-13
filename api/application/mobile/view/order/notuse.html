@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>待使用</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="/static/mobile/css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/order.css"/>
+		
+		<script type="text/javascript" charset="utf-8">
+	     (function (doc, win) {
+	        var docEl = doc.documentElement,
+	            resizeEvt = 'onorientationchange' in window ? 'onorientationchange' : 'resize',
+	            recalc = function () {
+	                var clientWidth = docEl.clientWidth;
+	                if (!clientWidth) return;
+	                if(clientWidth>=750){
+	                    docEl.style.fontSize = '100px';
+	                }else{
+	                    docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+	                }
+	            };
+	
+	        if (!doc.addEventListener) return;
+	        win.addEventListener(resizeEvt, recalc, false);
+	        doc.addEventListener('DOMContentLoaded', recalc, false);
+	    })(document, window);
+	    </script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">订单详情</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="dingdan">
+				<!--处理中-->
+		    	<li>
+		    		<div class="riqi">
+		    			<p>订单编号：<span>{$data.order_sn}</span></p>
+		    			<em class="shiyong">待使用</em>
+		    		</div>
+		    		<a href="javascript:;">
+		    			<div class="xingxi bgb">
+			    			<p class="p1 mui-clearfix">
+			    				<span class="fl">{$data.ticket_name}</span>
+			    			</p>
+			    			<div class="jiage mui-clearfix">
+			    				<p class="fl">
+			    					<span>￥{$data.price}</span><em>X{$data.num}</em>
+			    				</p>
+			    				<p class="fr">
+			    					合计：<span>￥{$data.order_total}</span>
+			    				</p>
+			    			</div>
+			    		</div>
+			    		<!--旅行币-->
+			    		<div class="lvxi">
+							<p class="mui-clearfix">
+								<span class="fl">游玩时间：</span>
+								<span class="fr cc">{$data.travel_date}</span>
+							</p>
+			    			<p class="mui-clearfix">
+			    				<span class="fl">旅行币折扣：</span>
+			    				<span class="fr cc">-￥{$data.rebate_total}</span>
+			    			</p>
+			    			<p class="mui-clearfix">
+			    				<span class="fl">实付款：</span>
+			    				<span class="fr red">-￥{$data.total}</span>
+			    			</p>
+			    		</div>
+		    		</a>
+		    	</li>
+		    	<!--处理中 end-->
+			</ul>
+			<p class="tuikuan_tit">购票人手机号</p>
+			<div class="tuikuan_xingxi">
+				<p>{$data.mobile}</p>
+			</div>
+			<p class="tuikuan_tit">出行人信息</p>
+			<div class="tuikuan_xingxi">
+				{volist name="traveller" id="v"}
+				<p><b>{$v.use_name}</b> <span class="ml20">{$v.use_card}</span><input type="checkbox" name="traveler_ids" value='{$v.id}'></p> <!-- <input type="checkbox" name="traveler_ids" value='{$v.id}'>  -->
+				{/volist}
+			</div>
+
+<!-- 			<form class="mui-input-group">  
+                <div class="mui-input-row mui-checkbox">
+				    <label>checkbox示例</label>
+				    <input name="checkbox1" value="Item 1" type="checkbox" checked>
+				</div> 
+                <div class="mui-input-row mui-checkbox">  
+                    <label>checked：true</label>  
+                    <input name="checkbox" value="Item 2" type="checkbox" checked>  
+                </div>  
+               
+            </form> 
+ -->		
+ 			<textarea id="tuikuan-text">请输入退款理由....</textarea>
+
+			<div class="pingzi">
+				<p>{$data.UUcode}</p>
+			</div>
+		</div>
+		<div class="foot">
+			<button type="button" class="mui-btn" onclick="tuikuan()">申请退款</button>
+		</div>
+	<!-- 	<script src="/static/mobile/js/mui.min.js"></script> -->
+<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+<script src="/static/mobile/js/layer/layer.js"></script>
+<script type="text/javascript" charset="utf-8">
+/*	mui.init({
+		swipeBack: false,
+	});
+	*/
+</script>
+<script>
+    function apply(id) {
+        mui.prompt('请输入您的备注：', '', '', ['确定','取消'], function(e) {
+            if (e.index == 1) {
+
+            } else {
+                $.post('/mobile/order/apply.html',{id:id,refund_reason:e.value},function(res){
+                    if (res.status == true) {
+                        location.href = '/mobile/order/index';
+                    }else {
+                        mui.toast(res.info);
+                    }
+                },'json')
+            }
+        })
+    }
+$("#tuikuan-text").click(function(){
+	$("#tuikuan-text").val('');
+});
+
+    function tuikuan(){
+    	        var price={$data.price};
+    	        var num={$data.num};
+    	        var order='{$data.order_sn}';
+    	        var is_team={$is_team};
+    	        var refund_reason=$("#tuikuan-text").val();
+    	        if(refund_reason==''||refund_reason=='请输入退款理由....'){
+    	        	layer.msg('请输入退款理由!');
+    	        	return;
+    	        }
+          		var obj=document.getElementsByName('traveler_ids'); //选择所有name="'test'"的对象，返回数组 
+    	        
+				//取到对象数组后，我们来循环检测它是不是被选中 
+				var s=''; 
+				var n='';
+				var j=0;
+				for(var i=0; i<obj.length; i++){ 
+						if(obj[i].checked){ 
+									s+=obj[i].value+','; //如果选中，将value添加到变量s中 
+									n+=obj[i].parentNode.firstElementChild.innerHTML+',';
+									j++;
+									console.log(num-j);									
+						} 			
+    			}
+    			/*if(is_team==1&&num-j<10&&num!=j){
+										window.alert('团队票至少是10张!');
+										return;
+				}
+				else*/ if(s==''){
+	    			 layer.msg('你还没有选择任何退款!');
+	    		}else{
+       					
+	    				var total_price= price*j;
+	     				var msg='您为'+n+'选择了退款,总退款金额:￥'+total_price;            
+                        var url= "{:url('order/tuikuan')}";
+					  $.ajax({
+                          type:'post',
+                          url:url,
+                          data: {"traveller_ids":s,"order":order,"refund_reason":refund_reason},
+                          dataType:'html',
+                          success:function(data){
+                         if(data){
+                           	layer.msg(msg);
+                           	console.log(data); 
+                           window.history.go(-1);
+                         }
+                         else{
+                         layer.msg('操作失败!'+data); 
+                            window.location.reload();
+                         }
+                     } 
+                  });
+	    		}	
+
+	     		
+			}
+
+			
+</script>
+
+</body>
+
+</html>

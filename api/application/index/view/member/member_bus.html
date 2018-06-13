@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>商家端</title>
+	<link rel="stylesheet" href="/static/index/css/info.css">
+</head>
+<body onload="loaded()">
+<div class="box">
+	<div id="wrapper">
+			<div id="scroller">
+				
+			
+
+		<div class="personal">
+			<div class="left"><img src="/static/index/images/5.png" alt=""></div>
+			<div class="center">
+				<p class="cen-name">森森森</p>
+				<p class="spa">旅行币 520<a href="#">使用</a></p>
+			</div>
+			<div class="right">
+				<a href="#"><img src="/static/index/images/phone.png" alt="">绑定手机</a>
+			</div>
+		</div>
+
+		<div class="personal-nav">
+			<a href=""><img src="/static/index/images/er.png" style="width: 0.4rem;height: 0.4rem" alt="">生成海报</a>
+			<a href=""><img src="/static/index/images/moeny.png" style="width: 0.47rem;height: 0.51rem; margin-top: 0.2rem;" alt="">赚取旅行币</a>
+			<a href=""><img src="/static/index/images/bi.png" style="width: 0.42rem;height: 0.45rem;margin-top: 0.27rem;" alt="">旅行币记录</a>
+		</div>
+		
+		<div class="busi">
+			<div class="busi-cont">
+				<div>
+					<p class="busi-monet">520</p>
+					<p class="busi-text">可提现佣金(元）</p>
+				</div>
+				<a href="#">佣金提现</a>
+			</div>
+			<div class="busi-box">
+				<a href="javascript:;"><img src="/static/index/images/jj.png" alt="" style="width: 0.38rem;height: 0.44rem"><p>分销佣金<b>1250</b>元</p></a>
+				<a href="javascript:;"><img src="/static/index/images/gg.png" alt="" style="width: 0.38rem;height: 0.46rem; margin-top: 0.24rem"><p>分销订单<b>52</b>笔</p></a>
+				<a href="/index/member/member_details"><img src="/static/index/images/zz.png" alt="" style="width: 0.40rem;height: 0.35rem;margin-top: 0.34rem;"><p>提现明细<b>5</b>笔</p></a>
+			</div>
+		</div>
+
+		
+
+		<ul class="persoal-list">
+			<!-- <li class="fist"><a href="#"><p>订单中心</p><img src="/static/index/images/right.png" alt=""></a></li>
+			<li style="border-top: 1px solid #ededed"><a href="#"><p>我的点评</p><img src="/static/index/images/right.png" alt=""></a></li> -->
+			<li><a href="/index/member/member_client"><p>客户管理</p><img src="/static/index/images/right.png" alt=""></a></li>
+			<li><a href="#"><p>订单中心</p><img src="/static/index/images/right.png" alt=""></a></li>
+			<li><a href="/index/member/member_comment"><p>我的点评</p><img src="/static/index/images/right.png" alt=""></a></li>
+			<li><a href="#"><p>我的秀秀</p><img src="/static/index/images/right.png" alt=""></a></li>
+			<li><a href="#"><p>出游人信息</p><img src="/static/index/images/right.png" alt=""></a></li>
+		</ul>
+		<div style="height: 1.2rem"></div>
+	</div>
+		</div>
+
+
+
+		
+	<footer class="foot">
+		<nav class="foot-bar">
+		 	<a class="tab-item " href="#">
+		        <span class="foot-item foot-shoppingmall"></span>
+		        <span class="tab-label">商城</span>
+		   	</a>
+		  	<a class="tab-item" href="#">
+		        <span class="foot-item foot-show"></span>
+		        <span class="tab-label">秀秀</span>
+		   </a>
+		  	<a  class="tab-item foot-active" href="#">
+		        <span class="foot-item foot-my"></span>
+		        <span class="tab-label">我的</span>
+		  	</a>       
+		</nav>
+	</footer>
+
+</div>
+	<script src="/static/index/js/rem.js"></script>
+	<script src="/static/index/js/iscroll.js"></script>
+	<script src="/static/index/js/demoUtils.js"></script>
+	<script src="/static/index/js/jquery-3.2.1.min.js"></script>
+	<script>
+		var myScroll;
+
+function loaded () {
+
+	myScroll = new IScroll('#wrapper',{ mouseWheel: true });
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+	capture: false,
+	passive: false
+} : false);
+
+		$(function(){
+			$(document).on('click', '.delete-btn', function(event) {
+				$(this).closest(".list").remove()
+				event.preventDefault();
+				/* Act on the event */
+			});
+		})
+	</script>
+</body>
+</html>

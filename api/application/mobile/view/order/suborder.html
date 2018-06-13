@@ -1,0 +1,89 @@
+<!--Created by wyg on 2018/1/23-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link rel="stylesheet" href="/static/mobile/css/confirmationOrder.css">
+    <title>提交订单</title>
+</head>
+<body>
+<div class="html">
+    <header>
+        <span class="left"><a href="javascript:history.go(-1);"><img src="/static/mobile/img/back.png"></a></span>
+        <p>提交订单</p>
+        <span class="right"></span> <!--占位误删-->
+    </header>
+    <div class="content">
+        <!--<p class="surplusTime">
+            <span>剩余支付时间</span>
+            <span>20:00</span>
+        </p>-->
+        <div class="bodyBox">
+            <div>
+                <p class="title">应付总额</p>
+                <div class="bodyContent">
+                    <p class="money">￥{$data.total}</p>
+                    <p>
+                        <span>{$data.ticket_name}</span>
+                        <span>￥{$data.price} <span class="color999">X{$data.num}</span></span>
+                    </p>
+                    <p>
+                        <span>旅游币抵扣</span>
+                        <span class="color999 sc">￥{$data.rebate_total}</span>
+                    </p>
+                </div>
+            </div>
+            <div>
+                <p class="title">出行日期</p>
+                <p>{$data.travel_date}</p>
+            </div>
+        </div>
+        <p class="payType">支付方式</p>
+        <div class="payTypeBox">
+            <img src="/static/mobile/img/wechat.png">
+            <span>微信支付</span>
+        </div>
+    </div>
+    <footer>
+        <p onclick="callpay()">立即支付</p>
+    </footer>
+</div>
+<script src="/static/mobile/js/rem.js" type="text/javascript"></script>
+<script>
+    function callpay()
+    {
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+            }
+        }else{
+            jsApiCall();
+        }
+    }
+    function jsApiCall()
+    {
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            {$res},
+            function(res){
+                WeixinJSBridge.log(res.err_msg);
+                if (res.err_msg == 'get_brand_wcpay_request:ok') {
+                    location.href='/mobile/order/index'
+                }else if(res.err_msg == 'get_brand_wcpay_request:cancel') {
+
+
+                }else if(res.err_msg == 'get_brand_wcpay_request:fail') {
+
+                }
+
+            }
+        );
+    }
+</script>
+</body>
+</html>

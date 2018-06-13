@@ -1,0 +1,84 @@
+<!--Created by wyg on 2018/1/24-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link rel="stylesheet" href="/static/mobile/wchuang/css/selectTravel.css">
+    <title>选择收货地址</title>
+    <script type="text/javascript">
+        function edit_address(id) {
+            location.href="/mobile/memberwch/edit_address/id/"+id;
+        }
+
+        function add_address(){
+            location.href="/mobile/memberwch/add_address";
+        }
+    </script>
+</head>
+<body>
+<div class="html">
+    <header>
+        <span class="left">
+            <a href="javascript:history.go(-1)"><img src="/static/mobile/wchuang/img/back.png"></a>
+        </span>
+        <span class="right" onclick="add_address()">新增地址</span>
+    </header>
+    <div class="content">
+
+        
+        <ul>
+            <!--是否选中 就是li 是否有 class selected-->
+            {foreach name="address" item="v"}
+            <li class="selected">
+                <div>
+                    <i onclick="set_address({$v.id})"></i>
+                    <p class="w80">
+                        <span class="fs">{$v.username}<span class="fr">{$v.phone}</span></span>
+                        <span>{$v.province_city}{$v.address}</span>
+                    </p>
+                </div>
+                <img onclick="edit_address({$v.id})" src="/static/mobile/wchuang/img/edit-1.png">
+            </li>
+            {/foreach}
+
+        </ul>
+    </div>
+        <!-- <footer>
+            <p>确定</p>
+        </footer> -->
+</div>
+<script src="/static/mobile/wchuang/js/rem.js" type="text/javascript"></script>
+<script src="/static/mobile/js/layer/mobile/layer.js" type="text/javascript"></script>
+<script src="/static/mobile/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function set_address(id)
+    {
+
+        var id = id;
+        $.ajax({
+             type: "POST",
+             url: "/mobile/memberwch/set_address",
+             data: {id:id},
+             dataType: "json",
+             success: function(res){
+                    if(res.status == true)
+                    {
+                        window.location.href = "/mobile/memberwch/orderdetails";
+                    }
+                    else
+                    {
+                        layer.open({
+                            content: "网络连接失败,请重试!",
+                            skin: 'msg',
+                            time: 3 //2秒后自动关闭
+                });
+                    }
+
+            }
+        });
+    }
+</script>
+</body>
+</html>

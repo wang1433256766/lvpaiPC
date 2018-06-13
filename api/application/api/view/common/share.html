@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{$news.title}</title>
+</head>
+<body>
+	{$news.content}
+	<br>
+	{if $news.img}
+		{volist name="$news.img" id="v" key="k"}
+			<img src="{$v}" alt="" width="100" height="100">&nbsp;	
+		{/volist}
+	{elseif $news.video_path}
+		<video src="{$news.video_path}" proload="auto"></video>	
+	{/if}
+
+</body>
+</html>

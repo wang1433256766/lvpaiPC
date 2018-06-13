@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+
+  <title>房型列表</title>
+
+  <link href="/static/admin/css/styles.css" rel="stylesheet">
+  <link href="/static/admin/css/style-responsive.css" rel="stylesheet">
+  <link href="/static/admin/css/iframe-main.css" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/static/admin/js/html5shiv.js"></script>
+  <script src="/static/admin/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<section>
+            <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+                房型列表
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">房型管理</a>
+                </li>
+                <li class="active">房型列表</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+            <div class="row">
+
+        <div class="col-sm-12">
+        <section class="panel">
+            <header class="panel-heading">
+                房型列表
+                        <div class="pull-right">
+                            <a class="btn btn-success btn-sm" href="/admin/hotel/room_add.html?id={:input('get.id')}"><i class="fa fa-plus"></i>&nbsp添加房型</a>
+                            <a id="show" href="#myModal" data-toggle="modal" style="display:none;"></a>
+                        </div>
+            </header>
+            <div class="panel-body">
+                <section id="unseen">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th> 房型名称</th>
+                                    <th>所属酒店</th>
+                                    <th>市场价</th>
+                                    <th>销售价</th>
+                                    <th>销售时间</th>
+                                    <th>结束时间</th>
+                                    <th>隐藏</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="data" id="data"}
+                                <tr>
+                                    <td>{$data.title}</td>
+                                    <td >{:get_hotel_name($data['hotel_id'])}</td>
+                                    <td>{$data.market_price}</td>
+                                    <td>{$data.shop_price}</td>
+                                    <td>{:date('Y-m-d',$data.sale_start)}</td>
+                                    <td>{:date('Y-m-d',$data.sale_end)}</td>
+                                    <td>
+                                        {if $data.status eq 1}
+                                        <a class="btn btn-success btn-xs" onclick="status(this,{$data.id},{$data.status},'status')">显示</a>
+                                        {else/}
+                                        <a class="btn btn-danger btn-xs" onclick="status(this,{$data.id},{$data.status},'status')">隐藏</a>
+                                        {/if}
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary btn-xs" href="/admin/hotel/room_edit/room_id/{$data.id}" >修改</a>
+                                        <a class="btn btn-danger btn-xs" onclick="del({$data.id})" >删除</a>
+                                    </td>
+                                </tr>
+                                {/volist}
+
+                                </tbody>
+                            </table>
+                        </section>    
+            </div>
+        </section>
+
+        </div>
+        
+                
+
+            </div>
+        </div>
+        <!--body wrapper end-->
+</section>
+
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/static/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/modernizr.min.js"></script>
+<script src="/static/admin/js/jquery.nicescroll.js"></script>
+
+
+<!--common scripts for all pages-->
+<script src="/static/admin/js/scripts.js"></script>
+
+<script type="text/javascript">
+        function del(id)
+        { 
+            if (id > 0) {
+                $.post('/base/ajax.html',{id:id,act:'del',tab:'shop_hotel_room'},function(res){
+                        if (res.status == false) {
+                            error_msg($(".page-heading"),' ');
+
+                        }else{
+                            success_msg($(".page-heading"),' ');
+                            window.location.reload();
+                        }
+                },'json')
+            };
+        }
+
+        function status(obj,id,value,act){
+            $.post('/base/ajax.html',{id:id,tab:'shop_hotel_room',act:act,value:value},function(ret){
+                    if (ret.status == false) {
+                           error_msg($(".page-heading"),' ');
+                        }else{
+                           success_msg($(".page-heading"),' ');
+                            window.location.reload();
+                        }
+            },'json');
+        }
+</script>
+
+</body>
+</html>

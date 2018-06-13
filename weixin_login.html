@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="./assert/jquery.min.js"></script>
+	<script>
+		//获取url参数
+		/*
+		encodeURI()是Javascript中真正用来对URL编码的函数
+		eg:
+		    编码： Javascript:encodeURI("春节");
+		    解码: Javascript:decodeURI("%E6%98%A5%E8%8A%82");
+		*/
+		(function ($) {
+		    $.getUrlParam = function (name) {
+		        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		        var r = window.location.search.substr(1).match(reg);
+		        if (r != null) return decodeURI(r[2]); return null;
+		    }
+		})(jQuery);
+
+		$(function(){
+			var code = $.getUrlParam('code');
+			$.ajax({
+				type: 'POST',
+				url: 'http://lvpai.zhonghuilv.net/pc/login/qrCodeCallback',
+				xhrFields: {
+	                withCredentials: true
+	            },
+	            data: {code:code},
+	            success: function(res){
+	            	if(res.status == 0){
+	            		window.location.href = './index.html';
+	            	}else if(res.status == 2){
+	            		window.location.href = './bind_phone.html';
+	            	}else{
+	            		window.location.href = './login.html';
+	            	}
+	            }
+			})
+		})
+	</script>
+</body>
+</html>

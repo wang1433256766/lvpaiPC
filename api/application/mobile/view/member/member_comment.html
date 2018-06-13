@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>我的点评</title>
+	<link rel="stylesheet" href="/static/mobile/css/info.css">
+</head>
+<body onload="loaded()">
+	<div class="box" >
+		<header style="margin-bottom: 0"><a href="javascript:history.go(-1)" class="back"></a>我的点评</header>
+		<div id="wrapper">
+			<div id="scroller">
+				{volist name='info' id='v'}
+				<div class="comments">
+					<div class="icon-info">
+						<div>
+							<img src="{$member.headimg}" alt="">
+						</div>
+						<div>
+							<p class="comm-name">{$member.nickname}</p>
+							<p class="comm-time">{:date('Y-m-d H:i:s',$v['add_time'])}</p>
+						</div>
+					</div>
+					<div class="describe">{$v.content}</div>
+					<div class="comm-info">
+						<p>{$v.title}</p>
+						<p>￥{$v.price}</p>
+					</div>
+				</div>
+				{/volist}
+				
+
+				<!-- 此DIV不删除 -->
+				<div style="height: 0.6rem"></div>
+		</div>
+		
+		</div>
+		
+	</div>
+	<script src="/static/mobile/js/rem.js"></script>
+	<script src="/static/mobile/js/iscroll.js"></script>
+	<script src="/static/mobile/js/demoUtils.js"></script>
+	<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+	<script>
+		var myScroll;
+
+function loaded () {
+
+	myScroll = new IScroll('#wrapper',{ mouseWheel: true });
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+	capture: false,
+	passive: false
+} : false);
+
+		$(function(){
+			$(document).on('click', '.delete-btn', function(event) {
+				$(this).closest(".list").remove()
+				event.preventDefault();
+				/* Act on the event */
+			});
+		})
+	</script>
+</body>
+</html>

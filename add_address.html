@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>添加收货地址</title>
+	<link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/add_address.css">
+</head>
+<body>
+	<div class="main-container">
+		<div class="form-control">
+			<div class="label">收货人：</div>
+			<div class="form-input">
+				<input id="userName" type="text" placeholder="请填写收货人" class="css-control">
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label">省市区：</div>
+			<div class="form-input" id="provinceCityArea" data-autoselect="0">
+				<select id="provinceAddr" class="css-control select-control"></select>
+				<select id="cityAddr" class="css-control select-control"></select>
+				<select id="areaAddr" class="css-control select-control"></select>
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label">详细地址：</div>
+			<div class="form-input">
+				<input id="detailAddr" type="text" placeholder="请填写详细地址" class="css-control">
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label">邮编：</div>
+			<div class="form-input">
+				<input id="postCode" type="text" placeholder="请填写邮编" class="css-control">
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label">联系方式：</div>
+			<div class="form-input">
+				<input id="userMobile" type="text" placeholder="请填写联系方式" class="css-control">
+			</div>
+		</div>
+		<div class="form-control">
+			<button type="button" id="submitBtn">确&nbsp;认</button>
+		</div>
+	</div>
+	<script src="./assert/jquery.min.js"></script>
+	<script src="./assert/distpicker.min.js"></script>
+	<script src="./assert/layer/layer.js"></script>
+    <script src="./js/add_address.js"></script>
+</body>
+</html>

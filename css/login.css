@@ -40,6 +40,8 @@ input:-ms-input-placeholder {
     height: 560px;
     min-width: 1200px;
     background: url('../images/login-background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
     background-position: center center;
     margin-bottom: 40px;
 }
@@ -142,16 +144,17 @@ input:-ms-input-placeholder {
     color: #444;
     font-size: 16px;
     opacity: 0.8;
+    border: 1px solid #999999;
 }
 
 .container .container-child .content .tab_content .tab_content_item .remember {
     width: 347px;
-    margin: 12px auto;
+    margin: 16px auto;
     color: #cccccc;
     vertical-align: middle;
 }
 
-.container .container-child .content .tab_content .tab_content_item button {
+.container .container-child .content .tab_content .tab_content_item .loginBtn {
     display: block;
     width: 347px;
     height: 40px;
@@ -166,7 +169,7 @@ input:-ms-input-placeholder {
 
 .container .container-child .content .tab_content .tab_content_item .forget_register {
     width: 347px;
-    margin: 12px auto;
+    margin: 16px auto;
 }
 
 .container .container-child .content .tab_content .tab_content_item .forget_register a {
@@ -195,4 +198,36 @@ input:-ms-input-placeholder {
     text-align: center;
     font-size: 14px;
     color: #999999;
+}
+
+.validate-code{
+    margin: 0 auto;
+    width: 347px;
+    margin-top: 16px;
+}
+
+.validate-code input {
+    display: inline-block;
+    width: 167px;
+    height: 42px;
+    padding-left: 14px;
+    color: #444;
+    font-size: 16px;
+    opacity: 0.8;
+    border: 1px solid #999999;
+    vertical-align: top;
+}
+.validate-code .getValidateBtn{
+    display: inline-block;
+    width: 174px;
+    height: 42px;
+    text-align: center;
+    color: #fff;
+    background: #ee8823;
+    border: 0;
+    cursor: pointer;
+}
+
+.check-phone, .check-code{
+    color: red;
 }

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+
+  <title>添加景区</title>
+  <!--file upload-->
+  <link rel="stylesheet" type="text/css" href="/static/admin/css/bootstrap-fileupload.min.css" />
+  <!--icheck -->
+  <link href="/static/admin/js/iCheck/skins/flat/green.css" rel="stylesheet">
+  <link href="/static/admin/js/iCheck/skins/minimal/blue.css" rel="stylesheet">
+  <!--dropzone css-->
+  <link href="/static/admin/js/dropzone/css/dropzone.css" rel="stylesheet"/>
+  <!--tags input-->
+  <link rel="stylesheet" type="text/css" href="/static/admin/js/jquery-tags-input/jquery.tagsinput.css" />
+  <!--common css-->
+  <link href="/static/admin/css/style1.css" rel="stylesheet">
+  <link href="/static/admin/css/style-responsive.css" rel="stylesheet">
+  <link href="/static/admin/css/iframe-main.css" rel="stylesheet">
+  <style>
+  	.col-sm-10 div{
+  		margin-right: 25px;
+  		padding:0;
+  	}
+
+  </style>
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/static/admin/js/html5shiv.js"></script>
+  <script src="/static/admin/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<section>
+
+        <div class="page-heading">
+            <h3>添加景区</h3>
+            <ul class="breadcrumb">
+                <li><a href="#">景区管理</a></li>
+                <li class="active">添加景区</li>
+            </ul>
+        </div>
+        <div class="wrapper">
+            <div class="row">
+              <div class="col-md-12">
+                    <section class="panel">
+                        <header class="panel-heading custom-tab dark-tab">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#indexs" data-toggle="tab">基本设置</a>
+                                </li>
+                                <li>
+                                    <a href="#imgs" data-toggle="tab">图片设置</a>
+                                </li>
+                                <li>
+                                    <a href="#contents" data-toggle="tab">景区介绍</a>
+                                </li>
+                                <li>
+                                    <a href="#about" data-toggle="tab">预定须知</a>
+                                </li>
+                                <li>
+                                    <a href="#seos" data-toggle="tab">优化设置</a>
+                                </li>
+                                <li>
+                                    <a href="#attrs" data-toggle="tab">属性设置</a>
+                                </li>
+                            </ul>
+                        </header>
+
+                        <form class="cmxform form-horizontal adminex-form" id="commentForm"  method="post" action="/admin/spot/add.html" enctype="multipart/form-data" >
+
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="indexs">
+                                    
+                                    <section class="panel">
+                                        <div class="panel-body">
+                                            
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">标题</label>
+                                                    <div class="col-sm-10">
+
+                                                        <input type="text" id="title" name="title" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="" placeholder="标题" data-original-title="请填写景区的名称" required>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">景区类型</label>
+                                                    <div class="col-sm-10">
+
+                                                        <input type="text" id="type" name="type" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="景区类型" placeholder="景区类型" value="ZHL" required>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">简介</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea class="form-control " id="desc" name="desc" required></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">地址</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text"  id="address" name="address" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="" placeholder="地址" data-original-title="请填写景区的地址" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">区域</label>
+                                                    <div class="col-sm-10">
+                                                          <label class="col-sm-2 control-label">省份</label>
+                                                          <div class="col-sm-4">
+                                                              <select name="province_id" id="province_id" class="form-control m-bot15"  onchange="getCity(this)">
+                                                                <option value="0">无</option>
+                                                                {volist name="region" id="v"}
+                                                                <option value="{$v.id}">{$v.name}</option>
+                                                                {/volist}
+                                                              </select>
+                                                          </div>
+                                                          <label class="col-sm-2 control-label">城市</label>
+                                                          <div class="col-sm-4">
+                                                              <select name="city_id" id="city_id" class="form-control m-bot15" >
+                                                                <option value="0">无</option>
+                                                              </select>
+                                                          </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">销售数量</label>
+                                                    <div class="col-sm-10">
+                                                                 
+                                                        <div class="col-md-2 ">
+                                                            <input type="text" id="show_num"  name="show_num" class="form-control" placeholder="销售数量">
+                                                        </div>
+
+                                                        <label class="col-sm-2 control-label">阅读数量</label>                                                                 
+                                                         <div class="col-md-2 ">
+                                                            <input type="text" id="clicks_num"  name="clicks_num" class="form-control" placeholder="阅读数量">
+                                                        </div>
+
+                                                        <label class="col-sm-2 control-label">分享数量</label>
+                                                        <div class="col-md-2 ">
+                                                            <input type="text" id="share_num"  name="share_num" class="form-control" placeholder="分享数量">
+                                                        </div>
+    
+                                                         
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group last">
+                                                    <label class="col-sm-2 col-sm-2 control-label">景区封面</label>
+                                                    <div class="col-sm-10">
+                                                        <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                            <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+                                                                <img src="/static/admin/images/no-img.png" alt="景区封面" />
+                                                            </div>
+                                                            <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
+                                                            <div>
+                                                                   <span class="btn btn-default btn-file">
+                                                                   <span class="fileupload-new"><i class="fa fa-paper-clip"></i> 浏览图片</span>
+                                                                   <span class="fileupload-exists"><i class="fa fa-undo"></i> 更换图片</span>
+                                                                   <input type="file" name="thumb" class="default" />
+                                                                   </span>
+                                                                <a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash"></i> 删除</a>
+                                                            </div>
+                                                        </div>
+                                                        <br/>
+                                                        <span class="label label-danger ">提示!</span>
+                                                        <span>图片尺寸为：</span>
+                                                    </div>
+                                                </div>
+
+
+
+                                            
+                                        </div>
+                                    </section>
+
+
+
+
+
+                                </div>
+
+
+                                <div class="tab-pane" id="seos">
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 col-sm-2 control-label">优化标题</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" id="seo_title"  name="seo_title" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="" placeholder="标题" data-original-title="请填写景区的名称">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 col-sm-2 control-label">优化介绍</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" id="seo_desc"  name="seo_desc" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="" placeholder="标题" data-original-title="请填写景区的名称">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 col-sm-2 control-label">关键词</label>
+                                            <div class="col-sm-10">
+                                                <input id="seo_key" name="seo_key" type="text" class="tags" value="" />
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="tab-pane" id="attrs">
+                                        
+                                            <div class="form-group theme">
+                                                <label class="col-sm-2 col-sm-2 control-label">景区主题</label>
+                                                    
+                                                
+                                                    
+
+
+                                            </div>
+
+										 <div class="col-sm-10 icheck">
+                                                            
+
+                                                                {volist name="theme" id="v"}
+                                                                <div class="radio" id="theme_{$v.id}">
+                                                                    <input tabindex="3" type="radio" value="{$v.id}" checked="{if $i == 8}checked{/if}" name="theme_id" >
+                                                                    <label>{$v.name}</label>
+                                                                </div>
+                                                                {/volist}
+
+                                                            
+                                                                                                 
+                                                      </div>
+                                </div>
+                                <div class="tab-pane" id="contents">
+                                    <script id="content" name="content" type="text/plain" style="height:350px;"></script>
+                                </div>
+                                <div class="tab-pane" id="about">
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 col-sm-2 control-label">开放时间</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" id="opening"  name="opening" value="" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="" placeholder="开放时间" data-original-title="请填写景区的开放时间">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 col-sm-2 control-label">取票地点</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" id="take"  name="take" value="" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="" placeholder="取票地点" data-original-title="请填写景区的取票地点">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 col-sm-2 control-label">入园凭证</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" id="certificate"  name="certificate" value="" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="" placeholder="入园凭证" data-original-title="请填写景区的入园凭证">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 col-sm-2 control-label">适合人群</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" id="crowd"  name="crowd" value="" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="" placeholder="适合人群" data-original-title="请填写景区的适合人群">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 col-sm-2 control-label">提示信息</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" id="reminder"  name="reminder" value="" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="" placeholder="提示信息" data-original-title="请填写景区的提示信息">
+                                            </div>
+                                        </div>
+
+                                </div>
+
+                                </form>
+  
+                                <div class="tab-pane" id="imgs">
+
+                                    <section class="panel">
+
+                                        <div class="panel-body">
+
+                                            <form action="/admin/spot/ajax.html" class="dropzone" id="my-awesome-dropzone" method="post" enctype="multipart/form-data">
+                                            </form>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title">修改图片</h4>
+                                                        </div>
+
+                                                        <div class="modal-body row">
+                                                        <form aciton="" id="img" mothod='post'>
+                                                            <div class="col-md-5 img-modal">
+                                                                <img id="modal_img" id="modal_img" src="#" alt="">
+                                                            </div>
+                                                            <div class="col-md-7">
+                                                                <div class="form-group">
+                                                                    <label> 名称</label>
+                                                                    <input name="modal_name" id="modal_name" value="" class="form-control">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label> 地址</label>
+                                                                    <input name="modal_link"  id="modal_link" value="" class="form-control">
+                                                                </div>
+                                                                <div class="pull-right">
+                                                                    <button id="delete" onclick="delete()" class="btn btn-danger btn-sm" type="button">删除</button>
+                                                                    <button id="update" onclick="updateImg('')" class="btn btn-success btn-sm" type="button">保存</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- modal -->  
+
+                                        </div>
+                                    </section>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+              </div>
+
+
+            </div>
+
+
+                    <section class="panel">
+                      <div class="panel-body">
+                          
+                          <button class="btn btn-info" type="button" onclick="save()">保存</button>
+                          <button class="btn btn-default" type="button">关闭</button>
+
+                      </div>
+                    </section>
+
+
+
+        </div>
+
+
+
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/static/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/modernizr.min.js"></script>
+<script src="/static/admin/js/jquery.nicescroll.js"></script>
+
+<!--file upload-->
+<script src="/static/admin/js/bootstrap-fileupload.min.js"></script>
+
+<!--icheck -->
+<script src="/static/admin/js/iCheck/jquery.icheck.js"></script>
+
+<!--dropzone-->
+<script src="/static/admin/js/dropzone/dropzone.js"></script>
+
+<!--tags input-->
+<script src="/static/admin/js/jquery-tags-input/jquery.tagsinput.js"></script>
+
+<script type="text/javascript" src="/static/admin/js/jquery.validate.min.js"></script>
+
+
+<!--common scripts for all pages-->
+<script src="/static/admin/js/scripts.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/admin/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/admin/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/admin/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+
+<script type="text/javascript">
+
+// $.extend($.validator.messages, {
+//     required: "必选字段",
+//     remote: "请修正该字段",
+//     email: "请输入正确格式的电子邮件",
+//     url: "请输入合法的网址",
+//     date: "请输入合法的日期",
+//     dateISO: "请输入合法的日期 (ISO).",
+//     number: "请输入合法的数字",
+//     digits: "只能输入整数",
+//     creditcard: "请输入合法的信用卡号",
+//     equalTo: "请再次输入相同的值",
+//     accept: "请输入拥有合法后缀名的字符串",
+//     maxlength: $.validator.format("请输入一个长度最多是 {0} 的字符串"),
+//     minlength: $.validator.format("请输入一个长度最少是 {0} 的字符串"),
+//     rangelength: $.validator.format("请输入一个长度介于 {0} 和 {1} 之间的字符串"),
+//     range: $.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+//     max: $.validator.format("请输入一个最大为 {0} 的值"),
+//     min: $.validator.format("请输入一个最小为 {0} 的值")
+// });
+
+$.extend($.validator.messages, {
+    required: "必选填写该信息"
+});
+
+var Script = function () {
+    $().ready(function() {
+        $("#commentForm").validate();
+    });
+}();
+
+$(function(){
+    $('.flat-green input').iCheck({
+        checkboxClass: 'icheckbox_flat-green',
+        radioClass: 'iradio_flat-green'
+    });
+
+    $('.minimal-blue input').iCheck({
+        checkboxClass: 'icheckbox_minimal-blue',
+        radioClass: 'iradio_minimal-blue',
+        increaseArea: '20%' // optional
+    });
+
+    $("#status_1").iCheck('check');
+    $('#seo_key').tagsInput({width:'auto'});
+});
+
+  var ue = UE.getEditor('content');
+
+function save(){
+  $("#commentForm").submit();
+}
+
+function getImg(obj){
+  var id = $(obj).children().attr('alt');
+  $.post("/admin/spot/getimg.html",{id:id,act:'name'},function(res){
+      $(obj).parent().parent().attr('id',res.info.name);
+      $("#modal_img").attr('src',res.info.img);
+      $("#modal_name").val(res.info.name);
+      $("#modal_link").val(res.info.img);
+      $("#update").attr('onclick','updateImg("'+res.info.name+'")');
+
+  },'json')
+}
+
+function updateImg(name)
+{
+    var modal_name = $('#modal_name').val();
+  $.post("/admin/spot/update.html",{name:name,value:modal_name},function(res){
+        $("#close").click();
+        if (res.status == false) {
+           error_msg($(".page-heading"),' ');
+        }else{
+           success_msg($(".page-heading"),' ');
+        }
+  },'json')
+
+}
+
+$("#delete").click(function(){
+    var id = $(this).val();
+    $.post("/admin/spot/deleteimg",{id:id,act:'one'},function(res){
+      if (res) {
+          $("#myModal .close").click();
+          $("#img_"+id).css('display','none');
+      }
+  })  
+})
+
+
+function getCity(obj)
+{
+    var id = $(obj).val();
+    $.post("/admin/spot/getcity",{id:id},function(res){
+      // console.log(res.status);
+        if (res.status == true) {
+            var str = '<option value="0">无</option>';
+            for (var i = 0; i < res.info.length; i++) {
+              str += '<option value="'+res.info[i].id+'">'+res.info[i].name+'</option>';
+            };
+
+            $("#city_id").html(str);
+        }
+    },'json')   
+}
+</script>
+
+
+</body>
+</html>

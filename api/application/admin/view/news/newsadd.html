@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>添加轮播</title>
+
+     <link rel="shortcut icon" href="/static/admin/images/zhlfavicon.ico">
+
+    <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+
+    <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <link href="__CSS__/animate.min.css" rel="stylesheet">
+
+    <link href="__CSS__/plugins/iCheck/custom.css" rel="stylesheet">
+
+    <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+
+    <link href="__CSS__/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <link href="__CSS__/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+
+    <link href="__CSS__/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+
+
+
+    <link href="__CSS__/style.min862f.css?v=4.1.0" rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/Kindeditor/themes/default/default.css" />
+
+    <link rel="stylesheet" href="/static/Kindeditor/plugins/code/prettify.css" />
+
+     <script charset="utf-8" src="/static/Kindeditor/kindeditor.js"></script>
+
+    <script charset="utf-8" src="/static/Kindeditor/lang/zh-CN.js"></script>
+
+     <script charset="utf-8" src="/static/Kindeditor/plugins/code/prettify.js"></script>
+
+    <script>
+
+        KindEditor.ready(function(K) {
+
+            var editor1 = K.create('textarea[name="content"]', {
+
+                cssPath : '/static/Kindeditor/plugins/code/prettify.css',
+
+                // uploadJson : '/admin/Uploadjson/index',
+
+                // 不需要这个控制器，直接使用kindeditor自带的文件解决，更改该文件上传目录
+
+                fileManagerJson : '/admin/Filemanagerjson/index',
+
+                allowFileManager : true,
+
+                afterCreate : function() {
+
+                    var self = this;
+
+                    K.ctrl(document, 13, function() {
+
+                        self.sync();
+
+                        K('form[name=example]')[0].submit();
+
+                    });
+
+                    K.ctrl(self.edit.doc, 13, function() {
+
+                        self.sync();
+
+                        K('form[name=example]')[0].submit();
+
+                    });
+
+                }
+
+            });
+
+            prettyPrint();
+
+        });
+
+    </script>
+
+</head>
+
+
+
+<body>
+
+
+
+<div class="wrapper wrapper-content">
+
+    <div class="row">
+
+        <div class="col-sm-8">
+
+            <div class="ibox float-e-margins">
+
+                <div class="ibox-title">
+
+                    <h5>添加轮播新闻</h5>
+
+                    <div class="ibox-tools">
+
+                        <a class="collapse-link">
+
+                            <i class="fa fa-chevron-up"></i>
+
+                        </a>
+
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">
+
+                            <i class="fa fa-wrench"></i>
+
+                        </a>
+
+                        <a class="close-link">
+
+                            <i class="fa fa-times"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                    <form action="/admin/news/newsAdd" name="example" id="formnewsadd" class="form-horizontal m-t" method="post" enctype="multipart/form-data">
+
+                        <div class="ibox-content">
+
+                       <div class="form-group">
+
+                            <label class="col-sm-3 control-label">新闻标题：</label>
+
+                            <div class="input-group col-sm-4">
+
+                                <input id="title" type="text" class="form-control" name="title" required="" aria-required="true" value="">
+
+                        	</div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-3 control-label">来源：</label>
+
+                            <div class="input-group col-sm-4">
+
+                                <input id="username" type="text" class="form-control" name="username" required="" aria-required="true" value="">
+
+                        	</div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-3 control-label">简介：</label>
+
+                            <div class="input-group col-sm-4">
+
+                                <textarea id="desc" type="text" class="form-control" name="desc" required="" aria-required="true" value=""></textarea>
+
+                        	</div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-3 control-label">所属菜单：</label>
+
+                            <div class="input-group col-sm-4">
+
+                                <select id="cate_id" class="form-control" name="cate_id" required="" aria-required="true">
+
+                                    {if !empty($menu)}
+
+                                    {foreach name="menu" item="vo"}
+
+                                    <option value="{$vo.id}">{$vo.name}</option>
+
+                                    {/foreach}
+
+                                    {/if} 
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-3 control-label">封面1:</label>
+
+                            <div class="input-group col-sm-4">
+    
+                                <input style="height:30px;margin-top:10px;border-radius:5px;" type="file" id="pic1" name="img[]"><br/>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-3 control-label">封面2:</label>
+
+                            <div class="input-group col-sm-4">
+
+                             
+
+                                <input style="height:30px;margin-top:10px;border-radius:5px;" type="file" id="pic2" name="img[]"><br/>
+
+                      
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-sm-3 control-label">封面3:</label>
+
+                            <div class="input-group col-sm-4">
+
+                            
+
+                                <input style="height:30px;margin-top:10px;border-radius:5px;" type="file" id="pic3" name="img[]"><br/>
+
+                           
+
+                            </div>
+
+                        </div>
+
+                      
+
+                        
+
+                        
+
+                        <div class="form-group">
+
+                            <label class="col-sm-3 control-label">是否推荐：</label>
+
+                            <div class="input-group col-sm-4" id="base">
+
+                                <div class="radio i-checks col-sm-4">                                    
+
+                                      <label><input type="radio" value="1" name="base" checked> <i></i>是</label>                                        
+
+                                </div>
+
+                                <div class="radio i-checks col-sm-4">                                    
+
+                                      <label>  <input type="radio" value="0" name="base"> <i></i>否</label>                                        
+
+                                </div>                               
+
+                            </div>
+
+                        </div>
+
+                          <div class="wrapper wrapper-content">
+
+					        <div class="row">
+
+					            <div class="col-sm-12">
+
+					                <div class="ibox float-e-margins">
+
+					                    <div class="ibox-content no-padding">
+
+                                            <textarea name="content" style="width:980px;height:400px;visibility:hidden;"></textarea>
+
+					                    </div>
+
+					                </div>
+
+					            </div>
+
+					        </div>
+
+                          </div>
+
+                            </div>
+
+
+
+                        <div class="form-group" style="align:center;">
+
+                            <span class="col-sm-4 col-sm-offset-3" >
+
+                                <!--<input type="button" value="提交" class="btn btn-primary" id="postform"/>-->
+
+                                <button class="btn btn-primary" style="margin-right:100px;" id="btn_submit" type="submit">提交</button>
+
+                            <!--</span>
+
+
+
+                            <span class="col-sm-4 col-sm-offset-3">-->
+
+                                <!--<input type="button" value="提交" class="btn btn-primary" id="postform"/>-->
+
+                                <button class="btn btn-primary" type="reset" >取消</button>
+
+                            </span>
+
+                        </div>
+
+
+
+
+
+                </form>
+
+            </div>
+
+
+
+      </div></div>
+
+       
+
+    </div>
+
+
+
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+
+<script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
+
+<script src="__JS__/plugins/validate/messages_zh.min.js"></script>
+
+<script src="__JS__/plugins/iCheck/icheck.min.js"></script>
+
+<script src="__JS__/plugins/sweetalert/sweetalert.min.js"></script>
+
+<script src="__JS__/plugins/layer/laydate/laydate.js"></script>
+
+<script src="__JS__/plugins/suggest/bootstrap-suggest.min.js"></script>
+
+<script src="__JS__/plugins/layer/layer.min.js"></script>
+
+<script src="__JS__/plugins/summernote/summernote.min.js"></script>
+
+<script src="__JS__/plugins/summernote/summernote-zh-CN.js"></script>
+
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+
+
+
+<script type="text/javascript">
+
+/*    //表单验证
+
+    $(document).ready(function(){
+
+        $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})
+
+    });
+
+    $.validator.setDefaults({
+
+        highlight: function(e) {
+
+            $(e).closest(".form-group").removeClass("has-success").addClass("has-error")
+
+        },
+
+        success: function(e) {
+
+            e.closest(".form-group").removeClass("has-error").addClass("has-success")
+
+        },
+
+        errorElement: "span",
+
+        errorPlacement: function(e, r) {
+
+            e.appendTo(r.is(":radio") || r.is(":checkbox") ? r.parent().parent().parent() : r.parent())
+
+        },
+
+        errorClass: "help-block m-b-none",
+
+        validClass: "help-block m-b-none"
+
+    });*/
+
+
+
+
+
+    //图片预览
+
+    function previewFile() {
+
+     var preview = document.querySelector('img');
+
+     var file  = document.querySelector('input[type=file]').files[0];
+
+     var reader = new FileReader();
+
+     reader.onloadend = function () {
+
+      preview.src = reader.result;
+
+     }
+
+     if (file) {
+
+      reader.readAsDataURL(file);
+
+     } else {
+
+      preview.src = "";
+
+     }
+
+    }
+
+
+
+    function previewFile1() {
+
+        var preview = document.querySelector('img');
+
+        var file  = document.querySelector('input[type=file]').files[0];
+
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+
+         preview.src = reader.result;
+
+        }
+
+        if (file) {
+
+         reader.readAsDataURL(file);
+
+        } else {
+
+         preview.src = "";
+
+        }
+
+       }
+
+
+
+    function previewFile2() {
+
+        var preview = document.querySelector('img');
+
+        var file  = document.querySelector('input[type=file]').files[0];
+
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+
+         preview.src = reader.result;
+
+        }
+
+        if (file) {
+
+         reader.readAsDataURL(file);
+
+        } else {
+
+         preview.src = "";
+
+        }
+
+       }
+
+</script>
+
+
+
+
+
+
+
+</body>
+
+</html>

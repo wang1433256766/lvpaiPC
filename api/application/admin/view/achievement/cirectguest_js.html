@@ -1,0 +1,294 @@
+<script type="text/javascript">
+
+
+    var $faciListTable = $('#faciListTable');
+
+    function initTable() {
+        $faciListTable.bootstrapTable('destroy');
+        $faciListTable.bootstrapTable({
+            url: '/admin/Achievement/cirectGuest.html', //获取数据的Servlet地址
+            striped: true,  //表格显示条纹
+            pagination: true, //启动分页
+            sortName: 'id',
+            sortOrder: 'desc',
+            pageSize: 15,  //每页显示的记录数
+            pageNumber:1, //当前第几页
+            pageList: [10, 15, 20, 25],  //记录数可选列表
+            search: false,
+            striped: true, //隔行变色
+            toolbar: '#list_search_faci',
+            showColumns: false,  //显示下拉框勾选要显示的列
+            showRefresh: true,  //显示刷新按钮
+            sidePagination: "server", //表示服务端请求
+            responseHandler:function(res){
+                return res.data;
+            },
+            queryParamsType : "undefined",
+            queryParams: function queryParams(params) {   //设置查询参数
+                var param = {
+                    //这里是在ajax发送请求的时候设置一些参数 params有什么东西，自己看看源码就知道了
+                    pageNumber: params.pageNumber,
+                    pageSize: params.pageSize,
+                    sortName: params.sortName,
+                    sortOrder: params.sortOrder,
+                    str_time : $('#history_s').val(),
+                    xs_id : $('#slpk').val(),
+                    one_id : $('#one_id').val(),
+//                    two_id : $('#two_id').val(),
+                    action : 'ajaxList'
+                };
+                return param;
+            },
+            onLoadSuccess:function (e) {
+                if(e.tj!=1){
+                    $('#total_all').val(e.tj.total_all);
+                    $('#payment').val(e.tj.payment);
+                    $('#promote_fee').val(e.tj.promote_fee);
+                    $('#refund_price').val(e.tj.refund_price);
+                    $('#num').val(e.tj.num);
+                    $('#ok').val(e.tj.ok);
+                }else {
+                    $('#total_all').val(0);
+                    $('#payment').val(0);
+                    $('#promote_fee').val(0);
+                    $('#refund_price').val(0);
+                    $('#num').val(0);
+                    $('#ok').val(0);
+                }
+
+            },
+            onLoadError: function(){  //加载失败时执行
+                layer.msg("加载数据失败", {time : 1500, icon : 2});
+            },
+            columns:[
+                {
+                    title: '订购日期',
+                    field: 'add_time',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return timeGo(value);
+                    }
+                },
+                {
+                    title: '订单编号',
+                    field: 'order_sn',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    title: '商品名称',
+                    field: 'ticket_name',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    title: '用户电话',
+                    field: 'mobile',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    title: '订购数量',
+                    field: 'num',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    title: '支付金额',
+                    field: 'order_total',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    title: '退款金额',
+                    field: 'refund_price',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+
+                {
+                    field: 'status',
+                    title: '订单状态',
+                    sortable: true,
+                    align: 'center',
+                    formatter: function(value,row,index){
+                        if(value==0){
+                            return '<a class="btn btn-warning btn-xs" >未支付</a>';
+                        }
+                        else if(value==1){
+                            return '<a class="btn btn-info btn-xs" >已支付</a>';
+                        }
+                        else if(value==2){
+                            return '<a class="btn btn-primary btn-xs" >处理中</a>';
+                        } else if(value==3){
+                            return '<a class="btn btn-danger btn-xs" >已取消</a>';
+                        } else if(value==4){
+                            return '<a class="btn btn-default btn-xs" >已退款</a>';
+                        } else if(value==5){
+                            return '<a class="btn btn-success btn-xs" >已核销</a>';
+                        }else if(value==5){
+                            return '<a class="btn btn-success btn-xs" >部分退款</a>';
+                        }else {
+                            return "未知";
+                        }
+                    }
+                }
+//                ,
+//                {
+//                    field: 'operate',
+//                    title: '操作',
+//                    align: 'center',
+//                    formatter: function(value,row,index){
+//                        var e='';
+//                        var d='';
+//                        d = '<a href="#" mce_href="#" data_from="lookImgdiv" data_id="'+row.id+'"  onclick="lookImg(this)" >查看详情</a> ';
+//                        return e+d;
+//                    }
+//                }
+            ]
+
+        });
+    }
+
+    /**
+     * 将时间转换为时间戳
+     * */
+    function gettimes(time) {
+        var times = new Date(time.replace(/-/g,'/'));
+        return times;
+    }
+
+    $(document).ready(function () {
+        //调用函数，初始化表格
+        initTable();
+        $("#edit_area").keydown(function(e) {
+            digitInput($(this), e);
+        });
+    });
+    //搜索
+    function p_search() {
+        $faciListTable.bootstrapTable('refresh');
+    }
+    var $boundUser = $('#addFaciTable');
+    function addBound_search(){
+        $boundUser.bootstrapTable('refresh');
+    }
+
+
+    /**
+     * 加载一级经销商列表
+     * */
+    function setOne(obj) {
+        $.ajax({
+            type: "post",
+            url: '/admin/Achievement/channelList.html',
+            data:{
+                'id':$(obj).val(),
+                'action' : 'getOne'
+            },
+            dataType: 'JSON',
+            success: function(data){
+                if (data.code == 200) {
+                    $('#one_id').empty();
+                    $('#two_id').empty();
+                    $('#one_id').append("<option value='-1'>全部</option>");
+                    $('#two_id').append("<option value='-1'>全部</option>");
+                    var arr = data.rows;
+                    for (var i = 0;i<arr.length;i++){
+                        $('#one_id').append("<option value='"+arr[i]['id']+"'>"+arr[i]['name']+"</option>");
+                    }
+                } else {
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(){
+                layer.msg('数据错误！');
+            }
+        });
+    }
+    /**
+     * 加载二级经销商列表
+     * */
+    function setTwo(obj) {
+        $.ajax({
+            type: "post",
+            url: '/admin/Achievement/channelList.html',
+            data:{
+                'id':$(obj).val(),
+                'action' : 'getTwo'
+            },
+            dataType: 'JSON',
+            success: function(data){
+                if (data.code == 200) {
+                    $('#two_id').empty();
+                    $('#two_id').append("<option value='-1'>全部</option>");
+                    var arr = data.rows;
+                    for (var i = 0;i<arr.length;i++){
+                        $('#two_id').append("<option value='"+arr[i]['id']+"'>"+arr[i]['name']+"</option>");
+                    }
+                } else {
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(){
+                layer.msg('数据错误！');
+            }
+        });
+    }
+
+    /**
+     * 将时间戳转换为日期
+     * */
+    function timeGo(value){
+        var value_time = parseInt(value);
+        var time = new Date(value_time * 1000);
+        var ymdhis = "";
+        ymdhis += time.getFullYear() + "-";
+        ymdhis += (time.getMonth() + 1) + "-";
+        ymdhis += time.getDate();
+        ymdhis += " " + time.getHours() + ":";
+        ymdhis += time.getMinutes() + ":";
+        ymdhis += time.getSeconds();
+        return ymdhis;
+    }
+
+    //导出
+    function getForm(form) {
+        var o = {};
+        $.each(form.serializeArray(), function(index) {
+            if (o[this['name']]) {
+                o[this['name']] = o[this['name']] + "," + this['value'];
+            } else {
+                o[this['name']] = this['value'];
+            }
+        });
+        return o;
+    }
+    function exportOut() {
+//        window.location.href="http://www.jb51.net";
+        var param = getForm($('#list_search_faci'));
+        param = $.param(param);
+//        window.open(_ROOT_+'CheckList/exportCom?'+param+'&is_end=1');
+        window.location.href = '/admin/Achievement/cirectGuest.html?action=export&'+param+'&is_end=1';
+    }
+
+</script>

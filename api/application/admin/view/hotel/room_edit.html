@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+
+  <title>修改房型</title>
+  <!--icheck -->
+  <link href="/static/admin/js/iCheck/skins/flat/green.css" rel="stylesheet">
+  <link href="/static/admin/js/iCheck/skins/minimal/blue.css" rel="stylesheet">
+  <!--pickers css-->
+  <link rel="stylesheet" type="text/css" href="/static/admin/js/bootstrap-datepicker/css/datepicker-custom.css" />
+  <!--common css-->
+  <link href="/static/admin/css/style.css" rel="stylesheet">
+  <link href="/static/admin/css/style-responsive.css" rel="stylesheet">
+  <link href="/static/admin/css/iframe-main.css" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/static/admin/js/html5shiv.js"></script>
+  <script src="/static/admin/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<section>
+
+        <div class="page-heading">
+            <h3>修改房型</h3>
+            <ul class="breadcrumb">
+                <li><a href="#">酒店管理</a></li>
+                <li class="active">修改房型</li>
+            </ul>
+        </div>
+        <!--body wrapper start-->
+        <section class="wrapper">
+        <!-- page start-->
+<form class="cmxform form-horizontal adminex-form" id="commentForm"  method="post" action="" >
+
+        <div class="row">
+            <div class="col-md-8">
+            <section class="panel">
+                <header class="panel-heading">
+                    基本信息
+                </header>
+                
+                  <div class="panel-body">
+
+                          <div class="form-group">
+                              <label class="col-sm-2 control-label">房型名称</label>
+                              <div class="col-sm-10">
+
+                                  <input type="text" id="title" name="title" value="{$room.title}" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="" placeholder="" data-original-title="请填写房型名称" required>
+
+                              </div>
+                          </div>
+
+                          <div class="form-group">
+                              <label class="col-sm-2 control-label">简介</label>
+                              <div class="col-sm-10">
+                                  <textarea class="form-control " id="desc" name="desc" required>{$room.desc}</textarea>
+                              </div>
+                          </div>
+
+                          <div class="form-group">
+                              
+                              
+                               <label class="col-sm-2 control-label">固定编号</label>  
+                              <div class="col-md-4 ">
+                                  <input type="text"  id="room_sn" name="room_sn" value="{$room.room_sn}" class="form-control" disabled>
+                              </div>
+                               
+                              <label class="col-sm-2 control-label">识别编号</label>
+                              <div class="col-md-4 ">
+                                  <input type="text"  id="goods_code"  name="goods_code" value="" class="form-control" placeholder="识别编号">
+                              </div>
+                                          
+                                      
+                                   
+                              
+                          </div>
+
+                          <div class="form-group">
+                              
+                            
+                                 <label class="col-sm-2 control-label">库存数量</label>  
+                                <div class="col-md-4 ">
+                                    <input type="text" id="room_num"  name="room_num" value="{$room.room_num}" class="form-control" placeholder="库存数量">
+                                </div>
+                                 
+                                <label class="col-sm-2 control-label">已售数量</label>
+                                <div class="col-md-4 ">
+                                    <input type="text"  id="sale_num"  name="sale_num" value="{$room.sale_num}" class="form-control" placeholder="已售数量">
+                                </div>
+                                          
+                                      
+                                   
+                             
+                          </div>
+
+                          <div class="form-group">
+                              
+                              
+                                 <label class="col-sm-2 control-label">市场价格</label>  
+                                <div class="col-md-4 ">
+                                    <input type="text" id="market_price"  name="market_price" value="{$room.market_price}" class="form-control" placeholder="市场价格">
+                                </div>
+                                 
+                                <label class="col-sm-2 control-label">本店价格</label>
+                                <div class="col-md-4 ">
+                                    <input type="text" id="shop_price"  name="shop_price" value="{$room.shop_price}" class="form-control" placeholder="本店价格">
+                                </div>
+                                          
+                                      
+                                   
+                             
+                          </div>
+
+                          <div class="form-group">
+                            <div class="col-sm-12">
+                                <input type="hidden" name="add_time" value="{$room.add_time}" />
+                                <input type="hidden" name="roome_id" id="room_id" value="{$room.id}" />                       
+                                <input type="submit" value="提交发布" class="btn btn-primary pull-right">  
+                            </div>
+                          </div>
+
+
+                  </div>
+                
+            </section>
+        </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                选择景区
+                        <span class="tools pull-right">
+                            <a class="fa fa-chevron-down" href="javascript:;"></a>
+                         </span>
+                            </header>
+                            <div class="panel-body">
+                              
+                                <select class="form-control input-sm m-bot15" name="hotel_id">
+                                  <option value="0">请选择酒店</option>
+                                  {volist name="hotel" id="v"}
+                                    <option {if $room.hotel_id eq $v.id}selected{/if} value="{$v.id}">{$v.title}</option>
+                                  {/volist}
+                                </select>
+
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                销售设置
+                        <span class="tools pull-right">
+                            <a class="fa fa-chevron-down" href="javascript:;"></a>
+                         </span>
+                            </header>
+                            <div class="panel-body">
+
+                                  <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="sale_start">开始时间</label>
+                                        <div class="col-md-8 ">
+                                        <input class="form-control form-control-inline input-medium default-date-picker"  name="sale_start" value="{:date('Y-m-d',$room.sale_start)}" size="12" type="text"  />  
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="sale_start">结束时间</label>
+                                        <div class="col-md-8 ">
+                                        <input class="form-control form-control-inline input-medium default-date-picker"  name="sale_end" value="{:date('Y-m-d',$room.sale_end)}" size="12" type="text"  />  
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="sale_start">赠送积分</label>
+                                        <div class="col-md-8 ">
+                                        <input type="text" id="score"  name="score" value="{$room.score}" class="form-control" placeholder="成功订购后赠送积分">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label" for="sale_start">分销提成</label>
+                                        <div class="col-md-8 ">
+                                        <input type="text" id="distribution"  name="distribution" value="{$room.distribution}" class="form-control" placeholder="分销提成佣金"> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">状态</label>
+                                        <div class="col-sm-8 icheck">
+                                              <div class="flat-green single-row">
+                                                  <div class="radio" id="status_1">
+                                                      <input tabindex="3" type="radio" {if $room.status eq 1}checked{/if} value="1" name="status">
+                                                      <label>启用</label>
+                                                  </div>
+                                                  <div class="radio" id="status_0">
+                                                      <input tabindex="3" type="radio" {if $room.status eq 0}checked{/if} value="0" name="status">
+                                                      <label>停用</label>
+                                                  </div>
+                                              </div>
+                                                                                   
+                                        </div>
+                                    </div>
+                                  </div>
+                 
+
+                            </div>
+                        </section>
+                    </div>
+                
+                  
+                </div>
+
+                
+
+            </div>
+        </div>
+  </form>      
+        <!-- page end-->
+        </section>
+        <!--body wrapper end-->
+
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/static/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/modernizr.min.js"></script>
+<script src="/static/admin/js/jquery.nicescroll.js"></script>
+
+<!--icheck -->
+<script src="/static/admin/js/iCheck/jquery.icheck.js"></script>
+<!--pickers plugins-->
+<script src="/static/admin/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+<!--common scripts for all pages-->
+<script src="/static/admin/js/scripts.js"></script>
+
+<script type="text/javascript">
+  $(function(){
+      window.prettyPrint && prettyPrint();
+      $('.default-date-picker').datepicker({
+          format: 'yyyy-mm-dd'
+      });
+   });
+  $(function(){
+    $('.flat-green input').iCheck({
+        checkboxClass: 'icheckbox_flat-green',
+        radioClass: 'iradio_flat-green'
+    });
+
+    $('.minimal-blue input').iCheck({
+        checkboxClass: 'icheckbox_minimal-blue',
+        radioClass: 'iradio_minimal-blue',
+        increaseArea: '20%' // optional
+    });
+
+    $('#tags_1').tagsInput({width:'auto'});
+});
+</script>
+
+
+
+</body>
+</html>

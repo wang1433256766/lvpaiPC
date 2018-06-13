@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>订单待支付</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="/static/mobile/css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/order.css"/>
+		<script type="text/javascript" charset="utf-8">
+	     (function (doc, win) {
+	        var docEl = doc.documentElement,
+	            resizeEvt = 'onorientationchange' in window ? 'onorientationchange' : 'resize',
+	            recalc = function () {
+	                var clientWidth = docEl.clientWidth;
+	                if (!clientWidth) return;
+	                if(clientWidth>=750){
+	                    docEl.style.fontSize = '100px';
+	                }else{
+	                    docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+	                }
+	            };
+	
+	        if (!doc.addEventListener) return;
+	        win.addEventListener(resizeEvt, recalc, false);
+	        doc.addEventListener('DOMContentLoaded', recalc, false);
+	    })(document, window);
+	    </script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">订单详情</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="dingdan">
+				<!--处理中-->
+		    	<li>
+		    		<div class="riqi">
+		    			<p>下单日期：<span>{:date('Y-m-d H:i',$data.add_time)}</span></p>
+		    			<em class="zhifu">待支付</em>
+		    		</div>
+		    		<a href="javascript:;">
+		    			<div class="xingxi bgb">
+			    			<p class="p1 mui-clearfix">
+			    				<span class="fl">{$data.ticket_name}</span>
+			    				
+			    			</p>
+			    			<div class="jiage mui-clearfix">
+			    				<p class="fl">
+			    					<span>￥{$data.price}</span><em>X{$data.num}</em>
+			    				</p>
+			    			</div>
+			    		</div>
+			    		<!--旅行币-->
+			    		<div class="lvxi">
+			    			<p class="mui-clearfix">
+			    				<span class="fl">旅行币折扣</span>
+			    				<span class="fr cc">-￥{$data.rebate_total}</span>
+			    			</p>
+			    			<p class="mui-clearfix">
+			    				<span class="fl">实付款:</span>
+			    				<span class="fr red">-￥{$data.total}</span>
+			    			</p>
+			    		</div>
+		    		</a>
+		    	</li>
+		    	<!--处理中 end-->
+			</ul>
+			
+			<p class="tuikuan_tit">出行人信息</p>
+			<div class="tuikuan_xingxi">
+				{volist name="traveller" id="v"}
+				<p>{$v.use_name} <span class="ml20">{$v.use_card}</span></p>
+				{/volist}
+			</div>
+			
+		</div>
+		<div class="foot">
+			<button type="button" class="mui-btn zhifu" onclick="callpay()">立即支付</button>
+			<button type="button" class="mui-btn" onclick="cancel({$data.id})">取消订单</button>
+		</div>
+<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+<script src="/static/mobile/js/mui.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+	mui.init({
+		swipeBack: false,
+	});
+	
+
+	mui('#scroll1,#scroll2,#scroll3,#scroll4,#scroll5').scroll();
+	
+</script>
+<script>
+	function cancel(id) {
+		mui.confirm('确认要取消该订单？', '', ['是','否'], function(e) {
+			if (e.index == 1) {
+
+			} else {
+				$.post('/mobile/order/cancel.html',{id:id},function(res){
+					if (res.status == true) {
+						location.href = '/mobile/order/index';
+					}else {
+						mui.toast(res.info);
+					}
+				},'json')
+			}
+		})
+	}
+    function callpay()
+    {
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+            }
+        }else{
+            jsApiCall();
+        }
+    }
+    function jsApiCall()
+    {
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            {$res},
+            function(res){
+                WeixinJSBridge.log(res.err_msg);
+                if (res.err_msg == 'get_brand_wcpay_request:ok') {
+                    location.href = '/mobile/order/index';
+                }else if(res.err_msg == 'get_brand_wcpay_request:cancel') {
+
+                }else if(res.err_msg == 'get_brand_wcpay_request:fail') {
+
+                }
+            }
+        );
+    }
+</script>
+</body>
+
+</html>

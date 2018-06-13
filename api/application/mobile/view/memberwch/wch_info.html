@@ -1,0 +1,131 @@
+<!--Created by wyg on 2018/1/23-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link rel="stylesheet" href="/static/mobile/wchuang/css/commodityDetails.css">
+    <title>商品详情</title>
+    <style type="text/css">
+    </style>
+    <script type="text/javascript">
+        function allcomment(id)
+        {
+            location.href = '/mobile/memberwch/allcoment/product_id/'+id;
+        }
+    </script>
+</head>
+<body>
+<div class="html">
+    <header>
+        <a href="javascript:history.go(-1)"><span class="left"><img src="/static/mobile/wchuang/img/back.png"></span></a>
+        <p>商品详情</p>
+       <!--  <span class="right"><img src="/static/mobile/wchuang/img/share.png"></span> -->
+    </header>
+    <div class="content">
+        <div class="li">
+            <img src="{$res.product.image}" style="height: 274px;">
+            <div>
+                <p>
+                    <span class="title">{$res.product.name}</span>
+                    <!--<span class="titleBg">佣金：￥16.80</span>-->
+                </p>
+                <p>
+                    <span class="price"><span>旅行币</span>{$res.product.integral} <del>￥{$res.product.price}</del></span>
+                    <span class="sales">销售量：{$res.product.already_count}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="cTitle">
+            <p>商品评价</p>
+            <span>({$res.comment_num})</span>
+        </div>
+        <div class="list">
+            {if $res.comment_num == 0}
+            <li>
+               
+                <p>暂无评价，喜欢本商品的宝宝快去评价一下吧!</p>
+            </li>
+            {else/}
+            <li>
+                <div>
+                    <img src="{$res.comment.headimg}">
+                    <p>
+                        <span>{$res.comment.nickname}</span>
+                        <span>{$res.comment.add_time}</span>
+                    </p>
+                </div>
+                <p>{$res.comment.content}</p>
+            </li>
+            {/if}
+            <p class="plBtn" onclick="allcomment({$res.product.id})">
+                <span>查看全部评价</span>
+            </p>
+        </div>
+		
+		<!--商品介绍-->
+		<div class="text-cont-top">
+			<p class="text-cont-tit">商品介绍</p>
+			<p>{$res.product.description}</p>
+		</div>
+		<div class="text-cont-bt">
+			<p class="text-cont-tit">兑换流程</p>
+			<p>1.用户确认符合兑换条件后，填写配送信息后，点击[立即兑换]</p>
+			<p>2.确认信息无误，提交兑换并支付完成。</p>
+			<br />
+			<p>注意事项：</p>
+			<p>1.库存为0时，商品兑换结束，喜欢该商品的用户需留意库存数，尽快兑换；</p>
+			<p>2.配送区域：仅限中国大陆地区（港澳台、西藏、新疆地区除外)</p>
+			<p>3.实物类商品将在活动结束后15个工作日内安排发货；</p>
+			<p>4.请提供正确的地址和可正常通信的手机号，提供错误信息导致损失将由用户承担；</p>
+			<p>5.兑换的商品如有多个款式，将会款式随机发货，有特殊要求的用户请主动联系客服；</p>
+			<p>6.兑换时请仔细核对收货信息，商品一经兑换，不支持收货地址和收件人信息修改，并不退不换。</p>
+		</div>
+	</div>	
+    <footer>
+        <div class="kf" onclick="kf()">
+            <img src="/static/mobile/wchuang/img/kefu.png">
+            <span>联系客服</span>
+        </div>
+        <div class="btn" onclick="buy({$res.product.id})">立即购买</div>
+
+    </footer>
+</div>
+<script src="/static/mobile/wchuang/js/rem.js" type="text/javascript"></script>
+<script src="/static/mobile/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/static/mobile/js/layer/mobile/layer.js"></script>
+<script type="text/javascript">
+    function buy(id) {
+        var product_id = id;
+        $.ajax({
+             type: "post",
+             url: "/mobile/memberwch/creatorder",
+             data: {product_id:product_id},
+             dataType: "json",
+             success: function(res){
+                    if(res.status == true)
+                    {
+                        location.href = "/mobile/memberwch/orderdetails/ordersn/"+ res.order.ordersn;
+                    }
+                    else
+                    {
+                        layer.msg("网络错误,请联网后重试!")
+                    }     
+                }
+         });
+    }
+
+    function kf() {
+        layer.open({
+            content: '客服电话：4000073177'
+            ,btn: '拨打电话',
+            yes: function(index, layero){
+                window.location.href = "tel://4000073177";
+            }
+        });
+    }
+</script>
+</body>
+</html>

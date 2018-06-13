@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>常用信息</title>
+	<link rel="stylesheet" href="css/info.css">
+</head>
+<body onload="loaded()">
+	<div class="box" >
+		<header><a href="history.back()" class="back"></a>绑定手机</header>
+		<div id="wrapper">
+			<div id="scroller">
+				<div class="list">
+					<div class="list-info">
+						<p class="name"><span>钱多多</span></p>
+						<p class="card"><span>身份证</span>430121199308141028</p>
+					</div>
+					<div class="edit">
+						<a href="javascript:;" class="delete-btn"><span></span>删除</a><a href="javascript:;" class="edit-btn"><span></span>编辑</a>
+					</div>
+				</div>
+				<div class="list">
+					<div class="list-info">
+						<p class="name"><span>钱多多</span></p>
+						<p class="card"><span>身份证</span>430121199308141028</p>
+					</div>
+					<div class="edit">
+						<a href="javascript:;" class="delete-btn"><span></span>删除</a><a href="javascript:;" class="edit-btn"><span></span>编辑</a>
+					</div>
+				</div>
+				<div class="list">
+					<div class="list-info">
+						<p class="name"><span>钱多多</span></p>
+						<p class="card"><span>身份证</span>430121199308141028</p>
+					</div>
+					<div class="edit">
+						<a href="javascript:;" class="delete-btn"><span></span>删除</a><a href="javascript:;" class="edit-btn"><span></span>编辑</a>
+					</div>
+				</div>
+				<div class="list">
+					<div class="list-info">
+						<p class="name"><span>钱多多</span></p>
+						<p class="card"><span>身份证</span>430121199308141028</p>
+					</div>
+					<div class="edit">
+						<a href="javascript:;" class="delete-btn"><span></span>删除</a><a href="javascript:;" class="edit-btn"><span></span>编辑</a>
+					</div>
+				</div>
+				<div class="list">
+					<div class="list-info">
+						<p class="name"><span>钱多多</span></p>
+						<p class="card"><span>身份证</span>430121199308141028</p>
+					</div>
+					<div class="edit">
+						<a href="javascript:;" class="delete-btn"><span></span>删除</a><a href="javascript:;" class="edit-btn"><span></span>编辑</a>
+					</div>
+				</div>
+				<div class="list">
+					<div class="list-info">
+						<p class="name"><span>钱多多</span></p>
+						<p class="card"><span>身份证</span>430121199308141028</p>
+					</div>
+					<div class="edit">
+						<a href="javascript:;" class="delete-btn"><span></span>删除</a><a href="javascript:;" class="edit-btn"><span></span>编辑</a>
+					</div>
+				</div>
+				<div class="list">
+					<div class="list-info">
+						<p class="name"><span>钱多多</span></p>
+						<p class="card"><span>身份证</span>430121199308141028</p>
+					</div>
+					<div class="edit">
+						<a href="javascript:;" class="delete-btn"><span></span>删除</a><a href="javascript:;" class="edit-btn"><span></span>编辑</a>
+					</div>
+				</div>
+				<div class="list">
+					<div class="list-info">
+						<p class="name"><span>钱多多</span></p>
+						<p class="card"><span>身份证</span>430121199308141028</p>
+					</div>
+					<div class="edit">
+						<a href="javascript:;" class="delete-btn"><span></span>删除</a><a href="javascript:;" class="edit-btn"><span></span>编辑</a>
+					</div>
+				</div>
+				<!-- 此DIV不删除 -->
+				<div style="height: 2.5rem"></div>
+		</div>
+		
+		</div>
+		<a href="javascript:;" class="add">新增</a>
+	</div>
+	<script src="js/rem.js"></script>
+	<script src="js/iscroll.js"></script>
+	<script src="js/demoUtils.js"></script>
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script>
+		var myScroll;
+
+function loaded () {
+
+	myScroll = new IScroll('#wrapper',{ mouseWheel: true });
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+	capture: false,
+	passive: false
+} : false);
+
+		$(function(){
+			$(document).on('click', '.delete-btn', function(event) {
+				$(this).closest(".list").remove()
+				event.preventDefault();
+				/* Act on the event */
+			});
+		})
+	</script>
+</body>
+</html>

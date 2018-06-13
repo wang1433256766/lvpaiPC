@@ -1,0 +1,455 @@
+<script type="text/javascript">
+
+
+    var $faciListTable = $('#faciListTable');
+
+    function initTable() {
+        $faciListTable.bootstrapTable('destroy');
+        $faciListTable.bootstrapTable({
+            url: '/admin/Putforward/index.html', //获取数据的Servlet地址
+            striped: true,  //表格显示条纹
+            pagination: true, //启动分页
+            sortName: 'createtime',
+            sortOrder: 'desc',
+            pageSize: 15,  //每页显示的记录数
+            pageNumber:1, //当前第几页
+            pageList: [10, 15, 20, 25],  //记录数可选列表
+            search: false,
+            striped: true, //隔行变色
+            toolbar: '#list_search_faci',
+            showColumns: false,  //显示下拉框勾选要显示的列
+            showRefresh: true,  //显示刷新按钮
+            sidePagination: "server", //表示服务端请求
+            responseHandler:function(res){
+                return res.data;
+            },
+            queryParamsType : "undefined",
+            queryParams: function queryParams(params) {   //设置查询参数
+                var param = {
+                    //这里是在ajax发送请求的时候设置一些参数 params有什么东西，自己看看源码就知道了
+                    pageNumber: params.pageNumber,
+                    pageSize: params.pageSize,
+                    sortName: params.sortName,
+                    sortOrder: params.sortOrder,
+                    str_time : $('#history_s').val(),
+                    end_time : $('#history_e').val(),
+                    action : 'ajaxList'
+                };
+                return param;
+            },
+            onLoadError: function(){  //加载失败时执行
+                layer.msg("加载数据失败", {time : 1500, icon : 2});
+            },
+            columns:[
+                {
+                    title: 'ID',
+                    field: 'id',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '用户名称',
+                    field: 'nickname',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    title: '用户电话',
+                    field: 'mobile',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    title: '提现金额',
+                    field: 'money',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+
+                {
+                    field: 'status',
+                    title: '状态',
+                    sortable: true,
+                    align: 'center',
+                    formatter: function(value,row,index){
+                        if(value==1){
+                            return "<div style='background-color: #eeeeff' > <label>未审核</label></div>";
+                        }
+                        else if(value==2){
+                            return "<div style='background-color: #98FB98' > <label>审核通过</label></div>";
+                        } else if(value==3){
+                            return "<div style='background-color: #EEEE00' > <label>审核未通过</label></div>";
+                        } else if(value==4){
+                            return "<div style='background-color: #BCEE68' > <label>已提现</label></div>";
+                        } else if(value==5){
+                            return "<div style='background-color: #EE2C2C' > <label>提现失败</label></div>";
+                        } else if(value==6){
+                            return "<div style='background-color: #BFEFFF' > <label>取消提现</label></div>";
+                        }else {
+                            return "未知";
+                        }
+                    }
+                },
+                {
+                    title: '提现方式',
+                    field: 'bankId',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        if(value){
+                            return '银行卡提现';
+                        }else {
+                            return '微信提现';
+                        }
+                    }
+                },
+                {
+                    title: '提现时间',
+                    field: 'createtime',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    field: 'operate',
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value,row,index){
+                        var e='';
+                        var d='';
+                        var f='';
+                        if(row.status==1){
+                            {if check_auth('PutForward','update')}
+                            e = '<a href="#" mce_href="#" data_status="2" data_id="'+row.id+'"  onclick="edit(this)" >通过 |</a> <a href="#" mce_href="#"  data_id="'+row.id+'" data_status="3" onclick="edit(this)" >不通过 |</a> ';
+                            {/if}
+                        }
+                        if(row.status==5){
+                            {if check_auth('PutForward','update')}
+                            e = '<a href="#" mce_href="#" data_status="2" data_id="'+row.id+'"  onclick="edit(this)" >重新提现 |</a>  ';
+                            {/if}
+                        }
+                        if(row.status==3){
+                            {if check_auth('PutForward','update')}
+                            e = '<a href="#" mce_href="#" data_status="2" data_id="'+row.id+'"  onclick="edit(this)" >重新提现 |</a>  ';
+                            {/if}
+                        }
+                        if(row.status!=2&&row.status!=4&&row.status!=6){
+                             f = '<a href="#" mce_href="#" data_status="6" data_id="'+row.id+'"  onclick="edit(this)" >取消提现 |</a>  ';
+                        }
+                        d = '<a href="#" mce_href="#" data_from="lookImgdiv" data_id="'+row.id+'"  onclick="lookImg(this)" >查看凭证</a> ';
+                        return e+f+d;
+                    }
+                }
+            ]
+
+        });
+    }
+
+    /**
+     * 将时间转换为时间戳
+     * */
+    function gettimes(time) {
+        var times = new Date(time.replace(/-/g,'/'));
+        return times;
+    }
+
+    $(document).ready(function () {
+        //调用函数，初始化表格
+        initTable();
+        $("#edit_area").keydown(function(e) {
+            digitInput($(this), e);
+        });
+    });
+    //搜索
+    function p_search() {
+        $faciListTable.bootstrapTable('refresh');
+    }
+    var $boundUser = $('#addFaciTable');
+    function addBound_search(){
+        $boundUser.bootstrapTable('refresh');
+    }
+   
+    //修改审核状态
+    function edit(obj) {
+        var id = $(obj).attr('data_id');
+        var status = $(obj).attr('data_status');
+            layer.confirm('确认操作？', {
+                btn: ['确认','取消'] //按钮
+            }, function(){
+                $.ajax({
+                    type: "post",
+                    url: '/admin/PutForward/index.html',
+                    data:{
+                        'id':id,
+                        'status': status,
+                        'action' : 'setStatus'
+                    },
+                    dataType: 'JSON',
+                    success: function(data){
+                        if (data.code == 200) {
+                            layer.msg(data.msg);
+                        } else {
+                            layer.msg(data.msg);
+                        }
+                        p_search();
+
+                    },
+                    error:function(){
+                        layer.msg('数据错误！');
+                    }
+                });
+            }, function(e){
+                layer.close(e);
+            });
+
+    }
+    /**
+     * 查看凭证
+     * */
+    function lookImg(obj){
+        var id = $(obj).attr('data_id');
+        var from = $(obj).attr('data_from');
+        $.ajax({
+            type: "post",
+            url: '/admin/PutForward/index.html',
+            data:{
+                'id':id,
+                'action' : 'lookImg'
+            },
+            dataType: 'JSON',
+            success: function(data){
+                if (data.code == 200) {
+                    $('#img_arr').empty();
+                    var arr = data.rows;
+                    for (var i = 0;i<arr.length;i++){
+                        $('#img_arr').append('<img src="'+data['rows'][i]['img_url']+'" style="margin-bottom: 10px;"><hr/>');
+                    }
+                } else {
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(){
+                layer.msg('数据错误！');
+            }
+        });
+
+        var p = layer.open({
+            type: 1,
+            title: '凭证图片',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['85%', '90%'],
+            content: $('#'+from),
+            btn: ['确定'], // 按钮
+            yes: function(index, layero){
+                layer.closeAll('page');
+            }
+        });
+    }
+//
+//
+//    /**
+//     * 添加设备
+//     * */
+//    function addFacility(obj){
+//        $('#regtime_div').hide();
+//        $('#regaddress_div').hide();
+//        var from = $(obj).attr('data_from');
+//        layer.open({
+//            type: 1,
+//            title: '添加设备',
+//            shadeClose: true,
+//            shade: 0.8,
+//            area: ['70%', '60%'],
+//            content: $('#'+from),
+//            btn: ['确定', '取消'], // 按钮
+//            yes: function(index, layero){
+//                if($('#edit_serialnumber').val()==''){
+//                    layer.msg('请填写设备编码！');
+//                    return false;
+//                }
+//                if($('#edit_imei').val()==''){
+//                    layer.msg('请填写IMEI号！');
+//                    return false;
+//                }
+//                if($('#edit_district').val()=='-1'||$('#edit_district').val()==-1){
+//                    layer.msg('请填写完整区域！');
+//                    return false;
+//                }
+//                layer.msg('确定添加？', {
+//                    time: 0 //不自动关闭
+//                    ,btn: ['确定', '取消']
+//                    ,yes: function(index){
+//                        $.ajax({
+//                            type: "post",
+//                            url: '("Facility/editFacility",array("act"=>submit,"action"=>add))}',
+//                            data:{  'from' : $('#'+from).toJson() },
+//                            dataType: 'JSON',
+//                            success: function(data){
+//                                if (data.code == 200) {
+//                                    $faciListTable.bootstrapTable('refresh');
+//                                    layer.close(index);
+//                                    layer.closeAll();
+//                                    layer.msg(data.msg);
+//                                } else {
+//                                    layer.msg(data.msg);
+//                                }
+//                            },
+//                            error:function(){
+//                                layer.msg('数据错误！');
+//                            }
+//                        });
+//                    }
+//                });
+//
+//            }
+//        });
+//    }
+//
+//    /**
+//     * 删除设备
+//     * */
+//    function del(obj){
+//        var id = $(obj).attr('data_id');
+//        layer.msg('确定删除？', {
+//            time: 0 //不自动关闭
+//            ,btn: ['确定', '取消']
+//            ,yes: function(index){
+//                $.ajax({
+//                    method: "post",
+//                    url: '("Facility/editFacility",array("act"=>submit,"action"=>del))}',
+//                    data:{'id':id},
+//                    dataType: 'JSON',
+//                    success: function(data){
+//                        if (data.code == 200) {
+//                            $faciListTable.bootstrapTable('refresh');
+//                            layer.msg('删除成功!');
+//                        } else {
+//                            layer.msg('删除失败!');
+//                        }
+//                    },
+//                    error:function(){
+//                        layer.msg('数据错误！');
+//                    }
+//                });
+//            }
+//        });
+//    }
+//
+//
+//    /**
+//     * 获取市
+//     * */
+//    function get_city(obj){
+//        var provinceid = $(obj).val();
+//        var city = $(obj).attr('data_city');
+//        $.ajax({
+//            type: 'post',
+//            data:{
+//                provinceid:provinceid
+//            },
+//            url: '("UserInfo/getCity")}',
+//            success:function(data) {
+//                $("#edit_district").empty();
+//                $("#edit_district").append("<option value='-1'>全部</option>");
+//                $("#"+city).empty();
+//                $("#"+city).append("<option value='-1'>全部</option>");
+//                if(data.code==200){
+//                    $.each(data.row, function() {
+//                        $("#"+city).append("<option value='"+this.id+"'>"+this.areaname+"</option>");
+//                    })
+//                }else {
+//                    layer.msg(data.msg);
+//                }
+//            },
+//            dataType: "JSON",
+//            error : function() {
+//                layer.msg('数据错误！');
+//            }
+//        });
+//    }
+//
+//    /**
+//     * 获取区
+//     * */
+//    function getDistrict(obj){
+//        var cityid = $(obj).val();
+//        var district = $(obj).attr('data_district');
+//        $.ajax({
+//            type: 'post',
+//            data:{
+//                cityid : cityid
+//            },
+//            url: '("UserInfo/getDistrict")}',
+//            success:function(data) {
+//                $("#"+district).empty();
+//                $("#"+district).append("<option value='-1'>全部</option>");
+//                if(data.code==200){
+//                    $.each(data.row, function() {
+//                        $("#"+district).append("<option value='"+this.id+"'>"+this.areaname+"</option>");
+//                    })
+//                }else {
+//                    layer.msg(data.msg);
+//                }
+//            },
+//            dataType: "JSON",
+//            error : function() {
+//                layer.msg('数据错误！');
+//            }
+//        });
+//    }
+//
+//
+//    /**
+//     * 将时间戳转换为日期
+//     * */
+//    function timeGo(value){
+//        var value_time = parseInt(value);
+//        var time = new Date(value_time * 1000);
+//        var ymdhis = "";
+//        ymdhis += time.getUTCFullYear() + "-";
+//        ymdhis += (time.getUTCMonth() + 1) + "-";
+//        ymdhis += time.getUTCDate();
+//        ymdhis += " " + time.getUTCHours() + ":";
+//        ymdhis += time.getUTCMinutes() + ":";
+//        ymdhis += time.getUTCSeconds();
+//        return ymdhis;
+//    }
+//
+//    /*
+//     * 限制只能输入数字
+//     * */
+//    function prevent(e) {
+//        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+//    }
+//    function digitInput(el, e) {
+//        var ee = e || window.event; // FF、Chrome IE下获取事件对象
+//        var c = e.charCode || e.keyCode; //FF、Chrome IE下获取键盘码
+//        //var txt = $('label').text();
+//        //$('label').text(txt + ' ' + c);
+//        var val = el.val();
+//        if (c == 110 || c == 190){ // 110 (190) - 小(主)键盘上的点
+//            (val.indexOf(".") >= 0 || !val.length) && prevent(e); // 已有小数点或者文本框为空，不允许输入点
+//        } else {
+//            if ((c != 8 && c != 46 && // 8 - Backspace, 46 - Delete
+//                (c < 37 || c > 40) && // 37 (38) (39) (40) - Left (Up) (Right) (Down) Arrow
+//                (c < 48 || c > 57) && // 48~57 - 主键盘上的0~9
+//                (c < 96 || c > 105)) // 96~105 - 小键盘的0~9
+//                || e.shiftKey) { // Shift键，对应的code为16
+//                prevent(e); // 阻止事件传播到keypress
+//            }
+//        }
+//    }
+
+</script>

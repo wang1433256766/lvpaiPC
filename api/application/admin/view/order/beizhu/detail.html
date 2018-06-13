@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+
+  <title>订单详情</title>
+  <!--icheck -->
+   <!--  <link href="/static/admin/js/iCheck/skins/flat/green.css" rel="stylesheet"> -->
+  <link rel="shortcut icon" href="/static/admin/images/zhlfavicon.ico">
+    
+    <link href="/static/admin/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+   <!--  <link href="/static/admin/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet"> -->
+    <!-- Morris -->
+    <!-- <link href="/static/admin/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet"> -->
+    <!-- Gritter -->
+   <!--  <link href="/static/admin/js/plugins/gritter/jquery.gritter.css" rel="stylesheet"> -->
+   <!--  <link href="/static/admin/css/animate.min.css" rel="stylesheet"> -->
+    <!-- <link href="/static/admin/css/style.min862f.css?v=4.1.0" rel="stylesheet"> -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/static/admin/js/html5shiv.js"></script>
+  <script src="/static/admin/js/respond.min.js"></script>
+  <![endif]-->
+  <style>
+      .edit-refund {
+        padding: 5px 8px;
+        background-color: #48BEEF;
+        color: #fefefe;
+        text-decoration:none;
+      }
+      .refund-price {
+        width: 20%;
+        border: 0px;
+        background-color: #fff;
+      }
+
+      .save-refund {
+         padding: 5px 8px;
+        background-color: #48BEEF;
+        color: #fefefe;
+        text-decoration:none;
+        display: none;
+      }
+
+      .refund-checkbox {
+        display: inline-block;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #cccccc;
+        border-radius: 3px;
+         background-color: #fff;
+         -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+        -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+        transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+      }
+  </style>
+  
+</head>
+
+
+<body style="padding: 15px">
+
+<section>
+        <!-- page heading start-->
+        <!--<div class="page-heading">-->
+            <!--<h3>-->
+                <!--订单详情-->
+            <!--</h3>-->
+            <!--<ul class="breadcrumb">-->
+                <!--<li>-->
+                    <!--<a href="#">订单管理</a>-->
+                <!--</li>-->
+                <!--<li class="active">订单详情</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+  
+            <div class="panel">
+                
+                <table class="table table-bordered table-invoice">
+                    <thead>
+                    <tr>
+                        <th>订单商品</th>
+                        <th class="text-center">单价</th>
+                        <th class="text-center">预定数量</th>
+                        <th class="text-center">入园凭证</th>                        
+                        <th class="text-center">预定小计</th>
+                        <th class="text-center">订单状态</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <h5>{$order.ticket_name}</h5>
+                            <p>使用日期：{$order.travel_date}</p>
+                        </td>
+                        <td class="text-center"><strong>￥{$order.price}</strong></td>
+                        <td class="text-center"><strong>{$order.num}</strong></td>
+                        <td class="text-center"><strong>{if $order.UUcode == 'NULL'}0{else/}{$order.UUcode}{/if}</strong></td>
+                        <td class="text-center"><strong>￥{$order.order_total}</strong></td>
+                        <td class="text-center">
+                            {if $order.status eq 0}
+                            <a class="btn btn-warning btn-xs" >未支付</a>
+                            {elseif $order.status eq 1}
+                            <a class="btn btn-info btn-xs" >已支付</a>
+                            {elseif $order.status eq 2}
+                            <a class="btn btn-primary btn-xs" >处理中</a><br/>
+                            <p class="text-left" >退款原因：{$order.refund_reason}</p><br/>
+                            {if isset($refund_name)}
+                          
+                            {/if}
+                            <p class="text-left" >退款金额:<input value="{$refund_price}" disabled="readonly" class="refund-price" /><span class="edit-refund">修改</span><span class="save-refund">保存</span></p>
+                            {elseif $order.status eq 3}
+                            <a class="btn btn-danger btn-xs" >已取消</a>
+                            {elseif $order.status eq 4}
+                            <a class="btn btn-default btn-xs">已退款</a>
+                            退款原因：{$order.refund_reason}
+                            {elseif $order.status eq 5}
+                            <a class="btn btn-success btn-xs">已核销</a>
+                            {elseif $order.status eq 6}
+                            <a class="btn btn-success btn-xs">部分退款</a><br/><br/>
+                            <p class="text-left" >退款原因：{$order.refund_reason}</p><br/>
+                            {if isset($refund_name)}
+                            
+                            {/if}
+                            <p class="text-left" >退款金额:<input value="{$refund_price}" disabled class="refund-price"/><span class="edit-refund">修改</span></p>
+                            {/if}</td>
+                        <td class="text-center">
+                            <a id="show" href="#myModal" data-toggle="modal" style="display:none;"></a>
+                            {if $order.status eq 1}
+                            <!--<a class="btn btn-info btn-xs" onclick="check({$order.id},'check')">核销</a>-->
+                            {elseif $order.status eq 2}
+                            <a class="btn btn-info btn-xs" onclick="check({$order.id},'cancel')">确认退款</a>
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="payment-method" style="vertical-align:initial;">
+
+                            <h5 class="text-left" >订单编号：{$order.order_sn}</h5>
+                            <p class="text-left" >支付编号：{$order.trade_no}</p>
+                             <p class="text-left" id="checked-num">已入园人数：{if $order.status > 0}{$traveler_num}{else/}0{/if}</p>
+                            {if $order.promote_id gt 0}
+                            <p class="text-left" >分销会员：{$order.promote_id}</p>
+                            {/if}
+                            <p class="text-left" >联系电话：{$order.mobile}</p>
+                            {if !empty($order.travel_agency)}
+                            <p class="text-left" >旅行社:{$order.travel_agency}</p>
+                            {else/}
+                            {/if}
+                            
+                            <br>
+                        </td>
+                        {if !empty($infos_)}
+                         <td colspan="2">
+                            {volist name="infos_" id="v"}
+                            <p class="text-left" style="margin-top: 1px;">身份证号：{$v.identity}
+                            {if $v.IsCheck == 0}
+                            <button style="background-color: #F15A24;border: 0px;color:#FEFEFE;margin: 8px;">未核销</button>
+                            <input class="refund-checkbox" type="checkbox" name="traveler_ids" value='{$v.id}'>
+                            {else/}
+                            <button style="background-color: #1A7BB9; border: 0px;color:#FEFEFE;margin: 8px;">已核销</button>
+                            {/if}
+                            
+                            </p>
+                            <!-- <input type="checkbox" name="traveler_ids" value='{$v.id}'>  -->
+                            {/volist}
+                        </td>
+                        {else/}
+                         <td colspan="2">
+                            {volist name="info" id="v"}
+                            <span class="text-left" >游玩人身份证号：{$v.use_card}</span>
+                            {/volist}
+                        </td>
+                        {/if}
+                        <td class="text-right" colspan="1" style="vertical-align:initial;">
+                            <p><strong>订单总计</strong></p>
+                            <p><strong>旅游币抵扣金额</strong></p>
+                            <p><strong>已付金额</strong></p>
+                            <p><strong>支付方式</strong></p>
+                        </td>
+                        <td class="text-center" colspan="2" style="vertical-align:initial;">
+                            <p><strong>￥ {$order.total}</strong></p>
+                            <p><strong>￥ {$order.rebate_total}</strong></p>
+                            <p><strong>￥ {$order.payment}</strong></p>
+                            <p><strong> {$order.pay_way}</strong></p>
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--body wrapper end-->
+
+
+
+</section>
+
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" id="close" type="button">×</button>
+                <h4 class="modal-title">点单信息</h4>
+            </div>
+            <div class="modal-body">
+
+                    <form action="#" id="article_cate" method="post" class="form-horizontal adminex-form" >
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                              <label class="col-sm-3 control-label col-md-3" for="order_sn">订单编号</label>
+                              <div class="col-md-6">
+                                  <input name="order_sn" id="order_sn" class="form-control m-bot15" type="text" disabled="disabled">
+                              </div>
+                            </div>
+
+                            <div class="col-md-12">
+                              <label class="col-sm-3 control-label col-md-3" for="order_sn">使用日期</label>
+                              <div class="col-md-6">
+                                    <input class="form-control form-control-inline input-medium default-date-picker" id="use_date"  name="use_date" size="12" type="text" value="" disabled="disabled"/>    
+                              </div>
+                            </div>
+
+                          <div class="col-md-12">
+                                <label class="col-sm-3 control-label col-md-3" for="status">订单状态</label>
+                                <div class="col-md-6 icheck">
+                                    <div class="flat-green single-row">
+                                        <div class="radio" id="status_0">
+                                            <input tabindex="3" type="radio" value="0" name="status">
+                                            <label>未支付</label>
+                                        </div>
+                                        <div class="radio" id="status_1">
+                                            <input tabindex="3" type="radio" value="1" name="status">
+                                            <label>已支付</label>
+                                        </div>
+                                        <div class="radio" id="status_2">
+                                            <input tabindex="3" type="radio" value="2" name="status">
+                                            <label>处理中</label>
+                                        </div>
+                                        <div class="radio" id="status_3">
+                                            <input tabindex="3" type="radio" value="3" name="status">
+                                            <label>已取消</label>
+                                        </div>
+                                        <div class="radio" id="status_4">
+                                            <input tabindex="3" type="radio" value="4" name="status">
+                                            <label>已退款</label>
+                                        </div>
+                                        <div class="radio" id="status_5">
+                                            <input tabindex="3" type="radio" value="5" name="status">
+                                            <label>已核销</label>
+                                        </div>
+                                        <div class="radio" id="status_6">
+                                            <input tabindex="3" type="radio" value="6" name="status">
+                                            <label>已完成</label>
+                                        </div>
+                                        
+                                    </div>
+                                                                         
+                                </div>
+                            </div>  
+
+
+                        </div>     
+
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label col-md-3" for="submit"></label>
+                            <div class="col-md-6">
+                                <input name="id" id="id" value="0" type="hidden">
+                                <a id="delete" onclick="del(0)" class="btn btn-danger btn-sm" type="button">关闭</a>
+                                <a id="save" onclick="position()" class="btn btn-success btn-sm">保存</a>
+                            </div>
+                        </div>
+                    </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/static/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/modernizr.min.js"></script>
+<script src="/static/admin/js/jquery.nicescroll.js"></script>
+<!--icheck -->
+<script src="/static/admin/js/iCheck/jquery.icheck.js"></script>
+<!--pickers plugins-->
+<script type="text/javascript" src="/static/admin/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<!--common scripts for all pages-->
+<script src="/static/admin/js/scripts.js"></script>
+<script type="text/javascript">
+    
+    function check (id,type) {
+        if (confirm('确定要执行该操作吗？') == true) {
+            $.post('/admin/order/check.html',{id:id,type:type},function(res){
+                if (res.status == false) {
+                    error_msg($(".page-heading"),' ');
+                }else{
+                    success_msg($(".page-heading"),' ');
+                    window.location.reload();
+                }
+            },'json');
+        }
+    }
+
+
+ function edit(id)
+    {
+        $.post('/base/ajax',{id:id,act:'edit',tab:'spot_order'},function(res){
+            if (res.status == false) { 
+                error_msg($(".page-heading"),'');
+                return false;
+            }
+            $("#id").val(res.info.id);
+            $("#order_sn").val(res.info.order_sn);
+            $("#use_date").val(res.info.use_date);
+            $('#status_'+ res.info.status).iCheck('check');
+            if (res.info.status == 3) {
+                $("#use_date").removeAttr('disabled');
+            }else{
+                $("#use_date").attr('disabled','disabled');
+            }
+            $("#modal_title").html("修改订单");
+            $("#save").attr("onclick",'save('+res.info.id+')');
+            $("#show").click();
+        },'json')
+
+    }
+
+    function save(id)
+    {
+        var id = $("#id").val();
+        var status = $('input[name="status"]:checked ').val();
+        var use_date = $("#use_date").val();
+      
+
+        if (id > 0) {
+           $.post("/order/ajaxa.html",{id:id,status:status,use_date:use_date},function(res){
+                if (res.status == false) {
+                    error_msg($(".page-heading"),'');
+                    return false;
+                }
+                else{
+                    $(".close").click();
+                    success_msg($(".page-heading"),' ');
+                    setTimeout(function (){
+                        window.location.reload();
+                    }, 3000);
+                }
+            },'json')
+        }
+    }
+</script>
+<script>
+    $(".edit-refund").click(function(){
+        $(".edit-refund").hide();        
+        $(".save-refund").show();
+        //var  orderid = 1892;
+        var  orderid = "{$order.id}";
+        var  num = "{$order.num}";
+        $.ajax({
+            url: '/admin/order/getCheckName',
+            type: 'GET',
+            dataType: 'JSON',
+            data: {orderid: orderid},
+            success:function(data){
+                
+                var obj=document.getElementsByName('traveler_ids'); //选择所有name="'test'"的对象，返回数组 
+                
+                //取到对象数组后，我们来循环检测它是不是被选中 
+                var s=''; 
+                var n='';
+                var j=0;
+                var arr = [];
+                for(var i=0; i<obj.length; i++){ 
+                        if(obj[i].checked){ 
+                                    s+=obj[i].value+','; //如果选中，将value添加到变量s中 
+                                    n+=obj[i].parentNode.firstElementChild.innerHTML+',';
+                                    j++;
+                                    console.log(num-j);
+                                    arr.push(num-j);
+
+                        }           
+                }
+                var refunc_price = arr.length * "{$order.price}";
+                $(".refund-price").val(refunc_price);
+
+            }
+        })
+    })
+
+    $(".save-refund").click(function(){
+     var tk_amount = $(".refund-price").val(); 
+     var  orderid = "{$order.id}";
+     $.ajax({
+        url: '/admin/order/editRefundPrice',
+        type: 'GET',
+        dataType: 'JSON',
+        data: {orderid: orderid,tk_amount: tk_amount},
+        success:function(data){
+            console.log(data)
+            if(data.code == 1){
+                alert(data.msg)
+            }else{
+                alert(data.msg)
+            }
+        }
+     })
+        
+        
+    })
+</script>
+</body>
+</html>

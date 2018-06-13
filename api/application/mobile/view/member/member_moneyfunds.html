@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>佣金提现</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="/static/mobile/css/css.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/static/mobile/css/mui.min.css">
+    <link rel="stylesheet" href="/static/mobile/css/moneyFunds.css"/>
+    <script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/mobile/js/match.js"></script>
+    <script src="/static/mobile/js/mui.min.js"></script>
+    <script src="/static/mobile/js/webuploader.min.js"></script>
+    <script src="/static/mobile/js/diyUpload.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/mobile/paypassword/zhifu.css">
+    <link rel="stylesheet" href="/static/mobile/css/commodityDetails.css">
+
+
+    <style>
+        .mui-btn-primary {
+            width: 99%;
+            border-radius:8px;
+        }
+
+        #dib{
+            float:left;
+            margin-left: 3px;
+        }
+        #bank{
+            float:left;
+            margin-right: 3px;
+        }
+
+       .ftc_wzsf .srzfmm_box {
+        top:10%;
+       }
+
+       .dough {
+        font-size: 0.4rem;
+       }
+     </style>
+</head>
+<body>
+<div class="mui-content">
+    <header>
+        <span class="left"><a href="javascript:history(-1)"><img src="/static/mobile/img/back.png"></a></span>
+        <p style="color:#000;padding-top:8px;">佣金提现</p>
+        <span class="right" style="width:1.5rem;display: flex;justify-content: center;align-items: center;"><a href="/mobile/member/bind_bank" style=" text-decoration: none;color:#000">绑定银行卡<!-- <img src="/static/mobile/img/share.png"> --></a></span>
+
+    </header>
+    <div class="titlew" style="border: none">
+        <div class="headList">
+            <img src="/static/mobile/images/Withdraw.png" style="margin-top: 20px;" />
+            <p class="dough">￥{$member.money}</p>
+        </div>
+    </div>
+   
+    <div class="media">
+        <p class="p1">提现金额</p>
+        <p class='mui-ellipsis p1'>￥<input type="number" style="width:100px; border:none;padding-left:0;margin-bottom: 2px" name="num"
+                                           id="num" value="" placeholder='请输入金额'/></p>
+    </div>
+
+    <div class="min">
+        <p>单次提现限额￥10 -- ￥20000</p>
+        <p class="all" onclick="whole_total()">全部提现</p>
+    </div>
+     <div style="padding-left: 10px;">
+        <ul class="upload-ul clearfix">
+            <li class="upload-pick">
+                <div class="webuploader-container clearfix" id="goodsUpload"></div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="meddle">
+    <p class="predict">请上传发票凭证</p>
+    <p class="predict">微信零钱到账预计2小时内  银行卡到账预计1-3天</p>
+        <button type="button" class="mui-btn mui-btn-primary mui-btn-block" onclick="total_ajax()" id="dib">提现到零钱</button>
+        <!-- <button type="button" class="mui-btn mui-btn-primary mui-btn-block" id="bank">提现到银行卡</button> -->
+</div>
+
+
+    <!--浮动层-->
+    <div class="ftc_wzsf">
+        <div class="srzfmm_box">
+            <div class="qsrzfmm_bt clear_wl">
+                <img src="/static/mobile/paypassword/images/xx_03.jpg" class="tx close fl">
+                <span class="fl">请输入支付密码</span></div>
+            <div class="zfmmxx_shop">
+                <div class="mz">您的提现金额为</div>
+                <div class="zhifu_price"></div></div>
+            <ul class="mm_box">
+                <li></li><li></li><li></li><li></li><li></li><li></li>
+            </ul>
+        </div>
+        <div class="numb_box">
+            <div class="xiaq_tb">
+                <img src="/static/mobile/paypassword/images/jftc_14.jpg" height="10"></div>
+            <ul class="nub_ggg">
+                <li><a href="javascript:void(0);" class="zf_num">1</a></li>
+                <li><a href="javascript:void(0);" class="zj_x zf_num">2</a></li>
+                <li><a href="javascript:void(0);" class="zf_num">3</a></li>
+                <li><a href="javascript:void(0);" class="zf_num">4</a></li>
+                <li><a href="javascript:void(0);" class="zj_x zf_num">5</a></li>
+                <li><a href="javascript:void(0);" class="zf_num">6</a></li>
+                <li><a href="javascript:void(0);" class="zf_num">7</a></li>
+                <li><a href="javascript:void(0);" class="zj_x zf_num">8</a></li>
+                <li><a href="javascript:void(0);" class="zf_num">9</a></li>
+                <li><a href="javascript:void(0);" class="zf_empty">清空</a></li>
+                <li><a href="javascript:void(0);" class="zj_x zf_num">0</a></li>
+                <li><a href="javascript:void(0);" class="zf_del">删除</a></li>
+            </ul>
+        </div>
+        <div class="hbbj"></div>
+    </div>
+
+<script>
+    $(function () {
+        $('#goodsUpload').diyUpload({
+            url: '/uploadFilePath',
+            success: function (data) {
+            },
+            error: function (err) {
+            },
+            buttonText: '',
+            accept: {
+                title: "Images",
+                extensions: 'gif,jpg,jpeg,bmp,png'
+            },
+            thumb: {
+                width: 800,
+                height: 1142,
+                quality: 200,
+                allowMagnify: true,
+                crop: true,
+                type: "image/jpeg"
+            }
+        });
+
+
+    });
+
+    /*var text = document.getElementById("zhejiushiwo");
+    alert(text.innerHTML)*/
+    function whole_total() {
+        var total = {$member.money};
+        $('#num').val(total);
+    }
+
+    var start_ajax = false;
+    function total_ajax() {
+        if (start_ajax == true) {
+            return false;
+        }
+        start_ajax = true;
+        var total = {$member.money};
+        var num = $('#num').val();
+        if (num > total) {
+            mui.toast('您的金额不足！');
+            start_ajax = false;
+            return false;
+        }
+        if (num <= 0) {
+            mui.toast('请输入提现金额！');
+            start_ajax = false;
+            return false;
+        }
+        if (num > 0 && num < 10) {
+            mui.toast('单次最低提现10元！');
+            start_ajax = false;
+            return false;
+        }
+        if (num > 0 && num < 10) {
+            mui.toast('单次最低提现10元！');
+            start_ajax = false;
+            return false;
+        }
+        if (num > 20000) {
+            mui.toast('单次最高不得超过2万元！');
+            start_ajax = false;
+            return false;
+        }
+        var img = $('.img');
+        var img_arr = [];
+        for (var i = 0; i < img.length; i++) {
+            if (i < 9) img_arr[i] = img[i].src;
+        }
+        $.ajax({
+            'type': 'post',
+            'url': "{:url('member/total_ajax')}",
+            'data': {img: img_arr, num: num},
+            'dataType': 'json',
+            success: function (data) {
+                start_ajax = false;
+                mui.toast(data.msg);
+               if (data.code == 10000) {
+                 setTimeout(function () {
+                    window.history.go(-1);
+                 });
+               }
+            },
+            error: function () {
+                start_ajax = false;
+            }
+        });
+
+    }
+    
+</script>
+ <script type="text/javascript">
+    $(function(){
+        var img_arr = [];
+        var money = '';
+        //出现浮动层
+        $("#bank").click(function(){
+            var money = $('#num').val();
+            var bank_card = "{$bank}";
+            if (bank_card == ''){
+                mui.toast('请绑定银行卡!');
+                return false;
+            }
+            var total = {$member.money};
+            var num = $('#num').val();
+            if (num > total) {
+                alert('您的金额不足！');
+                start_ajax = false;
+                return false;
+            }
+            if (num <= 0) {
+                alert('请输入提现金额！');
+                start_ajax = false;
+                return false;
+            }
+            if (num > 0 && num < 10) {
+                alert('单次最低提现10元！');
+                start_ajax = false;
+                return false;
+            }
+            if (num > 20000) {
+                alert('单次最高提现20000元！');
+                start_ajax = false;
+                return false;
+            }
+            var img = $('.img');
+            //var img_arr = [];
+            for (var i = 0; i < img.length; i++) {
+                if (i < 9) img_arr[i] = img[i].src;
+            }
+
+              $.ajax({
+                    'type': 'post',
+                    'url': "{:url('member/draw_bank')}",
+                    'data': {img: img_arr, num: num},
+                    'dataType': 'json',
+                    success: function (data) {
+                        start_ajax = false;
+                        mui.toast(data.msg);
+                       if (data.code == 10000) {
+                          $(".zhifu_price").html("￥"+money);
+                          $(".ftc_wzsf").show();
+                       }
+                    },
+                    error: function () {
+                        start_ajax = false;
+                    }
+                });
+
+           
+        });
+        //关闭浮动
+        $(".close").click(function(){
+            $(".ftc_wzsf").hide();
+            $(".mm_box li").removeClass("mmdd");
+            $(".mm_box li").attr("data","");
+            i = 0;
+        });
+            //数字显示隐藏
+        $(".xiaq_tb").click(function(){
+            $(".numb_box").slideUp(500);
+        });
+        $(".mm_box").click(function(){
+            $(".numb_box").slideDown(500);
+        });
+            //----
+        var i = 0;
+        $(".nub_ggg li .zf_num").click(function(){
+                
+            if(i<6){
+                $(".mm_box li").eq(i).addClass("mmdd");
+                $(".mm_box li").eq(i).attr("data",$(this).text());
+                i++
+                if (i==6) {
+                  setTimeout(function(){
+                    var data = "";
+                        $(".mm_box li").each(function(){
+                        data += $(this).attr("data");
+                    });
+                    mui.alert('支付成功', '', function() {
+                        location.href="/mobile/member/withdraw_notify";
+                    });
+                  },100);
+                };
+            } 
+        });
+            
+        $(".nub_ggg li .zf_del").click(function(){
+            if(i>0){
+                i--
+                $(".mm_box li").eq(i).removeClass("mmdd");
+                $(".mm_box li").eq(i).attr("data","");
+            }
+        });
+
+        $(".nub_ggg li .zf_empty").click(function(){
+            $(".mm_box li").removeClass("mmdd");
+            $(".mm_box li").attr("data","");
+            i = 0;
+        });
+         
+    });
+</script>
+</body>
+</html>

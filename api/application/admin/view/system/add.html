@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+
+  <title>添加广告</title>
+  <!--pickers css-->
+  <link rel="stylesheet" type="text/css" href="/static/admin/js/bootstrap-datepicker/css/datepicker-custom.css" />
+      <!--file upload-->
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/bootstrap-fileupload.min.css" />
+  <!--common css-->
+  <link href="/static/admin/css/style1.css" rel="stylesheet">
+  <link href="/static/admin/css/style-responsive.css" rel="stylesheet">
+  <link href="/static/admin/css/iframe-main.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<section>
+
+        <div class="page-heading">
+            <h3>添加广告</h3>
+            <ul class="breadcrumb">
+                <li><a href="#">系统设置</a></li>
+                <li class="active">添加广告</li>
+            </ul>
+        </div>
+        <!--body wrapper start-->
+        <section class="wrapper">
+        <!-- page start-->
+<form class="cmxform form-horizontal adminex-form" id="adForm"  method="post" action="/admin/system/add.html" enctype="multipart/form-data" >
+        <div class="row">
+            <div class="col-md-9">
+            <section class="panel">
+                <header class="panel-heading">
+                    基本信息
+                </header>
+                
+                  <div class="panel-body">
+
+                          <div class="form-group">
+                              <label class="col-sm-2 control-label">标题</label>
+                              <div class="col-sm-10">
+
+                                  <input type="text" id="name" name="name" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="" placeholder="标题" data-original-title="请填写景区的名称" required>
+
+                              </div>
+                          </div>
+
+                          <div class="form-group">
+                              <label class="col-sm-2 control-label">介绍</label>
+                              <div class="col-sm-10">
+                                  <textarea class="form-control " id="desc" name="desc"></textarea>
+                              </div>
+                          </div>
+
+                          <div class="form-group">
+                              <label class="col-sm-2 control-label">链接</label>
+                              <div class="col-sm-10">
+
+                                  <input type="text" id="url" name="url" class="form-control tooltips" data-trigger="hover" data-toggle="tooltip" title="" placeholder="链接" data-original-title="链接地址" required>
+
+                              </div>
+                          </div>
+
+                          <div class="form-group">
+                              <label class="col-sm-2 control-label">图片设置</label>
+                              <div class="col-sm-10">
+                                           <label class="col-sm-2 control-label">高度</label>  
+                                          <div class="col-md-4 ">
+                                              <input type="text"  id="height" name="height" class="form-control" placeholder="宽度">
+                                          </div>
+                                           
+                                          <label class="col-sm-2 control-label">宽度</label>
+                                          <div class="col-md-4 ">
+                                              <input type="text"  id="width"  name="width" class="form-control" placeholder="宽度">
+                                          </div>
+                                          
+                                      
+                                   
+                              </div>
+                          </div>
+
+                           <div class="form-group last">
+                                <label class="col-sm-2 col-sm-2 control-label">上传图片</label>
+                                <div class="col-sm-10">
+                                    <div class="fileupload fileupload-new" data-provides="fileupload">
+                                        <div class="fileupload-new thumbnail" style="height: 150px;">
+                                            <img src="/static/admin/images/no-img.png" alt="广告图片" />
+                                        </div>
+                                        <div class="fileupload-preview fileupload-exists thumbnail" style="max-height: 150px; line-height: 20px;"></div>
+                                        <div>
+                                               <span class="btn btn-default btn-file">
+                                                 <span class="fileupload-new"><i class="fa fa-paper-clip"></i> 保存图片</span>
+                                                 <span class="fileupload-exists"><i class="fa fa-undo"></i> 更换图片</span>
+                                                 <input type="file" name="thumb" class="default" />
+                                               </span>
+                                            <a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash"></i> 删除</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                          
+
+                          <div class="form-group">
+                            <div class="col-sm-12">                    
+                                <input type="submit" value="提交发布" class="btn btn-primary pull-right">  
+                            </div>
+                          </div>
+
+
+                  </div>
+                
+            </section>
+        </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                广告位置
+                        <span class="tools pull-right">
+                            <a class="fa fa-chevron-down" href="javascript:;"></a>
+                         </span>
+                            </header>
+                            <div class="panel-body">
+                              
+                                <select class="form-control input-sm m-bot15" name="position_id">
+                                     {volist name='position' id='v'}
+                                    <option value="{$v.id}">{$v.name}</option>
+                                    {/volist}
+
+                                </select>
+
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                时间设置
+                        <span class="tools pull-right">
+                            <a class="fa fa-chevron-down" href="javascript:;"></a>
+                         </span>
+                            </header>
+                            <div class="panel-body">
+
+                                  <div class="form-group">
+                                    <div class="col-md-12 ">
+                                        <label for="sale_start">开始时间</label>
+                                        <input class="form-control form-control-inline input-medium default-date-picker"  name="start_time" size="12" type="text" value="" />  
+                                    </div>
+
+                                    <div class="col-md-12 ">
+                                        <label for="sale_start">结束时间</label>
+                                        <input class="form-control form-control-inline input-medium default-date-picker"  name="end_time" size="12" type="text" value="" />  
+                                    </div>
+
+                                  </div>
+                 
+
+                            </div>
+                        </section>
+                    </div>
+                
+                  
+                </div>
+
+                
+
+            </div>
+        </div>
+  </form>      
+        <!-- page end-->
+        </section>
+        <!--body wrapper end-->
+
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/static/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/modernizr.min.js"></script>
+<script src="/static/admin/js/jquery.nicescroll.js"></script>
+
+<!--pickers plugins-->
+<script src="/static/admin/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<!--file upload-->
+<script src="/static/admin/js/bootstrap-fileupload.min.js"></script>
+<!--common scripts for all pages-->
+<script src="/static/admin/js/scripts.js"></script>
+
+<script type="text/javascript">
+  $(function(){
+      window.prettyPrint && prettyPrint();
+      $('.default-date-picker').datepicker({
+          format: 'yyyy-mm-dd'
+      });
+   });
+</script>
+
+
+
+</body>
+</html>

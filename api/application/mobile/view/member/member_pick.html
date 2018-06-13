@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>选择客户</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="/static/mobile/css/mui.min.css">
+		<link rel="stylesheet" href="/static/mobile/css/pickClient.css" />
+		<script src="/static/mobile/js/match.js"></script>
+		<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+	</head>
+	<body>
+		<!--公共头部-->
+		
+		<!--内容部分-->
+		<div class="mui-content mui-radio">
+			<ul class="mui-table-view">
+				{volist name='info' id='v'}
+				<li class="oli">
+					<div class="mui-input-row mui-radio mui-left">
+						<a href="javascript:;" style="display: flex;" class="aa">
+							<div class="mui-media-body">
+								<p class="p1">{$v.nickname}</p>
+								<p class='mui-ellipsis p1'>{$v.mobile}</p>
+							</div>
+							<div class="mui-media-body zlist">
+								<p class="p1">总消费</p>
+								<p class="mui-ellipsis p2">{$v.price}元</p>
+							</div>
+						</a>
+						<input name="radio" value="{$v.id}"  type="radio"  class="iput ">
+					</div>
+				</li>
+				{/volist}
+			</ul>
+		</div>
+		<div class="btn">
+			<button type="button" class="mui-btn mui-btn-primary mui-btn-block" onclick="gain_value()">确定</button>
+		</div>
+	</body>
+</html>
+	
+<script>
+	// 获取input值
+	function gain_value(){
+	    var str = document.getElementsByName("radio");
+	    var selectvalue=null;
+
+	             for(var i=0;i<str.length;i++){
+	                    if(str[i].checked==true) {
+	                             selectvalue=str[i].value;
+	                   }
+	            }
+	            console.log(selectvalue);
+	            //return false;
+		if(selectvalue == null)
+		{
+		 alert("未选择客户！");
+		}
+		else
+		{
+		 $.post('/mobile/member/member_y',{client_id:selectvalue},function(res){
+		 	if(res.status == true){
+		 		location.href='/mobile/member/member_donate';
+		 	}
+	    	},'json')
+		}
+	    
+	}
+	
+</script>
+

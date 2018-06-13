@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>常用信息</title>
+	<link rel="stylesheet" href="/static/mobile/css/info.css">
+	<link rel="stylesheet" href="/static/admin/js/layui/css/layui.mobile.css">
+</head>
+<body onload="loaded()">
+	<div class="box" >
+		<header><a href="javascript:history.go(-1)" class="back"></a>出游人信息</header>
+		<div id="wrapper">
+			<div id="scroller">
+				{volist name='info' id='v'}
+				<div class="list">
+					<div class="list-info">
+						<p class="name"><span>{$v.use_name}</span></p>
+						<p class="card"><span>身份证</span>{$v.use_card}</p>
+					</div>
+					<div class="edit">
+						<a class="delete-btn" id="{$v.id}"><span></span>删除</a><a href="/mobile/member/member_mod/id/{$v.id}" class="edit-btn"><span></span>编辑</a>
+					</div>
+				</div>
+				{/volist}
+				<!-- 此DIV不删除 -->
+				<div style="height: 2.5rem"></div>
+		</div>
+		
+		</div>
+		<a href="/mobile/member/member_addpeople" class="add">新增</a>
+	</div>
+	<script src="/static/mobile/js/rem.js"></script>
+	<script src="/static/mobile/js/iscroll.js"></script>
+	<script src="/static/mobile/js/demoUtils.js"></script>
+	<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+	<script src="/static/mobile/js/layer/layer.js"></script>
+	<script>
+		var myScroll;
+
+function loaded () {
+
+	myScroll = new IScroll('#wrapper',{ mouseWheel: true ,click:true});
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+	capture: false,
+	passive: false
+} : false);
+
+		/*$(function(){
+			$(document).on('click', '.delete-btn', function(event) {
+				$(this).closest(".list").remove()
+				event.preventDefault();
+			});
+		})*/
+		//删除联系人
+        $(document).on("click",".delete-btn",function(){
+        	var id = $(this).attr("id");
+	con=confirm("确定删除?"); //在页面上弹出对话框
+	if(con==true) start(); 
+            function start(){
+            	//var id = $(this).attr("id");
+            	
+
+	              $.post('/mobile/member/delect_contact',{id:id},function(res){
+	              if(res.status == true){
+	                alert("删除成功!");
+	                
+	                    window.location.reload();
+	                
+	              }else{
+	              	alert("删除失败!");
+	              }
+	          },'json')
+	            }
+	        });
+	</script>
+</body>
+</html>

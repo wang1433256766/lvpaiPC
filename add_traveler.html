@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>添加出游人</title>
+	<link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/add_traveler.css">
+</head>
+<body>
+	<div class="main-container">
+		<div class="form-control">
+			<div class="label">姓名：</div>
+			<div class="form-input">
+				<input id="userName" type="text" placeholder="请填写姓名" class="css-control">
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label">年龄：</div>
+			<div class="form-input">
+				<input id="userAge" type="text" placeholder="请填写年龄" class="css-control">
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label">性别：</div>
+			<div class="form-input">
+				<select name="" id="userSex" class="css-control select-control">
+					<option value="1">男</option>
+					<option value="2">女</option>
+					<option value="保密">保密</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label">儿童/成人：</div>
+			<div class="form-input">
+				<select name="" id="userType" class="css-control select-control">
+					<option value="0">儿童</option>
+					<option value="1">成人</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label">联系方式：</div>
+			<div class="form-input">
+				<input id="userMobile" type="text" placeholder="请填写联系方式" class="css-control">
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label">证件类型：</div>
+			<div class="form-input">
+				<select name="" id="userCardType" class="css-control select-control">
+					<option value="1">身份证</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-control">
+			<div class="label">证件号码：</div>
+			<div class="form-input">
+				<input id="userCard" type="text" placeholder="请填写证件号码" class="css-control">
+			</div>
+		</div>
+		<div class="form-control">
+			<button type="button" id="submitBtn">确&nbsp;认</button>
+		</div>
+	</div>
+	<script src="./assert/jquery.min.js"></script>
+	<script src="./assert/layer/layer.js"></script>
+    <script src="./js/add_traveler.js"></script>
+</body>
+</html>

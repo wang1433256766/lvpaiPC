@@ -83,6 +83,7 @@
     min-width: 1200px;
     height: 300px;
     background: url('../images/background.jpg');
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
 }
@@ -181,6 +182,12 @@
 .footer .footer-top .code .phone {
     display: inline-block;
     text-align: center;
+}
+
+.footer .footer-top .code .weixin img,
+.footer .footer-top .code .phone img{
+    width: 91px;
+    height: 93px;
 }
 
 .footer .footer-top .code .weixin p,

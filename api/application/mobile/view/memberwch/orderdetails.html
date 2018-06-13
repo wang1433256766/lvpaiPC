@@ -1,0 +1,234 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="/static/mobile/css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/mui.picker.min.css" />
+		<link rel="stylesheet" href="/static/mobile/js/layer/mobile/need/layer.css">
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/public.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/order.css"/>
+		<script type="text/javascript">
+	     (function (doc, win) {
+	        var docEl = doc.documentElement,
+	            resizeEvt = 'onorientationchange' in window ? 'onorientationchange' : 'resize',
+	            recalc = function () {
+	                var clientWidth = docEl.clientWidth;
+	                if (!clientWidth) return;
+	                if(clientWidth>=750){
+	                    docEl.style.fontSize = '100px';
+	                }else{
+	                    docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+	                }
+	            };
+	
+	        if (!doc.addEventListener) return;
+	        win.addEventListener(resizeEvt, recalc, false);
+	        doc.addEventListener('DOMContentLoaded', recalc, false);
+	    })(document, window);
+	    </script>
+	    <script type="text/javascript">
+	    	function jump_sh(order_sn)
+	    	{
+	    		location.href = "/mobile/memberwch/selectravel";
+	    	}
+	    </script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">提交订单</h1>
+		</header>
+		<div class="mui-content">
+			<form action="/mobile/mall/suborder" method="post" id="add_order">
+			<ul class="dingdan">
+				<!--处理中-->
+		    	<li>
+		    		
+		    		<a href="javascript:;">
+		    			<div class="xingxi bgb">
+			    			<p class="p1 mui-clearfix">
+			    				<span class="fl">{$info.order.name}</span>
+								<input type="hidden" name="id" value="{$info.order.id}" id="id">
+							
+			    			</p>
+			    			<div class="mui-clearfix details-jg">
+			    				<p class="fl">
+									<span>￥<span id="price">{$info.order.price}</span><em>/个</em></span>
+			    				</p>
+			    			</div>
+			    		</div>
+			    	</a>
+		    	</li>
+		    	<!--处理中 end-->
+			</ul>
+			<div class="details-date">
+				<div class="xq_riqi_two">
+					<span>数量</span>
+					<div class="mui-numbox" data-numbox-min='0' data-numbox-max='999'>
+						<button class="mui-btn mui-btn-numbox-minus" type="button" onclick="change()">-</button>
+						<input id="test" class="mui-input-numbox" type="number" value="" />
+						<button class="mui-btn mui-btn-numbox-plus" type="button" onclick="change()">+</button>
+					</div>
+				</div>
+			</div>
+			<div class="xq_info">
+				<a class="demo2"  onclick="">
+					<p class="mui-clearfix">
+						<span class="fl">收货信息</span>
+						<span id="demo-text1" class="fr" onclick="jump_sh()">选择收货地址</span>
+					</p>
+				</a>
+					{if empty($info.address)}
+					<p class="p1">收货人<span id="cyr1">选择收货人信息</span></p>
+					{else /}
+					{volist name="info.address" id="v"}
+					<p class="p1" id="username">收货人<span>{$v.username}&nbsp;&nbsp;{$v.phone}</span></p>
+					<p class="p1">收货地址<span>{$v.province_city}{$v.address}&nbsp;&nbsp;<!-- {$i.use_card} --></span></p>
+					<input type="hidden" value="{$v.id}" id="address_id">
+					{/volist}
+					{/if}
+			</div>
+			<div class="mui-input-row mui-checkbox dikou">
+				<p class="fl">当前可用<i class="orange">{$info.score}</i>个旅游币抵扣</p>
+				<p class="fr">￥<i id="score">{$info.score/20}</i><input name="checkbox1" id="checkbox1" value="Item1" type="checkbox"></p>
+			</div>
+			<!-- <p class="but-p">使用门票后,可获得<i class="orange" id="coin"></i>旅游币</p> -->
+			</form>
+		</div>
+		
+		<div class="foot-nav">
+			<p class="fl">订单总额<i id="total"></i><a href="#minxi">明细</a></p>
+			<button type="button" class="mui-btn tijiao" onclick="submit()">提交订单</button>
+		</div>
+		<!--弹出层-->
+		<div id="minxi" class="mui-popover mui-popover-action mui-popover-bottom">
+			<h5>费用说明</h5>
+			<p><span class="fl">{$info.order.name}</span><span class="fr">旅行币{$info.order.integral}×<i id="tnum"></i></span></p>
+			<p><span class="fl">旅行币抵扣</span><span id="discount"><del class="fr">{$info.score/20}</del></span></p>
+		</div>
+<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+<script src="/static/mobile/js/layer/mobile/layer.js"></script>
+<script src="/static/mobile/js/mui.min.js"></script>
+<script src="/static/mobile/js/mui.picker.min.js"></script>
+<script type="text/javascript">
+
+	mui.init({
+		swipeBack: false,
+	});
+	(function($) {
+		$.init();
+		var result = $('#demo-text')[0];
+		var btns = $('.demo1');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+                var options={
+                    type:"date",
+                    beginDate:curdate,
+                }
+                var picker = new mui.DtPicker(options);
+                picker.show(function(rs) {
+                    //$(obj).siblings().html('游玩时间 : '+rs.text);
+                    result.innerText = rs.text;
+                    picker.dispose();
+                });
+//				var optionsJson = this.getAttribute('data-options') || '{}';
+//				var options = JSON.parse(optionsJson);
+//				var id = this.getAttribute('id');
+//
+//				var picker = new $.DtPicker(options);
+//				picker.show(function(rs) {
+//					result.innerText = rs.text;
+//					picker.dispose();
+//				});
+			}, false);
+		});
+	})(mui);
+</script>
+<script>
+    sub();
+	function change() {
+        $('#tnum').html(document.getElementById("test").value);
+        sub();
+    }
+	$('#checkbox1').change(function () {
+		sub();
+    });
+
+    function jump(){
+      var num = Math.floor(document.getElementById("test").value);
+      var date = $('#demo-text').html();
+	  window.location.href="/mobile/mall/selecttravel/num/"+num+'/use_date/'+date;
+	}
+	function sub() {
+        var check = $("input[name='checkbox1']").prop('checked');
+		var price = $('#price').html();
+		var num = document.getElementById("test").value;
+		var total = price*num;
+		var score = $('#score').html();
+        $('#coin').html(total*0.05*20);
+		if (check == true) {
+		    $('#discount').html('<i class="fr">￥'+score+'</i>');
+		    total = total - score;
+		    if (total <= 0) {
+                $('#discount').html('<i class="fr">￥'+price*num+'</i>');
+		        total = 0.01;
+			}
+		}else {
+            $('#discount').html('<del class="fr">￥'+score+'</del>');
+		}
+        $('#total').html('￥'+total);
+    }
+
+    function submit() {
+    	var address_id = $("#address_id").val();
+		var username = $('#username').html();
+		if (username == '') {
+            layer.open({
+                content: '请选择收货人信息！'
+                ,skin: 'msg'
+                ,time: 2 //2秒后自动关闭
+            });
+            return false;
+		}
+
+		var nums = document.getElementById("test").value;
+		var num = $('#num').val();
+		if (nums == null) {
+            layer.open({
+                content: '请选择购买数量！'
+                ,skin: 'msg'
+                ,time: 2 //2秒后自动关闭
+            });
+            return false;
+		}
+
+        var check = $("input[name='checkbox1']").prop('checked');
+        if (check == true) {
+			var status = 1
+        }else {
+            var status = 0
+        }
+
+
+        $.post('/mobile/memberwch/confirmpay',{nums:nums,check:status,address_id:address_id},function(res){
+			if (res.status == true) {
+                window.location.href ='/mobile/memberwch/confirmpay';
+			}else {
+                layer.open({
+                    content: res.info
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
+			}
+		},'json')
+
+    }
+
+</script>
+</body>
+
+</html>

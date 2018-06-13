@@ -1,0 +1,74 @@
+body{
+	background: #f8f8f8;
+	font-size: 14px;
+	color: #222222;
+}
+.main-container{
+	width:100%;
+	max-width:1200px;
+	margin: 0 auto;
+}
+.main-container>p{
+	padding-left: 20px;
+	line-height: 55px;
+}
+.main-container .order-detail{
+	width: 100%;
+	height: 178px;
+	background: #fff;
+	padding: 0px 20px;
+}
+.main-container .order-detail .order-detail-title{
+	width: 100%;
+	height: 55px;
+	line-height: 55px;
+	color: #999999;
+	border-bottom: 1px dashed #e5e5e5;
+}
+.main-container .order-detail .order-detail-title>span:last-child{
+	float: right;
+	color: #ee8823;
+}
+.main-container .order-detail .order-detail-content{
+	width: 100%;
+	height: 123px;
+}
+.main-container .order-detail .order-detail-content>p{
+	height: 73px;
+	line-height: 73px;
+}
+.main-container .order-detail .order-detail-content span{
+	color: #999999;
+}
+.main-container .order-detail .order-detail-content>span:last-child{
+	float: right;
+	color: #222222;
+}
+.main-container .order-detail .order-detail-content>span:last-child strong{
+	color: #ee8823;
+}
+
+/*出游人信息样式*/
+.main-container .traveler-info{
+	width: 100%;
+	background: #fff;
+	padding: 0px 20px 40px;
+}
+.main-container .traveler-info table{
+	width: 100%;
+    border-collapse: collapse;
+}
+.main-container .traveler-info table thead tr{
+	text-align: center;
+	color: #999999;
+	height: 55px;
+	line-height: 55px;
+	border-bottom: 1px solid #bfbfbf;
+}
+.main-container .traveler-info table tbody tr{
+	text-align: center;
+	height: 55px;
+	line-height: 55px;
+	border-bottom: 1px dashed #e5e5e5;
+}
+

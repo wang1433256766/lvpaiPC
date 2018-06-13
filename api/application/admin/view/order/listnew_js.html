@@ -1,0 +1,260 @@
+<script type="text/javascript">
+
+
+    var $faciListTable = $('#faciListTable');
+
+    function initTable() {
+        $faciListTable.bootstrapTable('destroy');
+        $faciListTable.bootstrapTable({
+            url: '/admin/order/listNew.html', //获取数据的Servlet地址
+            striped: true,  //表格显示条纹
+            pagination: true, //启动分页
+            sortName: 'add_time',
+            sortOrder: 'desc',
+            pageSize: 15,  //每页显示的记录数
+            pageNumber:1, //当前第几页
+            pageList: [10, 15, 20, 25],  //记录数可选列表
+            search: false,
+            striped: true, //隔行变色
+            toolbar: '#list_search_faci',
+            showColumns: false,  //显示下拉框勾选要显示的列
+            showRefresh: true,  //显示刷新按钮
+            sidePagination: "server", //表示服务端请求
+            responseHandler:function(res){
+                return res.data;
+            },
+            queryParamsType : "undefined",
+            queryParams: function queryParams(params) {   //设置查询参数
+                var param = {
+                    //这里是在ajax发送请求的时候设置一些参数 params有什么东西，自己看看源码就知道了
+                    pageNumber: params.pageNumber,
+                    pageSize: params.pageSize,
+                    sortName: params.sortName,
+                    sortOrder: params.sortOrder,
+                    str_time : $('#history_s').val(),
+                    end_time : $('#history_e').val(),
+                    order_sn : $('#order_sn').val(),
+                    status : $('#status').val(),
+                    spot_id : $('#spot_id').val(),
+                    keyList : $('#keyList').val(),
+                    action : 'ajaxList'
+                };
+                return param;
+            },
+            onLoadError: function(){  //加载失败时执行
+                layer.msg("加载数据失败", {time : 1500, icon : 2});
+            },
+            columns:[
+
+                {
+                    title: '订购日期',
+                    field: 'add_time',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return timeGo(value);
+                    }
+                },
+                {
+                    title: '订单编号',
+                    field: 'order_sn',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    title: '商品名称',
+                    field: 'ticket_name',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    title: '用户电话',
+                    field: 'mobile',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    title: '订购数量',
+                    field: 'num',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    title: '支付金额',
+                    field: 'order_total',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+                {
+                    title: '退款金额',
+                    field: 'refund_price',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function(value,row,index){
+                        return value;
+                    }
+                },
+
+                {
+                    field: 'status',
+                    title: '订单状态',
+                    sortable: true,
+                    align: 'center',
+                    formatter: function(value,row,index){
+                        if(value==0){
+                            return '<a class="btn btn-warning btn-xs" >未支付</a>';
+                        }
+                        else if(value==1){
+                            return '<a class="btn btn-info btn-xs" >已支付</a>';
+                        }
+                        else if(value==2){
+                            return '<a class="btn btn-primary btn-xs" >处理中</a>';
+                        } else if(value==3){
+                            return '<a class="btn btn-danger btn-xs" >已取消</a>';
+                        } else if(value==4){
+                            return '<a class="btn btn-default btn-xs" >已退款</a>';
+                        } else if(value==5){
+                            return '<a class="btn btn-success btn-xs" >已核销</a>';
+                        }else if(value==6){
+                            return '<a class="btn btn-success btn-xs" >部分退款</a>';
+                        }else {
+                            return "未知";
+                        }
+                    }
+                },
+                {
+                    field: 'operate',
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value,row,index){
+                        var e='';
+                        var d='';
+                        d = '<a href="#" mce_href="#" data_from="lookImgdiv" data_id="'+row.id+'"  onclick="lookImg(this)" >查看详情</a> ';
+                        return e+d;
+                    }
+                }
+            ]
+
+        });
+    }
+
+    /**
+     * 将时间转换为时间戳
+     * */
+    function gettimes(time) {
+        var times = new Date(time.replace(/-/g,'/'));
+        return times;
+    }
+
+    $(document).ready(function () {
+        //调用函数，初始化表格
+        initTable();
+        $("#edit_area").keydown(function(e) {
+            digitInput($(this), e);
+        });
+    });
+    //搜索
+    function p_search() {
+        $faciListTable.bootstrapTable('refresh');
+    }
+    var $boundUser = $('#addFaciTable');
+    function addBound_search(){
+        $boundUser.bootstrapTable('refresh');
+    }
+
+    //修改审核状态
+    function edit(obj) {
+        var id = $(obj).attr('data_id');
+        $.ajax({
+            type: "post",
+            url: '/admin/PutForward/index.html',
+            data:{
+                'id':id,
+                'status': $(obj).attr('data_status'),
+                'action' : 'setStatus'
+            },
+            dataType: 'JSON',
+            success: function(data){
+                if (data.code == 200) {
+                    layer.msg(data.msg);
+                } else {
+                    layer.msg(data.msg);
+                }
+                p_search();
+            },
+            error:function(){
+                layer.msg('数据错误！');
+            }
+        });
+    }
+    /**
+     * 查看凭证
+     * */
+    function lookImg(obj){
+        var id = $(obj).attr('data_id');
+        console.log(id);
+        var p = layer.open({
+            type: 2,
+            title: '订单详情',
+            content: '/admin/order/detail/id/'+id+'.html',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['85%', '90%'],
+            btn: ['确定'], // 按钮
+            yes: function(index, layero){
+                layer.closeAll('page');
+            }
+        });
+    }
+
+        /**
+         * 将时间戳转换为日期
+         * */
+        function timeGo(value){
+            var value_time = parseInt(value);
+            var time = new Date(value_time * 1000);
+            var ymdhis = "";
+            ymdhis += time.getFullYear() + "-";
+            ymdhis += (time.getMonth() + 1) + "-";
+            ymdhis += time.getDate();
+            ymdhis += " " + time.getHours() + ":";
+            ymdhis += time.getMinutes() + ":";
+            ymdhis += time.getSeconds();
+            return ymdhis;
+        }
+    //导出
+    function getForm(form) {
+        var o = {};
+        $.each(form.serializeArray(), function(index) {
+            if (o[this['name']]) {
+                o[this['name']] = o[this['name']] + "," + this['value'];
+            } else {
+                o[this['name']] = this['value'];
+            }
+        });
+        return o;
+    }
+    function exportOut() {
+//        window.location.href="http://www.jb51.net";
+        var param = getForm($('#list_search_faci'));
+        param = $.param(param);
+//        window.open(_ROOT_+'CheckList/exportCom?'+param+'&is_end=1');
+        window.location.href = '/admin/order/listNew?action=export&'+param+'&is_end=1';
+    }
+
+</script>

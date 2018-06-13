@@ -1,0 +1,58 @@
+<!--Created by wyg on 2018/1/23-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link rel="stylesheet" href="/static/mobile/css/listOfGoods.css">
+    <link href="/static/index/css/css.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/static/mobile/js/layer/mobile/need/layer.css">
+    <title>商品列表</title>
+</head>
+<body>
+    <div class="html">
+        <div class="content">
+            {volist name="data" id="v"}
+            <li>
+                <a href="/mobile/mall/goodsdetail/id/{$v.id}" style="color: #333">
+                    <div style="padding:0.3rem 0.3rem 0 0.3rem"><img src="{$v.img}"></div>
+                    <div>
+                        <p style="padding: 0 0.3rem 0 0">
+                            <span class="title">{$v.ticket_name}</span>
+                            {if $type == 1}<span class="titleBg">佣金：￥{$v.distribution}</span>{/if}
+                            {if $type == 2}
+                            <span class="titleBg">佣金：￥{$v.second_distribution}</span>
+                            {/if}
+                        </p>
+                        <p>
+                            <span class="price"><span>￥</span>{$v.shop_price}</span>
+                            <span class="sales">销售量：{$v.sale_num}</span>
+                        </p>
+                    </div>
+                </a>
+            </li>
+            {/volist}
+        </div>
+        <footer class="foot">
+            <nav class="foot-bar">
+                <a class="tab-item" href="/mobile/show/show">
+                    <span class="foot-item foot-show"></span>
+                    <span class="tab-label">秀秀</span>
+                </a>
+                <a class="tab-item foot-active" href="/mobile/mall/index">
+                    <span class="foot-item foot-shoppingmall"></span>
+                    <span class="tab-label">商城</span>
+                </a>
+                <a class="tab-item" href="/mobile/member/member_bus">
+                    <span class="foot-item foot-my"></span>
+                    <span class="tab-label">我的</span>
+                </a>
+            </nav>
+        </footer>
+    </div>
+<script src="/static/mobile/js/rem.js" type="text/javascript"></script>
+<script src="/static/mobile/js/jquery-1.9.1.min.js"></script>
+<script src="/static/mobile/js/layer/mobile/layer.js"></script>
+</body>
+</html>

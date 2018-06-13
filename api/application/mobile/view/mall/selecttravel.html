@@ -1,0 +1,198 @@
+<!--Created by wyg on 2018/1/24-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <link rel="stylesheet" href="/static/mobile/css/selectTravel.css">
+    <link rel="stylesheet" href="/static/mobile/js/layer/mobile/need/layer.css">
+    <title>选择出行人</title>
+    <style type="text/css">
+        .selectTitle {
+            
+            line-height: 0.88rem;
+        }
+        .selectAll {
+           display: none;
+           float:left;
+            margin-left: 15px;
+            font-weight: center;
+        }
+
+        .title {
+            width: 70%;
+             float:left;
+        }
+        #editman {
+           
+            display: block;
+            float:right;
+            margin-right: 15px;
+        }
+        
+
+        #delman {
+           
+            display: none;
+            float:left;
+        } 
+        .content ul {
+            margin-top :1.0rem;
+        }  
+    </style>
+    
+</head>
+<body>
+<div class="html">
+    <header>
+        <span class="left">
+            <a href="javascript:history.go(-1);"><img src="/static/mobile/img/back.png"></a>
+            <span>选择出行人</span>
+        </span>
+        <span class="right" onclick="location='/mobile/mall/adduser/num/{$num}'">新增出行人</span>
+    </header>
+    <div class="content">
+        <div class="selectTitle">
+            <span class="selectAll"><input type="checkbox" value="" id="selectAll"/>全选</span>
+            <p class="title">已经选择<span id="num">0</span>人</p>
+            <span id="editman">编辑</span>
+            <span id="delman">删除</span>
+        </div>
+        <ul id="list">
+            <!--是否选中 就是li 是否有 class selected-->
+            {volist name="data" id="v" empty="暂时没有数据"}
+            <li data-id="{$v.id}">
+                <div>
+                    <i></i>
+                    <p>
+                        <span>{$v.use_name}</span>
+                        <span>身份证<span>{$v.use_card}</span></span>
+                    </p>
+                </div>
+                <img src="/static/mobile/img/edit.png">
+            </li>
+            {/volist}
+        </ul>
+        <input type="hidden" name="n" id="n" value="{$num}">
+        <input type="hidden" name="use_date" id="use_date" value="{$use_date}">
+    </div>
+    <footer>
+        <p onclick="submit()">确定</p>
+    </footer>
+</div>
+<script src="/static/mobile/js/layer/mobile/layer.js"></script>
+<script src="/static/mobile/js/rem.js" type="text/javascript"></script>
+<script src="/static/mobile/js/jquery-1.9.1.min.js"></script>
+
+<script type="text/javascript">  
+    
+            $(function() {  
+                $("#selectAll").click(function(){  
+                    var _this = $('#list li');
+                    if(_this == ''){
+
+                    }else{
+                        var n = $('#n').val();
+                        if(getAllSelected().length>(n-1) && !_this.hasClass('selected')){
+                            layer.open({
+                                content: '您已选择'+n+'人了'
+                                ,skin: 'msg'
+                                ,time: 2 //2秒后自动关闭
+                            });
+                            return;
+                        }
+                        _this.toggleClass('selected');
+                        var arr = getAllSelected();
+                        var num = arr.length;
+                        console.log(n)
+                        if (num > n) {
+                            return false
+                        }
+                        $('#num').html(num);
+                    }
+                
+                    
+                })
+            }) 
+
+  
+    $(function(){
+        $('#list li').click(function(){
+           
+            var _this = $(this);
+            var n = $('#n').val();
+            if(getAllSelected().length>(n-1) && !_this.hasClass('selected')){
+                layer.open({
+                    content: '您已选择'+n+'人了'
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
+                return;
+            }
+            _this.toggleClass('selected');
+            var arr = getAllSelected();
+            var num = arr.length;
+            if (num > n) {
+                return false
+            }
+            $('#num').html(num);
+        })
+
+        $("#editman").click(function(){
+            $(".selectAll").show();
+            $("#editman").hide();
+            $("#delman").show();
+        })
+        $("#delman").click(function(){
+            if(confirm('确定要清除选中的出游信息?')){
+                    $.ajax({
+                        url: '/mobile/mall/onekeydel',
+                        type: 'post',
+                        dataType: 'JSON',
+                        data: {},
+                        success:function(data){
+                            if(data.code == 1){
+                                location.reload();
+                            }else{
+                               alert(data.msg);
+                            }
+                        }
+                    })
+                    
+                };
+        })
+    });
+    function submit(){
+        var arr = getAllSelected();
+        if (arr.length == 0) {
+            layer.open({
+                content: '请至少选择一位出行人！'
+                ,skin: 'msg'
+                ,time: 2 //2秒后自动关闭
+            });
+            return false;
+        }
+        var str = '';
+        for (var i=0;i<arr.length;i++){
+            str = str+','+arr[i];
+        }
+        str=str.substr(1);
+        var use_date = $('#use_date').val();
+        console.log("{$ticketid}")
+        location.href = '/mobile/mall/createorder/str/'+str+'/use_date/'+use_date+'/buy_num/'+"{$buy_num}"+'/id/'+"{$ticketid}";
+
+    }
+    function getAllSelected(){
+        var $list = $('#list li');
+        var _arr = [];
+        for(var i=0;i<$list.length;i++){
+            if($($list[i]).hasClass('selected')){
+                _arr.push($($list[i]).data('id'));
+            }
+        }
+        return _arr;
+    }
+</script>
+</body>
+</html>

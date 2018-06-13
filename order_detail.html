@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>订单详情</title>
+	<link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/order_detail.css">
+</head>
+<body>
+	<div class="main-container">
+		<p>订单信息</p>
+		<div class="order-detail">
+			<div class="order-detail-title">
+				<span>订单编号：<span id="orderNo">20180408144525</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span>下单日期：<span id="orderDate">2018-04-08</span></span>
+				<span id="orderStatus">待出行</span>
+			</div>
+			<div class="order-detail-content">
+				<p id="orderName">石燕湖生态旅游区团队票</p>
+				<span>出游时间：<span id="traverDate">2018-04-09</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span>旅行币折扣：￥0.00</span>
+				<span><strong id="orderUnitPrice">￥4140</strong>  x <span id="orderNum">30</span></span>
+			</div>
+		</div>
+		<p>出游人信息</p>
+		<div class="traveler-info">
+			<table>
+				<thead>
+					<tr>
+						<th>姓名</th>
+						<th>联系电话</th>
+						<th>证件号码</th>
+					</tr>
+				</thead>
+				<tbody id="travelInfo">
+					<!-- <tr>
+						<td>周某某</td>
+						<td>18888888888</td>
+						<td>400179199112082451</td>
+					</tr>
+					<tr>
+						<td>周某某</td>
+						<td>18888888888</td>
+						<td>400179199112082451</td>
+					</tr> -->
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script src="./assert/jquery.min.js"></script>
+	<script src="./js/toolkit.js"></script>
+    <script src="./js/order_detail.js"></script>
+</body>
+</html>

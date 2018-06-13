@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+
+  <title>景区列表</title>
+
+  <link href="/static/admin/css/style1.css" rel="stylesheet">
+  <link href="/static/admin/css/style-responsive.css" rel="stylesheet">
+  <link href="/static/admin/css/iframe-main.css" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/static/admin/js/html5shiv.js"></script>
+  <script src="/static/admin/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<section>
+            <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+                景区列表
+            </h3> 
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">景区管理</a>
+                </li>
+                <li class="active">景区列表</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+            <div class="row">
+
+        <div class="col-sm-12">
+        <section class="panel">
+            <header class="panel-heading">
+                景区列表
+                        <div class="pull-right">
+                              <a class="btn btn-info btn-sm" href="/admin/spot/exportExcel.html"><i class="fa fa-plus"></i>数据导出</a>
+                                <select class="input-sm m-bot15" name="region_id" onchange="search(this)">
+                                    <option value="0">所有地区</option>
+                                     {volist name='region' id='v'}
+                                      <option value="{$v.id}">{$v.name}</option>
+                                     {/volist}
+                                </select>
+
+                            <a class="btn btn-success btn-sm" href="/admin/spot/add"><i class="fa fa-plus"></i>&nbsp添加景区</a>
+                            <a id="show" href="#myModal" data-toggle="modal" style="display:none;"></a>
+                        </div>
+            </header>
+            
+            <div class="panel-body">
+                   <form action="/admin/spot/index.html" id="searchForm" method="get" class="form-inline">                        
+                         <div class="form-group pull-right ">   
+                              <input type="text" name="key" id="key" value="{$info.key}" class="form-control" placeholder="输入关键词搜索">            
+                              <button class="btn btn-success btn-sm" type="submit" >
+                                  <i class="fa fa-plus"></i>&nbsp确认
+                               </button>
+                          </div>
+                    </form>   
+                                                                                                 
+            </div>
+            <div class="panel-body">
+                <section id="unseen">
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                        <tr>
+                            <th class="numeric">ID</th>                            
+                            <th class="numeric">省份</th>                            
+                            <th class="numeric">城市</th>                            
+                            <th>景区名称</th>
+                            <th class="numeric">排序</th>
+                            <th class="numeric">推荐</th>
+                            <th class="numeric">热门</th>
+                            <th class="numeric">特惠</th>
+                            <th class="numeric">潇湘</th>
+                            <th class="numeric">状态</th>
+                            <th class="numeric">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                         {volist name='data' id='v'}
+                        <tr>
+                            <td class="numeric">{$v.id}</td>
+                            <td class="numeric"><a >{$v.province}</a></td>
+                            <td class="numeric"><a >{$v.city}</a></td>
+                            <td>{$v.title}</td>
+                            <td>
+                              <input type="text" class="form-control" name="sort" id="sort" value="{$v.sort}" size=4 onblur="sort(this,{$v.id})">
+                            </td>
+                            <td>
+                              {if $v.base eq 1}
+                              <a onclick="status(this,{$v.id},{$v.base},'base')" class="btn btn-success btn-xs">是</a>
+                              {else/}
+                              <a class="btn btn-danger btn-xs" onclick="status(this,{$v.id},{$v.base},'base')">否</a>
+                              {/if}
+                            </td>
+                             <td>
+                              {if $v.hot eq 1}
+                              <a class="btn btn-success btn-xs" onclick="status(this,{$v.id},{$v.hot},'hot')" >是</a>
+                              {else/}
+                              <a class="btn btn-danger btn-xs" onclick="status(this,{$v.id},{$v.hot},'hot')">否</a>
+                              {/if}
+                            </td>
+                            <td>
+                              {if $v.cheap eq 1}
+                              <a class="btn btn-success btn-xs" onclick="status(this,{$v.id},{$v.cheap},'cheap')">是</a>
+                              {else/}
+                              <a class="btn btn-danger btn-xs" onclick="status(this,{$v.id},{$v.cheap},'cheap')">否</a>
+                              {/if}
+                            </td>                          
+                            <td>
+                              {if $v.project eq 1}
+                              <a class="btn btn-success btn-xs" onclick="status(this,{$v.id},{$v.project},'project')">是</a>
+                              {else/}
+                              <a class="btn btn-danger btn-xs" onclick="status(this,{$v.id},{$v.project},'project')">否</a>
+                              {/if}
+                            </td>                          
+                            <td>
+                              {if $v.status eq 1}
+                              <a class="btn btn-success btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">显示</a>
+                              {else/}
+                              <a class="btn btn-danger btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">隐藏</a>
+                              {/if}
+                            </td>
+                            <td class="numeric">
+                                 <a class="btn btn-primary btn-xs"  href="/admin/spot/edit/id/{$v.id}">编辑</a>
+                                 <a class="btn btn-info btn-xs"  href="/admin/spot/spotCheck/spot_id/{$v.id}">查看</a>                               
+                            </td>
+                        </tr>
+                        {/volist}
+
+
+                        </tbody>
+                    </table>
+
+                            <div class="col-md-12 text-center clearfix">
+                                <ul class="pagination">
+                                   {$page}
+                                </ul>
+                            </div>
+
+                </section>
+            </div>
+        </section>
+
+        </div>
+        
+                
+
+            </div>
+        </div>
+        <!--body wrapper end-->
+</section>
+
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/static/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/modernizr.min.js"></script>
+<script src="/static/admin/js/jquery.nicescroll.js"></script>
+
+
+<!--common scripts for all pages-->
+<script src="/static/admin/js/scripts.js"></script>
+
+<script type="text/javascript">
+        function status(obj,id,value,act){
+            $.post('/admin/base/ajax1',{id:id,tab:'mall_spot',act:act,value:value},function(ret){
+                //alert(ret)
+                    if (ret.status == false) {
+                           error_msg($(".page-heading"),' ');
+                        }else{
+                           success_msg($(".page-heading"),' ');
+                            window.location.reload();
+                        }
+            },'json');
+        }
+
+        function sort(obj,id){
+            var value = $(obj).val();
+            $.post('/base/ajax',{id:id,tab:'shop_spot',act:'sort',value:value},function(ret){
+                    if (ret.status == false) {
+                          
+                        }else{
+                           
+                        }
+            },'json');
+        }
+
+      function search(obj)
+      {
+            var id = $(obj).val();
+            location.href = '/admin/spot/index/r_id/' + id;
+      }        
+</script>
+
+</body>
+</html>

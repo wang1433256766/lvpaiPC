@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>分销订单列表</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="/static/mobile/css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/public.css" />
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/order.css" />
+		<script type="text/javascript" charset="utf-8">
+			(function(doc, win) {
+				var docEl = doc.documentElement,
+					resizeEvt = 'onorientationchange' in window ? 'onorientationchange' : 'resize',
+					recalc = function() {
+						var clientWidth = docEl.clientWidth;
+						if(!clientWidth) return;
+						if(clientWidth >= 750) {
+							docEl.style.fontSize = '100px';
+						} else {
+							docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+						}
+					};
+
+				if(!doc.addEventListener) return;
+				win.addEventListener(resizeEvt, recalc, false);
+				doc.addEventListener('DOMContentLoaded', recalc, false);
+			})(document, window);
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" href="javascript:history.go(-1)"></a>
+			<h1 class="mui-title">分销订单列表</h1>
+		</header>
+		<div class="mui-content">
+			<!--选项卡-->
+			<div id="slider" class="mui-slider">
+				<!--<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">-->
+					<!--<a class="mui-control-item mui-active" href="#item1mobile">-->
+						<!--全部-->
+					<!--</a>-->
+					<!--<a class="mui-control-item" href="#item2mobile">-->
+						<!--待付款-->
+					<!--</a>-->
+					<!--<a class="mui-control-item" href="#item3mobile">-->
+						<!--待使用-->
+					<!--</a>-->
+					<!--<a class="mui-control-item" href="#item4mobile">-->
+						<!--已完成-->
+					<!--</a>-->
+					<!--<a class="mui-control-item" href="#item5mobile">-->
+						<!--售后-->
+					<!--</a>-->
+				<!--</div>-->
+
+				<div class="mui-slider-group">
+					<div id="item4mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll4" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<!--内容-->
+								<ul class="dingdan">
+									<!--已完成-->
+									{volist name="complete" id="c"}
+									<li>
+										<div class="riqi">
+
+											<p>下单日期：<span>{:date('Y-m-d H:i',$c.add_time)}</span></p>
+
+											<em class="wancheng">已完成</em>
+
+										</div>
+
+											<div class="xingxi" data-id="{$c.id}" data-status="{$c.status}">
+
+												<p class="p1 mui-clearfix">
+
+													<span class="fl">{$c.ticket_name}</span>
+
+													<span class="fr"><del>￥{$c.cost_price*$c.num}</del></span>
+												</p>
+
+												<div class="jiage mui-clearfix">
+
+													<p class="fl">
+
+														<span>￥{$c.price}</span><em>X{$c.num}</em>
+
+													</p>
+
+													<p class="fr">
+
+														合计：<span>￥{$c.order_total}</span>
+
+													</p>
+
+												</div>
+												<p class="p1 mui-clearfix">
+
+													<span class="fl">返额佣金</span>
+
+													<span class="fr">￥{$c.total/$c.price*$c.distribution-$c.refund_price/$c.price*$c.distribution}</span>
+												</p>
+												<p class="p1 mui-clearfix">
+
+													<span class="fl">退款金额</span>
+
+													<span class="fr">￥{$c.refund_price}</span>
+												</p>
+											</div>
+                                    </li>
+									{/volist}
+									<!--已完成 end-->
+								</ul>
+								<!--内容 end-->
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!--选项卡-->
+
+		</div>
+		<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+		<script src="/static/mobile/js/mui.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				swipeBack: false,
+			});
+			mui('#scroll1,#scroll2,#scroll3,#scroll4,#scroll5').scroll();
+		</script>
+	<script>
+        // $('.xingxi').click(function () {
+		 //    var status = $(this).data('status');
+        //     var id = $(this).data('id');
+        //     if (status == 0) {
+			// 	location.href = '/mobile/order/notpay/id/'+id;
+			// }else if (status == 1) {
+        //         location.href = '/mobile/order/notuse/id/'+id;
+        //     }else if (status == 2) {
+        //         location.href = '/mobile/order/refund/id/'+id;
+        //     }else if (status == 4) {
+        //         location.href = '/mobile/order/refunddel/id/'+id;
+        //     }else if (status == 5) {
+        //         location.href = '/mobile/order/complete/id/'+id;
+        //     }
+        //     else if (status == 6) {
+        //         location.href = '/mobile/order/notuse/id/'+id;
+        //     }
+        //
+        // });
+		function cancel(id) {
+            mui.confirm('确认要取消该订单？', '', ['是','否'], function(e) {
+                if (e.index == 1) {
+
+                } else {
+                    $.post('/mobile/order/cancel.html',{id:id},function(res){
+						if (res.status == true) {
+						    location.href = location.href;
+						}else {
+                            mui.toast(res.info);
+						}
+					},'json')
+                }
+            })
+        }
+        function apply(id) {
+        	location.href = '/mobile/order/notuse/id/'+id;
+        	return;
+            mui.prompt('请输入您的备注：', '', '', ['确定','取消'], function(e) {
+                if (e.index == 1) {
+
+                } else {
+                    $.post('/mobile/order/apply.html',{id:id,refund_reason:e.value},function(res){
+                        if (res.status == true) {
+                            location.href = location.href;
+                        }else {
+                            mui.toast(res.info);
+                        }
+                    },'json')
+                }
+            })
+        }
+        function applycancel(id) {
+            $.post('/mobile/order/applyCancel.html',{id:id},function(res){
+                if (res.status == true) {
+                    location.href = location.href;
+                }else {
+                    mui.toast(res.info);
+                }
+            },'json')
+        }
+        function del(id) {
+            $.post('/mobile/order/del.html',{id:id},function(res){
+                if (res.status == true) {
+                    location.href = location.href;
+                }else {
+                    mui.toast(res.info);
+                }
+            },'json')
+        }
+        function comment(id) {
+            location='/mobile/order/commen/id/'+id;
+        }
+
+	</script>
+	</body>
+
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+
+  <title>酒店列表</title>
+
+  <link href="/static/admin/css/styles.css" rel="stylesheet">
+  <link href="/static/admin/css/style-responsive.css" rel="stylesheet">
+  <link href="/static/admin/css/iframe-main.css" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/static/admin/js/html5shiv.js"></script>
+  <script src="/static/admin/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<section>
+            <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+                酒店列表
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">酒店管理</a>
+                </li>
+                <li class="active">酒店列表</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+            <div class="row">
+
+        <div class="col-sm-12">
+        <section class="panel">
+            <header class="panel-heading">
+                酒店列表
+                        <div class="pull-right">
+                            
+                                <select class="input-sm m-bot15" name="region_id" onmouseout="search(this)">
+                                    <option value="0">所有地区</option>
+                                     {volist name='region' id='v'}
+                                      <option value="{$v.id}">{$v.name}</option>
+                                     {/volist}
+                                </select>
+
+
+                            <a class="btn btn-success btn-sm" href="/admin/hotel/add.html"><i class="fa fa-plus"></i>&nbsp添加酒店</a>
+                            <a id="show" href="#myModal" data-toggle="modal" style="display:none;"></a>
+                        </div>
+            </header>
+            <div class="panel-body">
+                <section id="unseen">
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th class="numeric">地区</th>
+                            <th>酒店名称</th>
+                            <th>酒店封面</th>
+                            <th class="numeric">添加时间</th>
+                            <th class="numeric">排序</th>
+                            <th class="numeric">推荐</th>
+                            <th class="numeric">热销</th>
+                            <th class="numeric">特惠</th>
+                            <th class="numeric">显示</th>
+                            
+                            <th class="numeric">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="data" id="v"}
+                        <tr>
+                            <td>{$v.id}</td>
+                            <td class="numeric">{:get_shop_region_name($v['region_id'])}</td>
+                            <td>{$v.title}</td>
+                            <td><img src="{$v.thumb}" height="50"></td>
+                            <td>{:date('Y-m-d',$v.add_time)}</td>
+                            <td>
+                                <input type="text" name="sort" id="sort" value="{$v.sort}" size=4 onblur="sort(this,{$v.id} ,{$v.sort})">
+                            </td>
+                            <td>
+                                {if $v.base eq 1}
+                                <a class="btn btn-success btn-xs" onclick="status(this,{$v.id},{$v.base},'base')">是</a>
+                                {else/}
+                                <a class="btn btn-danger btn-xs" onclick="status(this,{$v.id},{$v.base},'base')">否</a>
+                                {/if}
+                            </td>
+                            <td>
+                              {if $v.hot eq 1}
+                              <a class="btn btn-success btn-xs" onclick="status(this,{$v.id},{$v.hot},'hot')" >是</a>
+                              {else/}
+                              <a class="btn btn-danger btn-xs" onclick="status(this,{$v.id},{$v.hot},'hot')">否</a>
+                              {/if}
+                            </td>
+                            <td>
+                              {if $v.cheap eq 1}
+                              <a class="btn btn-success btn-xs" onclick="status(this,{$v.id},{$v.cheap},'cheap')">是</a>
+                              {else/}
+                              <a class="btn btn-danger btn-xs" onclick="status(this,{$v.id},{$v.cheap},'cheap')">否</a>
+                              {/if}
+                            </td> 
+
+                            <td>
+                                {if $v.status eq 1}
+                                <a class="btn btn-success btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">显示</a>
+                                {else/}
+                                <a class="btn btn-danger btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">隐藏</a>
+                                {/if}
+                            </td>
+                        
+                            <td class="panel-body">
+                                <a class="btn btn-primary btn-xs" href="/admin/hotel/edit/id/{$v.id}" >修改</a>
+                                <a class="btn btn-info btn-xs" href="/admin/hotel/room/id/{$v.id}" >查看</a>
+                                <a class="btn btn-danger btn-xs" onclick="del({$v.id})" >删除</a>
+                                
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+
+                            <div class="col-md-12 text-center clearfix">
+                                <ul class="pagination">
+                                   {$page}
+                                </ul>
+                            </div>
+
+                </section>
+            </div>
+        </section>
+
+        </div>
+        
+                
+
+            </div>
+        </div>
+        <!--body wrapper end-->
+</section>
+
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/static/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/modernizr.min.js"></script>
+<script src="/static/admin/js/jquery.nicescroll.js"></script>
+
+
+<!--common scripts for all pages-->
+<script src="/static/admin/js/scripts.js"></script>
+
+<script type="text/javascript">
+        function del(id)
+        { 
+            if (id > 0) {
+                $.post('/admin/base/ajax.html',{id:id,act:'del',tab:'mall_shop_hotel'},function(res){
+                        if (res.status == false) {
+                            error_msg($(".page-heading"),' ');
+
+                        }else{
+                            success_msg($(".page-heading"),' ');
+                            window.location.reload();
+                        }
+                },'json');
+            }
+        }
+
+
+        function status(obj,id,value,act){
+            $.post('/base/ajax.html',{id:id,tab:'shop_hotel',act:act,value:value},function(ret){
+                    if (ret.status == false) {
+                           error_msg($(".page-heading"),' ');
+                        }else{
+                           success_msg($(".page-heading"),' ');
+                            window.location.reload();
+                        }
+            },'json');
+        }
+
+        function sort(obj,id){
+            var value = $(obj).val();
+            $.post('/base/ajax.html',{id:id,tab:'shop_hotel',act:'sort',value:value},function(ret){
+                    if (ret.status == false) {
+                          
+                        }else{
+                           
+                        }
+            },'json');
+        }
+
+      function search(obj)
+      {
+            var id = $(obj).val();
+            location.href = '/admin/hotel/index/id/' + id;
+      }   
+
+</script>
+
+</body>
+</html>

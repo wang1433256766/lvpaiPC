@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {include file="publicyang/common_header"}
+    <link href="/static/admin/yang/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="/static/admin/yang/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/admin/yang/jPicture/css/jPicture.min.css">
+</head>
+<body>
+<style>
+    .bgcolor {
+        background: #F2F2F2;
+    }
+
+</style>
+ <!--Panel Other -->
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>提现审核列表</h5>
+
+        <div class="ibox-tools">
+            <a class="collapse-link">
+                <i class="fa fa-chevron-up"></i>
+            </a>
+            <a class="close-link">
+                <i class="fa fa-times"></i>
+            </a>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="row row-lg">
+            <div class="col-sm-12">
+                <!-- Example Toolbar -->
+                <div class="example-wrap">
+                    <div class="example">
+                        <div class="btn-group hidden-xs" id="facilityTypeListToolbar" role="group">
+
+                        </div>
+                        <table class="table table-hover" id="faciListTable"
+                               data-pagination="true"
+                               data-show-refresh="true"
+                               data-show-toggle="true"
+                               data-showColumns="true"></table>
+                    </div>
+                </div>
+                <!-- End Example Toolbar -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <form id="list_search_faci">
+        <div style="float: left;width: 180px;margin-right: 10px" class="input-group m-b" >
+            <span class="input-group-addon">开始时间</span>
+            <input id="history_s" class="laydate-icon form-control layer-date" style="width: 180px;height: 35px" name="str_time">
+        </div>
+        <div style="float: left;width: 180px;margin-right: 10px" class="input-group m-b" >
+            <span class="input-group-addon">结束时间</span>
+            <input id="history_e" class="laydate-icon form-control layer-date" style="width: 180px;height: 35px" name="end_time">
+        </div>
+        <button style="float: right;background-color: #c0c0c0;" type="button" onclick="p_search();" class="btn">查询</button>
+        </fieldset>
+    </form>
+</div>
+<form id="editFacility" class="form-horizontal m-t" style="display: none">
+
+</form>
+<div id = "lookImgdiv" style="text-align: center;display: none">
+    <div id="img_arr">
+
+    </div>
+</div>
+
+{include file="publicyang/common_footer"}
+{include file="putforward/index_js"}
+
+<script>
+
+    var start = {
+        elem: '#history_s',
+        format: 'YYYY-MM-DD hh:mm:ss',
+        max: laydate.now(),
+        istime: false,
+        istoday: false,
+        choose: function (datas) {
+            end.min = datas; //开始日选好后，重置结束日的最小日期
+            end.start = datas //将结束日的初始值设定为开始日
+        }
+    };
+    var end = {
+        elem: '#history_e',
+        format: 'YYYY-MM-DD hh:mm:ss',
+        max: laydate.now(),
+        istime: false, //是否开启时间选择
+        istoday: false,
+        isclear: true, //是否显示清空
+        issure: true, //是否显示确认
+        choose: function (datas) {
+            start.max = datas; //结束日选好后，重置开始日的最大日期
+        }
+    };
+    laydate(start);
+    laydate(end);
+    //给input赋值
+    $('#history_s').val(laydate.now(-1, 'YYYY-MM-DD hh:mm:ss'));
+    $('#history_e').val(laydate.now(0, 'YYYY-MM-DD hh:mm:ss'));
+</script>
+
+</body>
+</html>

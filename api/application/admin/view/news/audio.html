@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音频上传</title>
+     <link rel="shortcut icon" href="/static/admin/images/zhlfavicon.ico">
+    <link href="__CSS__/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__CSS__/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__CSS__/animate.min.css" rel="stylesheet">
+    <link href="__CSS__/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__CSS__/style.min.css?v=4.1.0" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="__CSS__/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>修改新闻</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form action="./audio" class="form-horizontal m-t" method="post" enctype="multipart/form-data">
+                       <input type="hidden" name="id" value="{$new.id}">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="input-group col-sm-4">
+                                <label for="img" >
+                               
+                                </label>
+                                <input style="height:30px;margin-top:10px;border-radius:5px;" type="file" onchange="previewFile()" name="thumb"><br/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">所属菜单：</label>
+                            <div class="input-group col-sm-4">
+                                <select class="form-control" name="cate_id" required="" aria-required="true">
+                                    {if !empty($menu)}
+                                    {foreach name="menu" item="vo"}
+                                    <option value="{$vo.id}">{$vo.name}</option>
+                                    {/foreach}
+                                    {/if} 
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">标题：</label>
+                            <div class="input-group col-sm-4">
+                                <input id="username" type="text" class="form-control" name="title" required="" aria-required="true" value="{$new.title}">
+                        </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">是否置顶：</label>
+                            <div class="input-group col-sm-4">                               
+                                <div class="radio i-checks col-sm-4">                                    
+                                      <label><input type="radio" value="1" name="base" checked> <i></i>是</label>                                        
+                                </div>
+                                <div class="radio i-checks col-sm-4">                                    
+                                      <label>  <input type="radio" value="0" name="status"> <i></i>否</label>                                        
+                                </div>                               
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-3">
+                                <!--<input type="button" value="提交" class="btn btn-primary" id="postform"/>-->
+                                <button class="btn btn-primary" type="submit">提交</button>
+                                <button class="btn btn-primary" type="reset">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+<script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
+<script src="__JS__/plugins/validate/messages_zh.min.js"></script>
+<script src="__JS__/plugins/iCheck/icheck.min.js"></script>
+<script src="__JS__/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="__JS__/plugins/layer/laydate/laydate.js"></script>
+<script src="__JS__/plugins/suggest/bootstrap-suggest.min.js"></script>
+<script src="__JS__/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+    //表单验证
+    $(document).ready(function(){
+        $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
+    });
+    $.validator.setDefaults({
+        highlight: function(e) {
+            $(e).closest(".form-group").removeClass("has-success").addClass("has-error")
+        },
+        success: function(e) {
+            e.closest(".form-group").removeClass("has-error").addClass("has-success")
+        },
+        errorElement: "span",
+        errorPlacement: function(e, r) {
+            e.appendTo(r.is(":radio") || r.is(":checkbox") ? r.parent().parent().parent() : r.parent())
+        },
+        errorClass: "help-block m-b-none",
+        validClass: "help-block m-b-none"
+    });
+    //图片预览
+    function previewFile() {
+     var preview = document.querySelector('img');
+     var file  = document.querySelector('input[type=file]').files[0];
+     var reader = new FileReader();
+     reader.onloadend = function () {
+      preview.src = reader.result;
+     }
+     if (file) {
+      reader.readAsDataURL(file);
+     } else {
+      preview.src = "";
+     }
+    }
+</script>
+</body>
+</html>

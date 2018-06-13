@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>分销明细</title>
+	<link rel="stylesheet" href="/static/index/css/info.css">
+
+</head>
+<body onload="loaded()">
+	<div class="box">
+		<header style="margin-bottom: 0"><a href="history.back()" class="back"></a>分销明细</header>
+		<div id="wrapper">
+			<div id="scroller">
+		<nav>
+			<div class="nav-item">
+				<p class="nav-item-t">今日成交</p>
+				<div class="nav-info"><span><b>{$info.today_sum}</b>笔</span><span><b>{if !empty($info.today_price)}{$info.today_price.price}{else/}0{/if}</b>元</span></div>
+			</div>
+			<div class="nav-item">
+				<p class="nav-item-t">累计成交</p>
+				<div class="nav-info"><span><b>{$info.promote_sum}</b>笔</span><span><b>{if !empty($info.promote_price)}{$info.promote_price.price}{else/}0{/if}</b>元</span></div>
+			</div>
+		</nav>
+		
+				{volist name='info.order_promote_time' id='v'}
+				<div class="item">
+					<div class="time">{$v.days}</div>
+					<div class="item-cont">
+						<ul>
+							{volist name='info.order_promote' id='vv'}
+							{if date('Y-m-d',$vv['add_time'])==$v.days}
+							<li>
+								<div class="item-left">
+									<p><span>{:date('Y-m-d',$vv['add_time'])}</span><span>{:date('H:i',$vv['add_time'])}</span></p>
+									<p class="price">{$vv.title|msubstr=10} X{$vv.num}</p>
+								</div>
+								<div class="item-right">￥{$vv.total}</div>
+							</li>
+							{/if}
+							{/volist}
+						</ul>
+					</div>
+				</div>
+				{/volist}
+
+				
+				
+				<!-- 此DIV不删除 -->
+				<div style="height: 1rem"></div>
+			</div>
+		</div>	
+	</div>
+
+	<script src="/static/index/js/rem.js"></script>
+	<script src="/static/index/js/iscroll.js"></script>
+	<script src="/static/index/js/demoUtils.js"></script>
+	<script src="/static/index/js/jquery-3.2.1.min.js"></script>
+	<script>
+				var myScroll;
+
+function loaded () {
+
+	myScroll = new IScroll('#wrapper',{ mouseWheel: true });
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+	capture: false,
+	passive: false
+} : false);
+	</script>
+</body>
+</html>

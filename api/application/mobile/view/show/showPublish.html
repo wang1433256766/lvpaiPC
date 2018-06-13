@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>秀一秀</title>
+    <link href="/static/index/css/css.css" rel="stylesheet"/>
+
+<!--      <script src="/static/mobile/js/vconsole.min.js"></script>
+    <script>
+        var vConsole = new VConsole();
+        vConsole.setOption({maxLogNumber: 5000});
+    </script> -->
+
+</head>
+<body>
+	<header class="head-gugu">
+		<a href="javascript:history.go(-1);">
+			<img class="head-search" src="/static/index/images/show-back.png"/>
+		</a>
+		<h2>秀一秀</h2>
+		<span onclick="submit()">发表</span>
+	</header>
+	<!--正文-->
+		<div class="my-show" style="padding-top: 0.8rem;">
+			<div class="text-cnt"><textarea id="gugu_content" placeholder="秀秀你的旅拍…"></textarea></div>
+			<div class="img-list">
+				<ul>
+					<li><img id="img1" src=""><span><img src="/static/index/images/show-close.png"></span></li>
+					<li><img id="img2" src=""><span><img src="/static/index/images/show-close.png"></span></li>
+					<li><img id="img3" src=""><span><img src="/static/index/images/show-close.png"></span></li>
+					<li><img id="img4" src=""><span><img src="/static/index/images/show-close.png"></span></li>
+					<li><img id="img5" src=""><span><img src="/static/index/images/show-close.png"></span></li>
+					<li><img id="img6" src=""><span><img src="/static/index/images/show-close.png"></span></li>
+					<li><img id="img7" src=""><span><img src="/static/index/images/show-close.png"></span></li>
+					<li><img id="img8" src=""><span><img src="/static/index/images/show-close.png"></span></li>
+					<li><img id="img9" src=""><span><img src="/static/index/images/show-close.png"></span></li>
+					<p><button onclick="chooseImage()" style="border:none; background:none;"><img src="/static/index/images/show-add.png"/></button></p>
+				</ul>
+			</div>
+			<div class="location">
+				<p class="chooseAddress">
+					<img src="/static/index/images/map_bg.png">所在位置
+					<span ><img src="/static/index/images/show-next.png"></span>
+				</p>
+			</div>
+		</div>
+		<!-- <div class="cansee">
+			<p><img src="/static/index/images/show-see.png">仅对自己可见</p>
+			<span></span>
+		</div> -->
+	<!--正文结束-->
+	<script src="/static/index/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+	<script src="/static/index/js/rem.js" type="text/javascript"></script>
+  <script src="/static/mobile/js/vconsole.min.js"></script>
+  <script type="text/javascript">
+  </script>
+	<script>
+		 // 点击隐藏，并且删除相对应的数组id
+		      $('.img-list li span').on('click',function(){
+		        $(this).parent('li').hide();
+		        var imgId = $(this).prev().attr('id');
+		        var index = imgId.substr(3, 1);
+
+		        imagesId.splice(index-1, 1, 0);
+		      })
+		      $(function()
+		      {
+		        $('.img-list li span').parent('li').hide();
+		      });
+	</script>
+ 
+	<script>
+  wx.config({
+      debug: false,
+      appId: "{$js_sign['appid']}",
+      timestamp: "{$js_sign['timestamp']}",
+      nonceStr:  "{$js_sign['nonceStr']}",
+      signature: "{$js_sign['signature']}",
+      jsApiList: [
+        'chooseImage',
+        'uploadImage',
+        'getLocation'
+      ]
+  });
+
+</script>
+
+ <script>
+    $(".chooseAddress").bind("click",function (){  
+    var latitude=0;
+    var longitude=0;   
+      wx.getLocation({
+                      type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                      success: function (res) {
+                      var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                      var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                      var speed = res.speed; // 速度，以米/每秒计
+                      var accuracy = res.accuracy; // 位置精度 
+
+                        $.ajax({
+                                      'type' : 'post',
+                                      'url' : "{:url('show/test')}", //传给高德定位方法
+                                      'data' : {'latitude':latitude,'longitude':longitude},
+                                      'dataType' : 'json',
+                                      success : function(msg)
+                                      {
+                                       // console.log(msg);
+                                        var node='';
+                                        for (var i = 0; i < msg.length; i++) {
+                                          node+='<option>'+msg[i]+'</option>';
+                                        }
+                                        console.log( node);
+                                         $(".chooseAddress").hide();
+                                       $(".location").append('<select class="addressHave" style="width:100%;margin-top=100px" >'+node+'</select>');
+                                       /*+'<option value="">不显示位置</option>'*/
+                                  
+                                      }
+                                  });        
+                      }
+
+                      });
+
+    
+      });
+//改变地址信息
+      $(document).on("change",".addressHave",function () {  
+                  if (this.value!='' ){
+                      var address= this.value;
+                      
+                       $(".addressHave").hide();
+                       $(".chooseAddress").html('<img src="/static/index/images/map_bg.png">'+address
+                                                 +'<span ><img src="/static/index/images/show-next.png"></span>');
+                    
+                       $(".chooseAddress").show();
+
+                     }  
+                  
+                });  
+            
+  </script>
+
+<script>
+   var img_path=[];	
+  var imagesId = [];  // 选定照片的id列表
+  var uploadCount = 0; // 上传次数
+  var serverIds = [];  // media_id数组
+  var  flag=0;
+    //  第二次添加图片把第一次的图片给覆盖了
+   //sconsole.log("12588");
+    function chooseImage(){
+      // 获取id的
+      
+      // 选择张片
+      wx.chooseImage({
+          count: 9, // 默认9
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+          success: function(res) {
+             //console.log(res);
+             // console.log("res");
+              var i = 0;
+              var j = 0;
+
+              uploadCount++;
+              var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+              if (1 == uploadCount)
+              {
+                // 第一次上传，imagesId就是localIds
+                imagesId = localIds;  
+                
+                // 循环显示图片
+                for (i=0; i<imagesId.length+1; i++)
+                {
+                    $('#img' + i).parent('li').show();
+                    $('#img' + i).attr('src', imagesId[i]);
+                   
+                }
+              }
+              else // 除了第一次上传
+              {
+                // 将前面的图片id和刚刚添加的图片id连起来
+                imagesId = imagesId + ',' + localIds;
+                imagesId = imagesId.split(',');
+
+                // 将imagesId数组过滤值为0的成员
+                var removeItem = 0;  
+                imagesId = $.grep(imagesId, function(value) {
+                 return value != removeItem;
+                });
+
+                // 得到新的数组之后，重新显示所有图片
+                for (i=0; i<imagesId.length; i++)
+                { 
+                    $('#img' + (i+1)).parent('li').show();
+                    $('#img' + (i+1)).attr('src', imagesId[i]);
+                }
+              }
+              clearMoreImg(); 
+              return;
+          }
+      });
+  }
+
+      // 处理多余的图片
+      function clearMoreImg()
+      { 
+          var length = imagesId.length;
+
+          // 判断当前选中图片数量是否大于9
+          if (9 < length)
+          {
+              var moreCount = length - 9; // 得到需要处理的图片数量
+              for (var i=0; i<moreCount; i++)
+              {
+                  imagesId.splice(9, 1); // 处理第十张图片
+              }
+              length = imagesId.length; // 重新得到图片数量
+          }
+
+          var count = 9 - length; // 得到需要隐藏的图片数量
+          var i = 0;
+          for (i=0; i<count; i++)
+          {
+              $('#img' + (length+i+1)).parent('li').hide();
+          }
+      }
+
+
+      // 上传图片
+      function uploadImg( )
+      {
+				    var i = 0;
+            var length = imagesId.length;
+
+						    function upload() {
+						      wx.uploadImage({
+						        localId: imagesId[i],
+						        isShowProgressTips: 1,
+						        success: function (res) {
+						          i++;
+						          //alert('已上传：' + i + '/' + length);
+						           //console.log(res);
+						          serverIds.push(res.serverId);
+
+						          if (i < length) {
+						            
+                        window.setTimeout(upload,50);
+						          }else{
+                        submitImgXiu();
+                       }
+						        },
+						        fail: function (res) {
+						          alert(JSON.stringify(res));
+						        }
+						      });
+						    }
+		  upload(); 
+		 }
+
+     var num = 0;
+
+    function submit()
+    {
+    	if (0 == imagesId.length)
+        {
+            var gugu_content=$("#gugu_content").val();
+            // console.log(gugu_content);
+            if(!gugu_content){
+            	 alert('不能发表空的内容');
+            }else{
+
+                             $.ajax({
+                                      'type' : 'post',
+                                      'url' : "{:url('show/submitXiu')}", //传给一个存纯文字秀秀的方法
+                                      'data' : {'gugu_content':gugu_content},
+                                      'dataType' : 'html',
+                                      success : function(msg)
+                                      {
+                                      	//console.log(msg);
+                                      	if(msg==1)
+                                      	{
+                                      		
+                                            location.href = "{:url('show/show')}";
+                                      	    }else{
+                                      	    	alert('网络不稳定');
+                                      	    }
+                                      }
+                                  });
+                }
+
+        }
+        else{
+        	           
+					    
+
+				        // 判断9张图中哪些是显示的，是显示的就上传图片
+				       
+					        //console.log(imagesId); 
+					           uploadImg();
+                     console.log(imagesId);
+                    // var serverIds = serverIds;
+    					             //  window.alert(serverIds);
+                             //var long_str = serverIds.join(',');
+                            
+    					        
+
+          					                 // var long_str = serverIds.join(',');
+                                    // console.log(long_str);
+          	                       
+      					                
+      				        
+                           
+				    }
+
+        }
+
+        function submitImgXiu(){
+                            var gugu_content=$("#gugu_content").val();
+                                $.ajax({
+                                                  'type' : 'post',
+                                                  'url' : "{:url('show/submitXiu')}", //传给一个存纯文字秀秀的方法
+                                                  'data' : {gugu_content:gugu_content,serverIds:serverIds},
+                                                  'dataType' : 'json',
+                                                  success : function(msg)
+                                                  {
+                                                       console.log(msg);
+                                                    if(msg==1)
+                                                    {
+                                                        location.href = "{:url('show/show')}";
+                                                        }else{
+                                                          alert('网络不稳定');
+                                                        }
+                                                  }
+                                              });
+
+        }
+
+   
+
+      function showServerId()
+      {
+          alert(serverIds);
+      }
+
+
+    window.onload = function(){
+        getRem(750,100)
+    };
+    window.onresize = function(){
+        getRem(750,100)
+    };
+    function getRem(pwidth,prem){
+        var html = document.getElementsByTagName("html")[0];
+        var oWidth = document.body.clientWidth || document.documentElement.clientWidth;
+        html.style.fontSize = oWidth/pwidth*prem + "px";
+    }
+
+</script>
+</body>
+</html>

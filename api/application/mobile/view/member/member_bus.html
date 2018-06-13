@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>商家端</title>
+	<link rel="stylesheet" href="/static/mobile/css/distribution.css">
+	<script type="text/javascript" charset="utf-8">
+		(function(doc, win) {
+			var docEl = doc.documentElement,
+				resizeEvt = 'onorientationchange' in window ? 'onorientationchange' : 'resize',
+				recalc = function() {
+					var clientWidth = docEl.clientWidth;
+					if(!clientWidth) return;
+					if(clientWidth >= 750) {
+						docEl.style.fontSize = '100px';
+					} else {
+						docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+					}
+				};
+
+			if(!doc.addEventListener) return;
+			win.addEventListener(resizeEvt, recalc, false);
+			doc.addEventListener('DOMContentLoaded', recalc, false);
+		})(document, window);
+	</script>
+	<style type="text/css">
+		.personal-nav a{
+			font-size: 0.32rem;
+		}
+		.busi-text {
+			font-size: 0.32rem;
+		}
+
+		.busi-box {
+			height: 1.6rem;
+		}
+
+		.busi-box a p{
+			font-size: 0.32rem;
+		}
+
+		.spa a {
+			font-size: 0.32rem;
+			text-decoration:none;
+		}
+
+		.right a{
+			font-size: 0.32rem;
+		}
+
+		.foot {
+			height: 1.26rem;
+
+		}
+		.foot-bar {
+			margin-top:0.05rem;
+			
+		}
+
+		.tab-label {
+			margin:0.1rem;
+			font-size: 0.32rem;
+		}
+
+		.foot-item {
+			height: 0.58rem;
+		}
+
+		.foot-shoppingmall {
+			background-size:0.52rem 0.50rem;
+		}
+
+		.foot-my {
+			background-size:0.52rem 0.50rem;
+		}
+
+		.foot-active .foot-my {
+			background-size: 0.42rem 0.57rem;
+		}
+
+		.foot-show {
+			background-size:0.52rem 0.50rem;
+		}
+	</style>
+</head>
+<body onload="loaded()">
+<div class="box">
+	<div id="wrapper">
+		<div id="scroller">
+			<div class="personal">
+				<div class="left"><img src="{$info.member_traveler.headimg}" alt=""></div>
+				<div class="center">
+					<p class="cen-name">{$info.member_traveler.nickname}</p>
+					<p class="spa">旅行币 {$info.member_traveler.score}<a href="/mobile/memberwch/index">使用</a></p>
+				</div>
+				<div class="right">
+					<a href="/mobile/bind/bind"><img src="/static/mobile/images/phone.png" alt="">绑定手机</a>
+				</div>
+			</div>
+	
+			<div class="personal-nav">
+				<a  href="javascript:;" onclick='poster_ajax()'><img src="/static/mobile/images/er.png" style="width: 0.4rem;height: 0.4rem" alt="">生成海报</a>
+				<a href="/mobile/member/member_earnmoney"><img src="/static/mobile/images/moeny.png" style="width: 0.47rem;height: 0.51rem; margin-top: 0.2rem;" alt="">赚取旅行币</a>
+				<a href="/mobile/member/member_tour"><img src="/static/mobile/images/bi.png" style="width: 0.42rem;height: 0.45rem;margin-top: 0.27rem;" alt="">旅行币记录</a>
+			</div>
+			{if $info.member_traveler.sala_type == 1 || $info.member_traveler.sala_type == 2 }
+			{else/}
+			{if $info.member_traveler.type == 1 || $info.member_traveler.type == 2}
+			<div class="busi">
+				<div class="busi-cont">
+					<div>
+						<p class="busi-monet">{$info.member_traveler.money}</p>
+						<p class="busi-text">可提现佣金(元）</p>
+					</div>
+					<a href="/mobile/member/member_moneyfunds">佣金提现</a>
+				</div>
+				<div class="busi-box">
+					<a href="/mobile/member/member_details.html"><img src="/static/mobile/images/jj.png" alt="" style="width: 0.48rem;height: 0.54rem"><p>分销佣金<b>{$info.member_traveler.money}</b>元</p></a>
+					<a href="/mobile/member/fenxiao_detail"><img src="/static/mobile/images/gg.png" alt="" style="width: 0.38rem;height: 0.56rem; margin-top: 0.34rem"><p>分销订单<b>{$order_num}</b>笔</p></a>
+					<a href="/mobile/member/member_cashnum"><img src="/static/mobile/images/zz.png" alt="" style="width: 0.50rem;height: 0.45rem;margin-top: 0.34rem;"><p>提现明细<b>{$info.member_cashnum}</b>笔</p></a>
+				</div>
+			</div>
+			{/if}
+			{/if}
+			<div class="busi">
+				<div class="busi-box mb0">
+					<a href="/mobile/order/index"><img src="/static/mobile/images/lp-zx-01.png" alt="" style="width: 0.48rem;height: 0.54rem"><p>订单中心</p></a>
+					<a href="/mobile/member/member_comment"><img src="/static/mobile/images/lp-zx-02.png" alt="" style="width: 0.48rem;height: 0.5rem; margin-top: 0.3rem"><p>我的点评</p></a>
+					<a href="/mobile/show/show/member_id/{$info.member_traveler.id}"><img src="/static/mobile/images/lp-zx-03.png" alt="" style="width: 0.50rem;height: 0.45rem;margin-top: 0.34rem;"><p>我的秀秀</p></a>
+				</div>
+				<div class="busi-box">
+					<a href="/mobile/orderwch/index"><img src="/static/mobile/images/lp-zx-04.png" alt="" style="width: 0.48rem;height: 0.54rem"><p>兑换中心</p></a>
+					<a href="/mobile/member/member_information"><img src="/static/mobile/images/lp-zx-05.png" alt="" style="width: 0.48rem;height: 0.44rem; margin-top: 0.4rem"><p>出行人信息</p></a>
+					<a href="/mobile/member/member_address"><img src="/static/mobile/images/lp-zx-06.png" alt="" style="width: 0.50rem;height: 0.54rem;margin-top: 0.32rem;"><p>收货地址</p></a>
+				</div>
+			</div>
+			{if $info.member_traveler.type == 1 || $info.member_traveler.sala_type == 1}
+			<div class="busi">
+				<div class="busi-box">
+					<a href="/mobile/member/member_client"><img src="/static/mobile/images/lp-zx-07.png" alt="" style="width: 0.5rem;height: 0.54rem"><p>客户管理</p></a>
+					<a href="/mobile/member/member_guangli"><img src="/static/mobile/images/lp-zx-08.png" alt="" style="width: 0.48rem;height: 0.52rem; margin-top: 0.3rem"><p>分销商管理</p></a>
+					<a href="javascript:;"></a>
+				</div>
+			</div>
+			{/if}
+			{if $info.member_traveler.type == 2}
+			<div class="busi">
+				<div class="busi-box">
+					<a href="/mobile/member/member_client"><img src="/static/mobile/images/lp-zx-07.png" alt="" style="width: 0.4rem;height: 0.44rem"><p>客户管理</p></a>
+					<a ><!-- <img src="/static/mobile/images/lp-zx-08.png" alt="" style="width: 0.38rem;height: 0.42rem; margin-top: 0.3rem" --><!-- <p>分销商管理</p> --></a>
+					<a href="javascript:;"></a>
+				</div>
+			</div>
+			{/if}
+	
+			<div style="height: 1.2rem"></div>
+		</div>
+	</div>
+
+
+
+		
+	<footer class="foot">
+		<nav class="foot-bar">
+			<a class="tab-item" href="/mobile/show/show">
+		        <span class="foot-item foot-show"></span>
+		        <span class="tab-label">秀秀</span>
+		   	</a>
+		 	<a class="tab-item " href="/mobile/mall/index">
+		        <span class="foot-item foot-shoppingmall"></span>
+		        <span class="tab-label">商城</span>
+		   	</a>
+		  	
+		  	<a  class="tab-item foot-active" href="#">
+		        <span class="foot-item foot-my"></span>
+		        <span class="tab-label">我的</span>
+		  	</a>       
+		</nav>
+	</footer>
+
+</div>
+	
+	<script src="/static/mobile/js/demoUtils.js"></script>
+	<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+	<script>
+		var myScroll;
+
+function loaded () {
+
+	myScroll = new IScroll('#wrapper',{ mouseWheel: true });
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, isPassive() ? {
+	capture: false,
+	passive: false
+} : false);
+
+		$(function(){
+			$(document).on('click', '.delete-btn', function(event) {
+				$(this).closest(".list").remove()
+				event.preventDefault();
+				/* Act on the event */
+			});
+		})
+	</script>
+	<script>
+
+ 	$(function(){
+ 		$.post('/mobile/member/point_out',{},function(res){
+ 			if(res.status==true){
+ 				var str = '';
+ 				str += '<div class="dislong">'+
+ 				'<div class="dis-box">'+
+ 				'<img src="/static/mobile/images/liwu.png" alt="">'+
+ 				'<h3>'+res.data.member_id+'</h3>'+
+ 				'<p>赠送给您'+res.data.sum+'旅行币</p>'+
+ 				'</div>'+
+ 				'</div>';
+
+ 				$(".box").append(str)
+ 				setTimeout(function(){
+ 					$(".dislong").hide();
+ 					point_ajax(res.data.id);
+ 				},2000)
+ 				
+ 			}else{
+ 				//alert('1111');
+ 			}
+ 		},'json')
+ 	})
+
+ 	function point_ajax(id){
+ 		$.post('/mobile/member/point_ajax',{id:id},function(res){
+ 			if(res.status==true){
+ 				window.location.reload();
+ 			}
+ 		},'json')
+ 	}
+
+ 	function poster_ajax(){
+ 		var member_id = {$info.member_traveler.id};
+ 		$.post('/mobile/member/poster_ajax',{},function(res){
+ 			if(res.status==true){
+ 				location.href='/mobile/member/member_poster/member_id/'+member_id+'';
+ 			}else{
+ 				alert(res.info);
+ 			}
+ 		},'json')
+ 	}
+
+		// $(function(){
+		// 	$(document).on('click', '.delete-btn', function(event) {
+		// 		$(this).closest(".list").remove()
+		// 		event.preventDefault();
+		// 		/* Act on the event */
+		// 	});
+		// })
+	</script>
+</body>
+</html>

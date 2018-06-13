@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+
+  <title>广告列表</title>
+
+  <link href="/static/admin/css/style1.css" rel="stylesheet">
+  <link href="/static/admin/css/style-responsive.css" rel="stylesheet">
+  <link href="/static/admin/css/iframe-main.css" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/static/admin/js/html5shiv.js"></script>
+  <script src="/static/admin/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+<section>
+            <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+                广告设置
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">系统设置</a>
+                </li>
+                <li class="active">广告设置</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+            <div class="row">
+
+        <div class="col-sm-12">
+        <section class="panel">
+            <header class="panel-heading">
+                        广告列表                                
+                        <div class="pull-right">
+                                <select class="input-sm m-bot15" name="position" onchange="search(this)">
+                                    <option value="0">所有广告</option>
+                                     {volist name='position' id='v'}
+                                    <option value="{$v.id}" {if $info['id'] eq $v['id']}selected{/if}>{$v.name}</option>
+                                    {/volist}
+                                </select>
+
+                            <a class="btn btn-success btn-sm" href="#myModal_position" data-toggle="modal" ><i class="fa fa-plus"></i>&nbsp添加位置</a>
+                            <a class="btn btn-success btn-sm" href="/admin/system/add.html"><i class="fa fa-plus"></i>&nbsp添加广告</a>
+                            <a id="show" href="#myModal" data-toggle="modal" style="display:none;"></a>
+
+                        </div>
+            </header>
+            <div class="panel-body">
+                <section id="unseen">
+                    <table class="table table-bordered table-striped table-condensed">
+                        <thead>
+                        <tr>
+                            <th class="numeric">ID</th>                            
+                            <th>图片</th>
+                            <th>名称</th>
+                            <th class="numeric">排序</th>
+                            
+                            <th class="numeric">状态</th>
+                            <th class="numeric">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                         {volist name='data' id='v'}
+                        <tr>
+                            <td class="numeric">{$v.id}</td>
+                            <td><img src="{$v.img}" height="60"></td>
+                            <td>{$v.name}</td>
+                            <td>
+                                <input type="text" name="sort" id="sort" value="{$v.sort}" size=4 onblur="sort(this,{$v.id})">
+                            </td>
+                            
+                            <td>
+                              {if $v.status eq 1}
+                              <a class="btn btn-success btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">显示</a>
+                              {else/}
+                              <a class="btn btn-danger btn-xs" onclick="status(this,{$v.id},{$v.status},'status')">隐藏</a>
+                              {/if}
+                            </td>
+
+                            <td class="numeric">
+                                 <a class="btn btn-primary btn-xs"  href="/admin/system/edit/id/{$v.id}">编辑</a>
+                                  <a class="btn btn-danger btn-xs"  href="javascript:del({$v.id})">删除</a>
+                            </td>
+                        </tr>
+                        {/volist}
+
+
+                        </tbody>
+                    </table>
+
+                            <div class="col-md-12 text-center clearfix">
+                                <ul class="pagination">
+                                   {$page}
+                                </ul>
+                            </div>
+
+                </section>
+            </div>
+        </section>
+
+        </div>
+        
+                
+
+            </div>
+        </div>
+        <!--body wrapper end-->
+</section>
+
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal_position" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" id="close" type="button">×</button>
+                <h4 class="modal-title">添加位置</h4>
+            </div>
+            <div class="modal-body">
+
+                    <form action="#" id="article_cate" method="post" class="form-horizontal adminex-form" >
+                        <div class="form-group">
+
+                            <div class="col-md-12">
+                              <label class="col-sm-3 control-label col-md-3" for="pname">位置名称</label>
+                              <div class="col-md-6">
+                                  <input name="pname" id="pname" class="form-control m-bot15" type="text" placeholder="导航名称">
+                              </div>
+                            </div>
+
+                        </div>     
+
+                        <div class="form-group ">
+                            <label class="col-sm-3 control-label col-md-3" for="submit"></label>
+                            <div class="col-md-6">
+                                <input name="pid" id="pid" value="0" type="hidden">
+                                <input name="type" id="type" value="1" type="hidden">
+                                <a id="delete" onclick="del(0)" class="btn btn-danger btn-sm" type="button">关闭</a>
+                                <a id="save" onclick="position()" class="btn btn-success btn-sm">保存</a>
+                            </div>
+                        </div>
+                    </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/static/admin/js/jquery-1.10.2.min.js"></script>
+<script src="/static/admin/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/static/admin/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/modernizr.min.js"></script>
+<script src="/static/admin/js/jquery.nicescroll.js"></script>
+
+
+<!--common scripts for all pages-->
+<script src="/static/admin/js/scripts.js"></script>
+
+<script type="text/javascript">
+	function del(id){
+		//alert(id);
+        		 if(confirm('是否确认删除该广告?')){
+        		 	$.post('/admin/base/ajax1',{id:id,tab:'ad',act:'del',value:''},function(ret){
+                    if (ret.status == false) {
+                           error_msg($(".page-heading"),' ');
+                        }else{
+                           success_msg($(".page-heading"),' ');
+                            window.location.reload();
+                        }
+            },'json');
+        		 }
+        }
+
+      function position()
+      {
+            var pname = $("#pname").val();
+            var type = $("#type").val();
+            $.post("/admin/system/position.html",{pname:pname,type:type},function(res){
+                if (res.status == false) {
+                    error_msg($(".page-heading"),'');
+                    return false;
+                }
+                else{
+                    $(".close").click();
+                    success_msg($(".page-heading"),' ');
+                    setTimeout(function (){
+                        window.location.reload();
+                    }, 3000);
+                }
+            },'json')
+      }
+
+      function search(obj)
+      {
+            var id = $(obj).val();
+            location.href = '/admin/system/ad/id/' + id;
+      }
+
+        function status(obj,id,value,act){
+            $.post('/admin/base/ajax1',{id:id,tab:'ad',act:act,value:value},function(ret){
+                    if (ret.status == false) {
+                           error_msg($(".page-heading"),' ');
+                        }else{
+                           success_msg($(".page-heading"),' ');
+                            window.location.reload();
+                        }
+            },'json');
+        }
+
+        function sort(obj,id){
+            var value = $(obj).val();
+            $.post('/admin/base/ajax',{id:id,tab:'ad',act:'sort',value:value},function(ret){
+                    if (ret.status == false) {
+                          
+                        }else{
+                           
+                        }
+            },'json');
+        }
+        
+
+</script>
+
+</body>
+</html>

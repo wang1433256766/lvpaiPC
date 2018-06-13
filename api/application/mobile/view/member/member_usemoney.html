@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>使用旅行币</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="/static/mobile/css/mui.min.css">
+		<link rel="stylesheet" href="/static/mobile/css/useMoney.css" />
+		<script src="/static/mobile/js/match.js"></script>
+		<script src="/static/mobile/js/mui.min.js"></script>
+	</head>
+	<body>
+		<!--头部-->
+		<header>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<div class="text-cnt">使用旅行币</div>
+			<div class="textIndex"><a href="/mobile/member/member_donate">赠送客户</a></div>
+		</header>
+	<div class="html">
+        <div class="content">
+            {volist name="data" id="v"}
+            <li>
+                <a href="/mobile/mall/goodsdetail/id/{$v.id}" style="color: #333">
+                    <img src="{$v.img}">
+                    <div>
+                        <p>
+                            <span class="title">{$v.ticket_name}</span>
+                            
+                        </p>
+                        <p>
+                            <span class="price"><span>￥</span>{$v.shop_price}</span>
+                            <span class="sales">销售量：{$v.sale_num}</span>
+                        </p>
+                    </div>
+                </a>
+            </li>
+            {/volist}
+        </div>
+        <!-- <footer>
+            <p>
+                <img src="/static/mobile/img/shangchengIcon.png">
+                <span class="current">商城</span>
+            </p>
+            <p>
+                <img src="/static/mobile/img/xiuxiuIcon.png">
+                <span>秀秀</span>
+            </p>
+            <p>
+                <img src="/static/mobile/img/wodeIcon.png">
+                <span>我的</span>
+            </p>
+        </footer> -->
+    </div>
+	</body>
+</html>

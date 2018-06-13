@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>点评</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="/static/mobile/css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/mobile/css/Comments.css"/>
+		<script src="/static/mobile/js/match.js"></script>
+		<script src="/static/mobile/js/mui.min.js"></script>
+		<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+	</head>
+	<body>
+		<!--公共头部-->
+		
+		<!--内容-->
+		<div class="mui-content">
+			<div class="mui-input-row" style="margin: 10px 5px;">
+				<textarea id="textarea" rows="5" placeholder="请输入评价"></textarea>
+			</div>
+			
+			<div class="btn">
+				<button type="button" class="mui-btn mui-btn-primary mui-btn-block" style="font-size: .45rem;font-weight: bold;" onclick="sub()">发表</button>
+			</div>
+		</div>
+	</body>
+<script>
+	function sub() {
+	    var id = {$id};
+		var str = $('#textarea').val();
+		if (!str) {
+            mui.toast('评价不能为空');
+            return false;
+		}
+        $.post('/mobile/order/subcomment.html',{content:str,id:id},function(res){
+            if (res.status == true) {
+                location.href = '/mobile/order/evaluation/id/'+id;
+            }else {
+                mui.toast(res.info);
+            }
+        },'json')
+    }
+</script>
+</html>

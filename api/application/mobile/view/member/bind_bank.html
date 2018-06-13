@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>绑定银行卡</title>
+	<link rel="stylesheet" href="/static/mobile/css/info.css">
+
+</head>
+<body>
+	<div class="box">
+		<header><a href="javascript:history.go(-1)" class="back"></a>绑定银行卡</header>
+		<div class="sider" style="margin-bottom:none;">
+			<label for="">姓名</label><input type="text" id="username" name="username"  placeholder="请输入真实姓名">
+		</div>
+		<div class="sider" style="border-bottom: none;">
+			<label for="">手机号</label><input type="text" id="mobile" name="mobile"  placeholder="请输入真实手机号码">
+		</div>
+		<div class="sider" style="border-bottom: none;">
+			<label for="">银行卡号</label><input type="text" id="bank_no" name="bank_no"  placeholder="银行卡号">
+		</div> 
+		<div class="sider" style="border-bottom: none;">
+			<label for="">所属银行</label><select name="bank_id" id="bank_id" style="font-size: 38px;border: 0px;">
+				{foreach name="bank" item="v"}
+				<option value="{$v.BankId}">{$v.BankName}</option>
+				{/foreach}
+				
+			</select>
+		</div> 
+		<div class="sider">
+			<!-- sendhui为发送验证吗 删除sendhui就是正常 -->
+			<label for="">验证码</label><input type="number" id="code" placeholder="输入短信验证码"> <button id="sendCode" class="send">发送验证码</button>
+		</div>
+		<!-- bindhui删除就是正常 -->
+		<!-- <a  class="bind">绑 定</a> -->
+		<a onclick="form_check()" class="bind">绑 定</a>
+	</div>
+
+	<script src="/static/mobile/js/rem.js"></script>
+	<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+	<script src="/static/mobile/js/send.js"></script>
+	<script type="text/javascript">
+		function form_check() {
+		        var username = $("#username").val();
+		        if (username == '') { alert('请填写姓名');  return false;};
+		        var mobile = $("#mobile").val();
+		        if (mobile == '') { alert('请填写手机号码'); return false;};
+		        var bank_id = $("#bank_id").val();
+		        if (bank_id == '') { alert('请选择归属银行'); return false;};
+		        var bank_no = $("#bank_no").val();
+		        if (bank_no == '') { alert('请输入银行卡号'); return false;};
+		        var code = $("#code").val();
+		        if (code == '') { alert('请输入验证码'); return false;};
+		        var travel_agency=$('#travel_agency').val();
+		        $.post('/mobile/member/bind_bank.html', {username:username,mobile:mobile,code:code,bank_no:bank_no,}, function(res) {
+		            if(res.code == 1){
+		                alert(res.msg);
+		                location.href='/mobile/member/member_moneyfunds'
+		            }else {
+		                alert(res.msg);
+		            }
+		        },'json');
+		    }
+
+		     //发送手机验证码
+    $(function(){
+        //点击按钮发送验证码
+        $("#sendCode").click(function(){
+            var mobile = $("#mobile").val();
+            var myreg = /^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
+
+            if(mobile == ''){
+                alert("请先填写手机号码!");
+                return false;
+            }else if(!myreg.test(mobile)){
+                alert('请输入有效的手机号码！');
+                return false;
+            }
+            sendCode($('#sendCode'));
+        });
+
+    var name = $("#sendCode").attr('id');
+    v = getCookieValue(name);//获取cookie值
+    if(v>0){
+        settime($("#sendCode"));//开始倒计时
+    }
+
+    });
+	</script>
+</body>
+</html>

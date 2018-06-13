@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>修改出行人信息</title>
+	<link rel="stylesheet" href="/static/mobile/css/info.css">
+</head>
+<body>
+	<div class="box">
+		<header><a href="history.back()" class="back"></a>修改出行人信息</header>
+		<div class="sider" style="margin-bottom: 0.2rem;">
+			<label for="">中文姓名</label><input type="text" name="use_name" id="use_name" placeholder="与证件保持一致" class="m7" value="{$bool.use_name}">
+		</div>
+		<div class="sider" style="border-bottom: none;">
+			<label for="">证件号码</label><input type="text" id="use_card" name="use_card" placeholder="请输入正确证件号码" class="m7" value="{$bool.use_card}">
+		</div>
+
+		<a onclick="submit_mod()" class="preservation">保存</a>
+	</div>
+
+
+	<script src="/static/mobile/js/rem.js"></script>
+	<script src="/static/mobile/js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript">
+	function submit_mod(){
+		var id ={$bool.id};
+		console.log(id);
+		var use_name =$('#use_name').val();
+		var use_card =$('#use_card').val();
+		 $.post('/mobile/member/submit_mod',{id:id,use_name:use_name,use_card:use_card},function(res){
+		 	if(res.status == true){
+		                alert("添加成功!");
+		                setTimeout(function(){
+		                    location.href='/mobile/member/member_information.html';
+		                },0)
+		              }else{
+		              	alert("添加失败!");
+		              }
+		          },'json')
+	}
+	</script>
+</body>
+</html>
